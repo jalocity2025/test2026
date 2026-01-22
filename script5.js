@@ -404,7 +404,6 @@
     "answer": 1
 }
 ];
-
 const quizContainer = document.getElementById("questions");
 
 questions.forEach((question, index) => {
