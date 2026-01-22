@@ -1,0 +1,121 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    direction: rtl;       /* تحديد اتجاه النص */
+    unicode-bidi: bidi-override; /* لضمان معالجة النصوص المختلطة بشكل صحيح */
+    text-align: right;    /* محاذاة النص لليمين */
+background-color: black; /* جعل اللون أسود */
+    
+margin: 0;               /* إزالة الهوامش الافتراضية */
+    height: 100vh;
+font-family: 'Cairo', sans-serif;
+    overflow-x: hidden;
+}
+
+
+.split-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+.side {
+    position: relative;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: flex 0.5s ease-in-out;
+    overflow-y: auto;
+    padding: 40px 0;
+}
+
+/* خلفيات افتراضية - يمكنك استبدال الرابط بصورة محلية */
+.scientific {
+ background: url('ayada1.jpg') no-repeat center center fixed;
+   /* background: url('https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&q=80') no-repeat center center/cover;*/
+}
+
+.literary {
+ background: url('ayada1.jpg') no-repeat center center fixed;
+  /*  background: url('https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&q=80') no-repeat center center/cover;*/
+}
+
+/* طبقة تظليل فوق الصور لجعل النص واضحاً */
+.overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    transition: background 0.3s ease;
+}
+
+.side:hover .overlay {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+    width: 80%;
+}
+
+.icon { font-size: 60px; margin-bottom: 10px; }
+
+h2 { font-size: 1.5rem; font-weight: 900; margin-bottom: 10px; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
+
+p { font-size: 1.2rem; margin-bottom: 30px; opacity: 0.9; }
+
+/* قائمة الاختبارات تحت بعضها */
+.test-links {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
+
+.test-links a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2rem;
+    padding: 12px 40px;
+    border: 2px solid white;
+    border-radius: 50px;
+    width: 250px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* تأثير التكبير عند الوقوف على القسم */
+.side:hover {
+    flex: 1.5; /* يتوسع القسم عند مرور الماوس */
+}
+
+/* ألوان الأزرار عند المرور */
+.scientific .test-links a:hover {
+    background: #00d2ff;
+    border-color: #00d2ff;
+    transform: scale(1.1);
+}
+
+.literary .test-links a:hover {
+    background: #ff4b2b;
+    border-color: #ff4b2b;
+    transform: scale(1.1);
+}
+
+/* للتوافق مع الموبايل */
+@media (max-width: 768px) {
+    .split-container { flex-direction: column; }
+    .side { height: 50vh; }
+    h2 { font-size: 2rem; }
+    .side:hover { flex: 1; }
+}

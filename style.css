@@ -1,0 +1,93 @@
+/* ≈⁄œ«œ«  ⁄«„… */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Cairo', sans-serif;
+}
+
+body {
+    background-color: #121212; /* ·Ê‰ „—ÌÕ ··⁄Ì‰ ›Ì «·„Ê»«Ì· */
+    color: white;
+}
+
+/* «·Õ«ÊÌ… «·—∆Ì”Ì… */
+.split-container {
+    display: flex;
+    flex-wrap: wrap; /* ··”„«Õ »‰“Ê· «·√ﬁ”«„  Õ  »⁄÷Â« ›Ì «·‘«‘«  «·’€Ì—… */
+    min-height: 100vh;
+}
+
+/*  ‰”Ìﬁ «·ﬁ”„ (⁄·„Ì / √œ»Ì) */
+.side {
+    position: relative;
+    flex: 1; /* Ì√Œ– ‰’› «·‘«‘… ›Ì «·ﬂ„»ÌÊ — */
+    min-width: 300px; /* Ì„‰⁄ «·ﬁ”„ „‰ √‰ Ì’»Õ ‰ÕÌ›« Ãœ« */
+    min-height: 50vh; /* Ì√Œ– ‰’› «— ›«⁄ «·‘«‘… ›Ì «·„Ê»«Ì· */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Œ·›Ì«   „ÌÌ“Ì… */
+.elmy { 
+    background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://via.placeholder.com/800x1200/003366'); 
+}
+.adaby { 
+    background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://via.placeholder.com/800x1200/663300'); 
+}
+
+/*  ‰”Ìﬁ «·„Õ ÊÏ */
+.icon { font-size: 50px; margin-bottom: 15px; }
+h2 { font-size: 28px; margin-bottom: 10px; color: #fff; }
+p { font-size: 16px; margin-bottom: 25px; color: #bbb; }
+
+/*  ‰”Ìﬁ «·—Ê«»ÿ («·√“—«—) - „’„„… · ‰«”» ·„”… «·≈’»⁄ */
+.test-links {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 250px;
+}
+
+.test-links a {
+    text-decoration: none;
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 15px; /* „”«Õ… Ê«”⁄… ··÷€ÿ »«·≈’»⁄ */
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    transition: 0.3s;
+    text-align: center;
+}
+
+/*  √ÀÌ— ⁄‰œ «··„” ›Ì «·„Ê»«Ì· */
+.test-links a:active {
+    background: #fff;
+    color: #000;
+    transform: scale(0.95);
+}
+
+/*  Œ’Ì’ √·Ê«‰ «·√“—«— */
+.elmy a { border-right: 5px solid #00d2ff; }
+.adaby a { border-right: 5px solid #ff9f43; }
+
+/* --- «” ⁄·«„«  «·Ê”«∆ÿ ··„Ê»«Ì· (Media Queries) --- */
+@media (max-width: 600px) {
+    h2 { font-size: 24px; }
+    .side {
+        min-height: 50vh; /* ﬂ· ﬁ”„ Ì√Œ– ‰’› ‘«‘… «·„Ê»«Ì· */
+    }
+    .test-links a {
+        padding: 12px;
+        font-size: 16px;
+    }
+}

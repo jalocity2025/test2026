@@ -1,0 +1,138 @@
+﻿body {
+    font-family: Arial, sans-serif;
+    text-align: right;
+    direction: rtl;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 600px;
+    margin: 10px auto; 
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* توسيط العناوين وضمان ظهورها في المنتصف */
+h1, h2 {
+    text-align: center;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    color: #000;
+    font-weight: bold;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+h2 {
+    font-size: 14px; /* حسب طلبك */
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+/* تنسيق حقل إدخال الاسم (جديد) */
+label[for="name"] {
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #000;
+}
+
+input[id="name"] {
+    width: 100%;             /* الطول الكامل */
+    padding: 15px;           /* زيادة حجم الصندوق (الطول الداخلي) */
+    font-size: 18px;         /* حجم خط الكتابة */
+    font-weight: bold;
+    color: #000;
+    border: 2px solid #000;
+    border-radius: 6px;
+    box-sizing: border-box;  /* لمنع خروج الصندوق عن الحاوية */
+    margin-bottom: 20px;
+}
+
+/* تنسيق حاوية السؤال */
+.question {
+    margin: 5px 0;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+}
+
+.question-text {
+    font-weight: bold;
+    font-size: 20px;
+    color: #000;
+    margin-bottom: 5px;
+}
+
+/* صندوق الكود البرمجي */
+.code-block {
+    display: block;
+    direction: ltr !important;    
+    text-align: left !important;  
+    background-color: #f8f9fa;    
+    padding: 10px;
+    margin: 10px 0;               
+    border: 2px solid #000;       
+    font-family: 'Courier New', Courier, monospace; 
+    font-size: 20px;              
+    font-weight: bold;            
+    color: #000;               
+    white-space: pre-wrap;        
+    border-radius: 4px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+}
+
+/* تنسيق الخيارات وأزرار الراديو */
+label {
+    display: block;
+    margin: 5px 0;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+    color: #000;
+}
+
+input[type="radio"] {
+    transform: scale(1.5); /* تكبير حجم الدائرة */
+    margin-left: 12px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+/* الأزرار والنتائج */
+button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+button:hover {
+    background: #218838;
+}
+
+.result {
+    margin-top: 15px;
+    padding: 15px;
+    background: #e7f3e7;
+    border: 2px solid #28a745;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    border-radius: 5px;
+    color: #000;
+}
