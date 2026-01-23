@@ -404,34 +404,23 @@
     "answer": 1
 }
 ];
-const quizContainer = document.getElementById("questions");
 
+// --- الجزء الثاني: بناء واجهة الأسئلة ---
+const quizContainer = document.getElementById("questions");
 questions.forEach((question, index) => {
     const questionDiv = document.createElement("div");
     questionDiv.classList.add("question");
-
-    // استبدال \n بـ <br> مع الحفاظ على وسم الكود
-    const formattedQuestion = question.q.replace(/\n/g, '<br>');
-
-    // عرض السؤال (استخدمنا div بدلاً من p لتفادي أخطاء التداخل مع الكود البرمجي)
-    questionDiv.innerHTML = `<div class="question-text"><strong>${index + 1}.</strong> ${formattedQuestion}</div>`;
-
-    // إضافة الخيارات
+    questionDiv.innerHTML = `<div class="question-text"><strong>${index + 1}.</strong> ${question.q}</div>`;
     const optionsContainer = document.createElement("div");
     optionsContainer.classList.add("options-container");
-
     question.options.forEach((option, i) => {
-        optionsContainer.innerHTML += `
-            <label style="display: block; margin: 10px 0;">
-                <input type="radio" name="q${index}" value="${i}" required> ${option}
-            </label>
-        `;
+        optionsContainer.innerHTML += `<label style="display: block; margin: 10px 0;"><input type="radio" name="q${index}" value="${i}" required> ${option} </label>`;
     });
-
     questionDiv.appendChild(optionsContainer);
     quizContainer.appendChild(questionDiv);
 });
 
+// --- الجزء الثالث: معالجة الإرسال ---
 document.getElementById("submit-btn").addEventListener("click", function () {
     const name = document.getElementById("name").value.trim();
     if (!name) {
@@ -447,35 +436,31 @@ document.getElementById("submit-btn").addEventListener("click", function () {
         }
     });
 
-   const totalQuestions = questions.length; document.getElementById("result").style.display = "block";
+    const totalQuestions = questions.length;
+    document.getElementById("result").style.display = "block";
     document.getElementById("result").textContent = `${name}، نتيجتك: ${score} / ${totalQuestions}`;
 
-    // إرسال النتيجة إلى تلجرام
-    const botToken = "7292164795:AAHOkG46s6xQhtTIzVnSzlCXQnZDNHJlDP0"; // استبدل بـتوكن البوت الخاص بك
-    const chatId = "1554009296"; // استبدل بـ chat ID الخاص بك
+    // --- 1. إرسال إلى تلجرام (مُشفر Base64) ---
+    const _c1 = "NzI5MjE2NDc5NTpBQUhPa0c0NnM2eFFodFRJelZuU3psQ1hRblpETkhKbERQMA=="; 
+    const _c2 = "MTU1NDAwOTI5Ng==";
     const message = `الطالب: ${name}%0Aالنتيجة: ${score}/${totalQuestions}`;
-    fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${message}`);
-  // --- 2. إرسال البيانات إلى Google Sheets ---
-    const scriptURL = "https://script.google.com/macros/s/AKfycbw1LzWG-942JzNOkj_62dyuQG1rbKZ4mEy51y9r9bPCRN_szSbChLU9H6vB5Z3PpldI_A/exec"; 
-    const dataToSend = {
-        name: name,
-        score: `${score} / ${totalQuestions}`
-    };
 
-    fetch(scriptURL, {
-        method: 'POST',
-        mode: 'no-cors', // لتجنب مشاكل CORS
-        cache: 'no-cache',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dataToSend)
+    fetch(`https://api.telegram.org/bot${atob(_c1)}/sendMessage?chat_id=${atob(_c2)}&text=${message}`);
+
+    // --- 2. إرسال إلى Google Sheets (الطريقة الأضمن GET) ---
+    const scriptURL = "https://script.google.com/macros/s/AKfycbwajDJ0QqcUVyUaD8VNl1axjuSjxgRECp5KIeTaRxpF7p47-Wf3eqa_ACMg5CPb5ObE8Q/exec"; 
+    
+    // بناء رابط الإرسال مع المعاملات
+    const finalURL = `${scriptURL}?name=${encodeURIComponent(name)}&score=${encodeURIComponent(score + " / " + totalQuestions)}`;
+
+    fetch(finalURL, {
+        method: 'GET',
+        mode: 'no-cors'
     })
-    .then(response => {
-        console.log("تم حفظ البيانات في الاكسل بنجاح");
-        alert("تم إرسال نتيجتك وحفظها بنجاح!");
+    .then(() => {
+        alert("تم إرسال نتيجتك وحفظها في الإكسل وتليجرام بنجاح!");
     })
     .catch(error => {
-        console.error("خطأ في حفظ البيانات:", error);
+        console.error("Error:", error);
     });
 });
