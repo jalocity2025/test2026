@@ -755,8 +755,8 @@ document.getElementById("submit-btn").addEventListener("click", function () {
     document.getElementById("result").textContent = `${name}، نتيجتك: ${score} / ${totalQuestions}`;
 
     // إرسال النتيجة إلى تلجرام
-    const botToken = "7292164795:AAHOkG46s6xQhtTIzVnSzlCXQnZDNHJlDP0"; // استبدل بـتوكن البوت الخاص بك
-    const chatId = "1554009296"; // استبدل بـ chat ID الخاص بك
+    const botToken = "000000000000000000"; // استبدل بـتوكن البوت الخاص بك
+    const chatId = "00000000000000006"; // استبدل بـ chat ID الخاص بك
     const message = `الطالب: ${name}%0Aالنتيجة: ${score}/${totalQuestions}`;
     fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${message}`);
   // --- 2. إرسال البيانات إلى Google Sheets ---
