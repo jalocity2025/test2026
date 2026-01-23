@@ -1,6 +1,4 @@
- user.name "jalocity2025"
-  user.email "jalocity0@gmail.com"
-password  ayada@12345
+ 
 https://jalocity2025.github.io/test2026/
 
 
