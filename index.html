@@ -1,47 +1,59 @@
-﻿<!DOCTYPE html>
 <!DOCTYPE html>
-<html lang="ar" dir="rtl"> <head>
+<html lang="ar" dir="rtl">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ثانوية صلاح الدين جالو</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css"> <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <script>
+        function openTest(testNumber, fileName) {
+            var password = 2026 * testNumber; // العملية الحسابية
+            var userInput = prompt("الرجاء إدخال كلمة المرور للاختبار رقم " + testNumber);
+
+            if (userInput == password) {
+                window.location.href = fileName; // يفتح الملف إذا كانت صحيحة
+            } else if (userInput != null) {
+                alert("كلمة المرور خاطئة!"); // ينبهه إذا كانت خاطئة
+            }
+        }
+    </script>
 </head>
 <body>
 
     <div class="split-container">
-        <section class="side scientific">
-            <div class="overlay"></div>
+        <section class="side elmy">
             <div class="content">
                 <div class="icon">🔬</div>
-                <h2>القسم العلمي</h2>
-                <p>الثالث علمي</p>
+                <h2>الثالث علمي</h2>
+                <p>مطلوب كلمة السر لكل اختبار</p>
                 <div class="test-links">
-                    <a href="index1.html">الاختبار الأول</a>
-                    <a href="index2.html">الاختبار الثاني</a>
-                    <a href="index3.html">الاختبار الثالث</a>
-                    <a href="index4.html">الاختبار الرابع</a>
-                    <a href="index5.html">الاختبار الخامس</a>
-                    <a href="index6.html">الاختبار السادس</a>
-                    <a href="index7.html">الاختبار السابع</a>
+                    <a href="javascript:void(0)" onclick="openTest(1, 'index1.html')">الاختبار الأول</a>
+                    <a href="javascript:void(0)" onclick="openTest(2, 'index2.html')">الاختبار الثاني</a>
+                    <a href="javascript:void(0)" onclick="openTest(3, 'index3.html')">الاختبار الثالث</a>
+                    <a href="javascript:void(0)" onclick="openTest(4, 'index4.html')">الاختبار الرابع</a>
+					<a href="javascript:void(0)" onclick="openTest(5, 'index5.html')">الاختبار الخامس</a>
+                    <a href="javascript:void(0)" onclick="openTest(6, 'index6.html')">الاختبار السادس</a>
+                    <a href="javascript:void(0)" onclick="openTest(7, 'index3.html')">الاختبار السابع</a>
+                   
                 </div>
             </div>
         </section>
 
-        <section class="side literary">
-            <div class="overlay"></div>
+        <section class="side adaby">
             <div class="content">
                 <div class="icon">📚</div>
-                <h2>القسم الأدبي</h2>
-                <p>الثالث ادبي</p>
+                <h2>الثالث ادبي </h2>
+               <p>مطلوب كلمة السر لكل اختبار</p>
                 <div class="test-links">
-                    <a href="index01.html">الاختبار الأول</a>
-                    <a href="index02.html">الاختبار الثاني</a>
-                    <a href="index03.html">الاختبار الثالث</a>
-                    <a href="index04.html">الاختبار الرابع</a>
-                    <a href="index05.html">الاختبار الخامس</a>
-                    <a href="index06.html">الاختبار السادس</a>
-                    <a href="index07.html">الاختبار السابع</a>
+                    <a href="javascript:void(0)" onclick="openTest(1, 'index01.html')">الاختبار الأول</a>
+                    <a href="javascript:void(0)" onclick="openTest(2, 'index02.html')">الاختبار الثاني</a>
+                    <a href="javascript:void(0)" onclick="openTest(3, 'index03.html')">الاختبار الثالث</a>
+                    <a href="javascript:void(0)" onclick="openTest(4, 'index04.html')">الاختبار الرابع</a>
+					<a href="javascript:void(0)" onclick="openTest(5, 'index05.html')">الاحتبار الخامس</a>
+                    <a href="javascript:void(0)" onclick="openTest(6, 'index06.html')">الاحتبار السادس</a>
+                    <a href="javascript:void(0)" onclick="openTest(7, 'index07.html')">الاختبار السابع</a>
+
                 </div>
             </div>
         </section>
