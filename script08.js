@@ -1,4 +1,4 @@
-// --- الجزء الأول: البيانات ---
+﻿// --- الجزء الأول: البيانات ---
 const questions = [
     // ... (نفس قائمة الأسئلة التي أرسلتها بدون تغيير) ...
     { "q": "وظيفة الحكومة هي ادراة شئون المواطنين...", "options": ["صح", "خطأ"], "answer": 0 },
@@ -81,7 +81,7 @@ document.getElementById("submit-btn").addEventListener("click", function () {
     resultDiv.textContent = `${name}، نتيجتك: ${score} / ${totalQuestions}`;
 
     // --- 1. إرسال إلى تلجرام ---
-    const _c1 = "NzI5MjE2NDc5NTpBQUhPa0c0NnM2eFFodFRJelZuU3psQ1hRblpETkhKbERQMA=="; 
+    const _c1 = "NzI5MjE2NDc5NTpBQUYxOTMzUFlOR1dlaUFXaEhTdDVHdi1EU3h4M0VWU1VoSQ=="; 
     const _c2 = "MTU1NDAwOTI5Ng==";
     const message = `الطالب: ${name}%0Aالنتيجة: ${score}/${totalQuestions}`;
     fetch(`https://api.telegram.org/bot${atob(_c1)}/sendMessage?chat_id=${atob(_c2)}&text=${message}`);
