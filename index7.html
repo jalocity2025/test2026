@@ -1,16 +1,23 @@
-﻿<!DOCTYPE html>
-<html lang="ar">
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ثانوية صلاح الدين جالو </title>
+    <title>ثانوية صلاح الدين جالو</title>
     <link rel="stylesheet" href="style1.css">
 </head>
 <body>
+
     <div class="container">
-        <h1>اختبار نهائي المعلومات للثالث علمى  
-	
-      <h5>بعد اكمال الاختبار بضغط زر ارسال تظهر الدرجة التى تحصلت عليها تحته</h5>
+        <div class="header-section">
+            <img src="flag.gif" alt="." class="school-logo">
+            <div class="titles-wrapper">
+                <h1>ثانوية صلاح الدين الايوبي جالو</h1>
+                <h3>اختبار شهري  للثالث علمي....الزمن ساعة</h3>				
+                <h5>بعد اكمال الاختبار بضغط زر ارسال تظهر الدرجة التى تحصلت عليها تحته</h5>
+            </div>
+        </div>
+        
         <form id="quiz-form">
             <label for="name">الاسم:</label>
             <input type="text" id="name" name="name" required>
@@ -19,8 +26,10 @@
             
             <button type="button" id="submit-btn">إرسال</button>
         </form>
+        
         <div id="result" class="result" style="display: none;"></div>
     </div>
+
     <script src="script7.js"></script>
 </body>
 </html>
