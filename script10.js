@@ -1,5 +1,5 @@
-// --- الجزء الأول: بنك الأسئلة (81 سؤال) ---
-const questions = [
+﻿// --- الجزء الأول: بنك الأسئلة (81 سؤال) ---
+const allQuestions = [
     { "q": "يفضل شراء الاسطوانات المستنسخة للبرمجيات لأنه ارخص و اجود", "options": ["صح", "خطأ"], "answer": 1 },
     { "q": "سرقة حاسوب من مركز تقنية المعلومات يعتبر جريمة الكترونية", "options": ["صح", "خطأ"], "answer": 1 },
     { "q": "سرقة الملفات من الحاسوب تعتبر جريمة حاسوب", "options": ["صح", "خطأ"], "answer": 0 },
@@ -80,7 +80,34 @@ const questions = [
     { "q": "مخاطر تتعرض لها البيانات الرقمية", "options": ["فقدان البيانات و المعلومات غير المتعمد والاعطال الفنية و العبث فى المعدات والشبكة", "فقدان البيانات و المعلومات المتعمد القرصنة –الفيروسات", "التجسس التجاري", "كل ما سبق"], "answer": 3 }
 ];
 
-// --- خلط الأسئلة فور التحميل ---
+// ========================================
+// إعدادات الاختبار
+// ========================================
+const REQUIRED_QUESTIONS_COUNT = 48;  // عدد الأسئلة المطلوب عرضها
+const EXAM_DURATION_MINUTES = 60;      // مدة الاختبار بالدقائق (60 دقيقة)
+// ========================================
+
+// --- دالة اختيار أسئلة عشوائية بدون تكرار ---
+function getRandomQuestions(questionsArray, count) {
+    const shuffled = [...questionsArray];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled.slice(0, count);
+}
+
+// --- اختيار الأسئلة (45 سؤال عشوائي) ---
+let questions;
+if (allQuestions.length > REQUIRED_QUESTIONS_COUNT) {
+    questions = getRandomQuestions(allQuestions, REQUIRED_QUESTIONS_COUNT);
+    console.log(`✅ تم اختيار ${questions.length} سؤال عشوائي من أصل ${allQuestions.length}`);
+} else {
+    questions = [...allQuestions];
+    console.log(`📋 عدد الأسئلة (${questions.length}) أقل من أو يساوي ${REQUIRED_QUESTIONS_COUNT}، تم عرض جميع الأسئلة`);
+}
+
+// --- خلط الأسئلة المختارة ---
 function shuffleQuestions(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -89,7 +116,90 @@ function shuffleQuestions(array) {
 }
 shuffleQuestions(questions);
 
-// --- بناء واجهة الأسئلة (مرة واحدة فقط) ---
+// --- عرض عدد الأسئلة للمستخدم ---
+const questionsCountDisplay = document.createElement("div");
+questionsCountDisplay.id = "questions-count";
+questionsCountDisplay.style.cssText = "background: #2196F3; color: white; padding: 12px; border-radius: 8px; margin-bottom: 15px; text-align: center; font-weight: bold; font-size: 16px;";
+questionsCountDisplay.innerHTML = `📋 عدد أسئلة الاختبار: ${questions.length} سؤال | ⏱️ مدة الاختبار: ${EXAM_DURATION_MINUTES} دقيقة`;
+const container = document.querySelector('.container');
+if (container) {
+    container.insertBefore(questionsCountDisplay, container.firstChild);
+}
+
+// --- إنشاء شريط المؤقت ---
+const timerDisplay = document.createElement("div");
+timerDisplay.id = "timer-box";
+timerDisplay.style.cssText = "background: #ff5722; color: white; padding: 12px; border-radius: 8px; margin-bottom: 15px; text-align: center; font-weight: bold; font-size: 18px; font-family: monospace;";
+if (container) {
+    container.insertBefore(timerDisplay, container.firstChild);
+}
+
+// --- متغيرات المؤقت ---
+let timeInSeconds = EXAM_DURATION_MINUTES * 60;
+let timerInterval = null;
+let isTimeEnded = false;
+
+// --- دالة تحديث عرض المؤقت ---
+function updateTimerDisplay() {
+    let minutes = Math.floor(timeInSeconds / 60);
+    let seconds = timeInSeconds % 60;
+    seconds = seconds < 10 ? '0' + seconds : seconds;
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    
+    // تغيير اللون عند اقتراب الوقت
+    if (timeInSeconds <= 300) { // أقل من 5 دقائق
+        timerDisplay.style.background = "#f44336";
+        timerDisplay.style.animation = "blink 1s infinite";
+    } else if (timeInSeconds <= 600) { // أقل من 10 دقائق
+        timerDisplay.style.background = "#ff9800";
+    } else {
+        timerDisplay.style.background = "#4CAF50";
+    }
+    
+    timerDisplay.innerHTML = `⏱️ الوقت المتبقي: ${minutes}:${seconds}`;
+}
+
+// --- دالة بدء المؤقت ---
+function startTimer() {
+    if (timerInterval) clearInterval(timerInterval);
+    
+    timerInterval = setInterval(function() {
+        if (timeInSeconds <= 0) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            isTimeEnded = true;
+            timerDisplay.innerHTML = "⏰ انتهى الوقت! تم إرسال الإجابات تلقائياً.";
+            timerDisplay.style.background = "#d32f2f";
+            autoSubmitQuiz();
+        } else {
+            timeInSeconds--;
+            updateTimerDisplay();
+        }
+    }, 1000);
+}
+
+// --- دالة إيقاف المؤقت ---
+function stopTimer() {
+    if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+    }
+}
+
+// --- دالة الإرسال التلقائي عند انتهاء الوقت ---
+function autoSubmitQuiz() {
+    if (isTimeEnded) return;
+    isTimeEnded = true;
+    
+    const nameField = document.getElementById("name");
+    if (!nameField.value.trim()) {
+        nameField.value = "طالب (انتهى الوقت)";
+    }
+    alert("⏰ انتهى وقت الاختبار! سيتم سحب الورقة وإرسال الإجابات الحالية.");
+    performFinalSubmit(true);
+}
+
+// --- بناء واجهة الأسئلة ---
 const quizContainer = document.getElementById("questions");
 questions.forEach((question, index) => {
     const questionDiv = document.createElement("div");
@@ -126,40 +236,14 @@ function highlightCorrectAnswers() {
     });
 }
 
-// --- إدارة المؤقت (اختياري - يمكن تفعيله إذا أردت) ---
-let timeInSeconds = 60 * 60; // 60 دقيقة
-const timerDisplay = document.createElement("div");
-timerDisplay.id = "timer-box";
-if (document.querySelector('.container')) {
-    document.body.insertBefore(timerDisplay, document.querySelector('.container'));
-}
-
-function startTimer() {
-    const countdown = setInterval(function() {
-        let minutes = Math.floor(timeInSeconds / 60);
-        let seconds = timeInSeconds % 60;
-        seconds = seconds < 10 ? '0' + seconds : seconds;
-        minutes = minutes < 10 ? '0' + minutes : minutes;
-        timerDisplay.innerHTML = `الوقت المتبقي: ${minutes}:${seconds}`;
-
-        if (timeInSeconds <= 0) {
-            clearInterval(countdown);
-            timerDisplay.innerHTML = "انتهى الوقت!";
-            autoSubmitQuiz(); 
-        }
-        timeInSeconds--;
-    }, 1000);
-}
-
-function autoSubmitQuiz() {
-    const nameField = document.getElementById("name");
-    if (!nameField.value.trim()) nameField.value = "طالب (انتهى الوقت)";
-    alert("انتهى وقت الاختبار! سيتم سحب الورقة وإرسال الإجابات الحالية.");
-    performFinalSubmit(true); 
-}
-
 // --- معالجة زر الإرسال اليدوي ---
 document.getElementById("submit-btn").addEventListener("click", function () {
+    // منع الإرسال إذا انتهى الوقت
+    if (isTimeEnded) {
+        alert("⏰ انتهى الوقت! لا يمكنك الإرسال يدوياً.");
+        return;
+    }
+    
     const name = document.getElementById("name").value.trim();
     if (!name) { 
         alert("يرجى إدخال الاسم"); 
@@ -178,7 +262,7 @@ document.getElementById("submit-btn").addEventListener("click", function () {
     });
 
     if (unansweredCount > 0) {
-        const confirmMsg = `تنبيه: نسيتم الإجابة عن (${unansweredCount}) سؤال.\n\nهل تريد الإرسال وتتحمل مسؤولية نقص الإجابات؟\n\n(موافق للإرسال / إلغاء للذهاب لأول سؤال ناقص)`;
+        const confirmMsg = `⚠️ تنبيه: نسيتم الإجابة عن (${unansweredCount}) سؤال من أصل ${questions.length} سؤال.\n\nهل تريد الإرسال وتتحمل مسؤولية نقص الإجابات؟\n\n(موافق للإرسال / إلغاء للذهاب لأول سؤال ناقص)`;
         
         if (!confirm(confirmMsg)) {
             const unansweredQuestion = document.getElementsByClassName("question")[firstUnansweredIndex];
@@ -188,7 +272,7 @@ document.getElementById("submit-btn").addEventListener("click", function () {
             return; 
         }
     } else {
-        if (!confirm("هل أنت متأكد من تسليم الإجابات الآن؟")) return;
+        if (!confirm("✅ هل أنت متأكد من تسليم الإجابات الآن؟")) return;
     }
 
     performFinalSubmit(false); 
@@ -196,6 +280,9 @@ document.getElementById("submit-btn").addEventListener("click", function () {
 
 // --- تنفيذ الإرسال النهائي وحساب النتيجة ---
 function performFinalSubmit(isAuto) {
+    // إيقاف المؤقت عند الإرسال
+    stopTimer();
+    
     const submitBtn = document.getElementById("submit-btn");
     const name = document.getElementById("name").value.trim();
     
@@ -211,7 +298,7 @@ function performFinalSubmit(isAuto) {
     const total = questions.length;
     const resultDiv = document.getElementById("result");
     resultDiv.style.display = "block";
-    resultDiv.innerHTML = `<h3>تم استلام الإجابات</h3><p>${name}، نتيجتك: ${score} من ${total}</p>`;
+    resultDiv.innerHTML = `<h3>✅ تم استلام الإجابات</h3><p>${name}، نتيجتك: ${score} من ${total}</p>`;
     
     // إظهار زر التصحيح
     const correctBtn = document.getElementById("correct-btn");
@@ -221,7 +308,7 @@ function performFinalSubmit(isAuto) {
 }
 
 function sendData(name, score, total, isAuto) {
-    const status = isAuto ? "🔴 تلقائي" : "🟢 يدوي";
+    const status = isAuto ? "🔴 تلقائي (انتهاء الوقت)" : "🟢 يدوي";
     const _c1 = "NzI5MjE2NDc5NTpBQUYxOTMzUFlOR1dlaUFXaEhTdDVHdi1EU3h4M0VWU1VoSQ=="; 
     const _c2 = "MTU1NDAwOTI5Ng==";
     const msg = `الحالة: ${status}%0Aالطالب: ${name}%0Aالنتيجة: ${score}/${total}`;
@@ -230,7 +317,7 @@ function sendData(name, score, total, isAuto) {
 
     const scriptURL = "https://script.google.com/macros/s/AKfycbwajDJ0QqcUVyUaD8VNl1axjuSjxgRECp5KIeTaRxpF7p47-Wf3eqa_ACMg5CPb5ObE8Q/exec"; 
     fetch(`${scriptURL}?name=${encodeURIComponent(name)}&score=${encodeURIComponent(score + " / " + total)}`, { method: 'GET', mode: 'no-cors' })
-    .then(() => alert("تم حفظ النتيجة في سجل المدرسة بنجاح."))
+    .then(() => alert("✅ تم حفظ النتيجة في سجل المدرسة بنجاح."))
     .catch(error => console.error("خطأ في الإرسال:", error));
 }
 
@@ -239,9 +326,28 @@ const correctBtn = document.getElementById("correct-btn");
 if (correctBtn) {
     correctBtn.addEventListener("click", function () {
         highlightCorrectAnswers();
-        alert("تم تظليل الإجابات الصحيحة باللون الأخضر!");
+        alert("✅ تم تظليل الإجابات الصحيحة باللون الأخضر!");
     });
 }
 
-// --- تشغيل المؤقت (اختياري - قم بإلغاء التعليق إذا أردت تفعيله) ---
-// window.onload = startTimer;
+// --- إضافة تأثير وميض للمؤقت (CSS) ---
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes blink {
+        0% { opacity: 1; }
+        50% { opacity: 0.7; }
+        100% { opacity: 1; }
+    }
+    #timer-box {
+        transition: all 0.3s ease;
+    }
+`;
+document.head.appendChild(style);
+
+// --- بدء الاختبار فور تحميل الصفحة ---
+window.onload = function() {
+    startTimer();
+    console.log("🚀 تم بدء الاختبار بنجاح!");
+    console.log(`📊 عدد الأسئلة: ${questions.length} سؤال`);
+    console.log(`⏱️ المدة المتبقية: ${EXAM_DURATION_MINUTES} دقيقة`);
+};

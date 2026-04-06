@@ -1,5 +1,5 @@
 // --- الجزء الأول: بنك الأسئلة (81 سؤال) ---
-const questions = [
+const allQuestions = [
     { "q": "يفضل شراء الاسطوانات المستنسخة للبرمجيات لأنه ارخص و اجود", "options": ["صح", "خطأ"], "answer": 1 },
     { "q": "سرقة حاسوب من مركز تقنية المعلومات يعتبر جريمة الكترونية", "options": ["صح", "خطأ"], "answer": 1 },
     { "q": "سرقة الملفات من الحاسوب تعتبر جريمة حاسوب", "options": ["صح", "خطأ"], "answer": 0 },
@@ -80,7 +80,35 @@ const questions = [
     { "q": "مخاطر تتعرض لها البيانات الرقمية", "options": ["فقدان البيانات و المعلومات غير المتعمد والاعطال الفنية و العبث فى المعدات والشبكة", "فقدان البيانات و المعلومات المتعمد القرصنة –الفيروسات", "التجسس التجاري", "كل ما سبق"], "answer": 3 }
 ];
 
-// --- خلط الأسئلة فور التحميل ---
+// --- عدد الأسئلة المطلوب عرضها ---
+const REQUIRED_QUESTIONS_COUNT = 20;
+
+// --- دالة اختيار أسئلة عشوائية بدون تكرار (خوارزمية Fisher-Yates) ---
+function getRandomQuestions(questionsArray, count) {
+    // نسخة من المصفوفة الأصلية حتى لا نعدلها
+    const shuffled = [...questionsArray];
+    
+    // خلط المصفوفة بشكل عشوائي
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    
+    // إرجاع أول 'count' عنصر
+    return shuffled.slice(0, count);
+}
+
+// --- اختيار الأسئلة (45 سؤال عشوائي) ---
+let questions;
+if (allQuestions.length > REQUIRED_QUESTIONS_COUNT) {
+    questions = getRandomQuestions(allQuestions, REQUIRED_QUESTIONS_COUNT);
+    console.log(`تم اختيار ${questions.length} سؤال عشوائي من أصل ${allQuestions.length}`);
+} else {
+    questions = [...allQuestions];
+    console.log(`عدد الأسئلة (${questions.length}) أقل من أو يساوي ${REQUIRED_QUESTIONS_COUNT}، تم عرض جميع الأسئلة`);
+}
+
+// --- خلط الأسئلة المختارة (اختياري - لجعل ترتيب الأسئلة عشوائي أيضاً) ---
 function shuffleQuestions(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -89,7 +117,17 @@ function shuffleQuestions(array) {
 }
 shuffleQuestions(questions);
 
-// --- بناء واجهة الأسئلة (مرة واحدة فقط) ---
+// --- عرض عدد الأسئلة للمستخدم (اختياري) ---
+const questionsCountDisplay = document.createElement("div");
+questionsCountDisplay.id = "questions-count";
+questionsCountDisplay.style.cssText = "background: #4CAF50; color: white; padding: 10px; border-radius: 8px; margin-bottom: 15px; text-align: center; font-weight: bold;";
+questionsCountDisplay.innerHTML = `📋 عدد أسئلة الاختبار: ${questions.length} سؤال`;
+const container = document.querySelector('.container');
+if (container) {
+    container.insertBefore(questionsCountDisplay, container.firstChild);
+}
+
+// --- بناء واجهة الأسئلة ---
 const quizContainer = document.getElementById("questions");
 questions.forEach((question, index) => {
     const questionDiv = document.createElement("div");
@@ -126,7 +164,7 @@ function highlightCorrectAnswers() {
     });
 }
 
-// --- إدارة المؤقت (اختياري - يمكن تفعيله إذا أردت) ---
+// --- إدارة المؤقت (اختياري) ---
 let timeInSeconds = 60 * 60; // 60 دقيقة
 const timerDisplay = document.createElement("div");
 timerDisplay.id = "timer-box";
@@ -140,11 +178,11 @@ function startTimer() {
         let seconds = timeInSeconds % 60;
         seconds = seconds < 10 ? '0' + seconds : seconds;
         minutes = minutes < 10 ? '0' + minutes : minutes;
-        timerDisplay.innerHTML = `الوقت المتبقي: ${minutes}:${seconds}`;
+        timerDisplay.innerHTML = `⏱️ الوقت المتبقي: ${minutes}:${seconds}`;
 
         if (timeInSeconds <= 0) {
             clearInterval(countdown);
-            timerDisplay.innerHTML = "انتهى الوقت!";
+            timerDisplay.innerHTML = "⏰ انتهى الوقت!";
             autoSubmitQuiz(); 
         }
         timeInSeconds--;
@@ -178,7 +216,7 @@ document.getElementById("submit-btn").addEventListener("click", function () {
     });
 
     if (unansweredCount > 0) {
-        const confirmMsg = `تنبيه: نسيتم الإجابة عن (${unansweredCount}) سؤال.\n\nهل تريد الإرسال وتتحمل مسؤولية نقص الإجابات؟\n\n(موافق للإرسال / إلغاء للذهاب لأول سؤال ناقص)`;
+        const confirmMsg = `تنبيه: نسيتم الإجابة عن (${unansweredCount}) سؤال من أصل ${questions.length} سؤال.\n\nهل تريد الإرسال وتتحمل مسؤولية نقص الإجابات؟\n\n(موافق للإرسال / إلغاء للذهاب لأول سؤال ناقص)`;
         
         if (!confirm(confirmMsg)) {
             const unansweredQuestion = document.getElementsByClassName("question")[firstUnansweredIndex];
@@ -211,7 +249,7 @@ function performFinalSubmit(isAuto) {
     const total = questions.length;
     const resultDiv = document.getElementById("result");
     resultDiv.style.display = "block";
-    resultDiv.innerHTML = `<h3>تم استلام الإجابات</h3><p>${name}، نتيجتك: ${score} من ${total}</p>`;
+    resultDiv.innerHTML = `<h3>✅ تم استلام الإجابات</h3><p>${name}، نتيجتك: ${score} من ${total}</p>`;
     
     // إظهار زر التصحيح
     const correctBtn = document.getElementById("correct-btn");
@@ -230,7 +268,7 @@ function sendData(name, score, total, isAuto) {
 
     const scriptURL = "https://script.google.com/macros/s/AKfycbwajDJ0QqcUVyUaD8VNl1axjuSjxgRECp5KIeTaRxpF7p47-Wf3eqa_ACMg5CPb5ObE8Q/exec"; 
     fetch(`${scriptURL}?name=${encodeURIComponent(name)}&score=${encodeURIComponent(score + " / " + total)}`, { method: 'GET', mode: 'no-cors' })
-    .then(() => alert("تم حفظ النتيجة في سجل المدرسة بنجاح."))
+    .then(() => alert("✅ تم حفظ النتيجة في سجل المدرسة بنجاح."))
     .catch(error => console.error("خطأ في الإرسال:", error));
 }
 
@@ -239,7 +277,7 @@ const correctBtn = document.getElementById("correct-btn");
 if (correctBtn) {
     correctBtn.addEventListener("click", function () {
         highlightCorrectAnswers();
-        alert("تم تظليل الإجابات الصحيحة باللون الأخضر!");
+        alert("✅ تم تظليل الإجابات الصحيحة باللون الأخضر!");
     });
 }
 

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -14,10 +14,7 @@
             <div class="titles-wrapper">
                 <h1>ثانوية صلاح الدين الايوبي جالو</h1>
                 <h3>اختبار شهري  للثالث علمي....الزمن ساعة</h3>				
-                <h5>بعد اكمال الاختبار بضغط زر ارسال تظهر الدرجة التى تحصلت عليها تحته</h5>
-            </div>
-        </div>
-        
+               <h5>بعد اكمال الاختبار بضغط زر ارسال تظهر الدرجة التى تحصلت عليها تحته</h5>
         <form id="quiz-form">
             <label for="name">الاسم:</label>
             <input type="text" id="name" name="name" required>
@@ -25,8 +22,8 @@
             <div id="questions"></div>
             
             <button type="button" id="submit-btn">إرسال</button>
+            <button type="button" id="correct-btn" style="display: none; background-color: #007bff; margin-top: 10px;">تصحيح الإجابات</button>
         </form>
-        
         <div id="result" class="result" style="display: none;"></div>
     </div>
 
