@@ -2,256 +2,236 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <!-- هذا السطر هو مفتحل حل مشاكل العرض على الموبايل -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>إشعارات الاختبارات</title>
+    <!-- خط Tajawal -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* إعدادات أساسية لضبط الصفحة على الجوال */
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Tajawal', sans-serif; background: #f4f6f9; color: #333; padding-bottom: 50px; }
-        
-        /* الحاوية الرئيسية */
-        .container { max-width: 600px; margin: 0 auto; padding: 15px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tajawal', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: #f4f6f9; padding: 20px; padding-bottom: 50px; }
 
         /* رأس الصفحة */
         .header {
-            background: linear-gradient(135deg, #0056b3, #004494);
-            color: white;
-            padding: 25px;
-            border-radius: 15px;
-            text-align: center;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            background: #0056b3; color: white; padding: 20px; border-radius: 15px;
+            text-align: center; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-        .header h1 { font-size: 20px; margin-bottom: 10px; }
-        .badge {
-            background: #ffc107; color: #000; padding: 5px 15px;
-            border-radius: 20px; font-size: 12px; font-weight: bold;
-            display: inline-block;
-        }
-
+        .header h2 { font-size: 22px; margin-bottom: 10px; }
+        .badge { background: #ffc107; color: black; padding: 5px 12px; border-radius: 15px; font-size: 12px; font-weight: bold; }
+        
         /* بطاقة الإشعار */
         .card {
-            background: white;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            border-right: 4px solid #0056b3;
+            background: white; border-radius: 12px; padding: 15px; margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-right: 4px solid #0056b3; text-align: right;
         }
-        .card h3 { font-size: 16px; color: #0056b3; margin-bottom: 8px; }
-        .card p { font-size: 14px; line-height: 1.6; color: #555; }
+        .card h3 { color: #0056b3; margin-bottom: 8px; font-size: 18px; }
+        .card p { color: #555; line-height: 1.6; font-size: 15px; }
 
-        /* تنسيق وضع التعديل */
-        .edit-mode .card h3, .edit-mode .card p {
-            background: #fff9c4; /* خلفية صفراء خفيفة لتمييز القابل للتعديل */
+        /* تنسيق وضع التعديل (الكتابة) */
+        .editable {
+            background-color: #fff9c4; /* خلفية صفراء خفيفة للدلالة على التعديل */
             border: 1px dashed #fbc02d;
-            padding: 8px;
-            border-radius: 8px;
-            outline: none;
-            min-height: 30px;
+            padding: 8px; border-radius: 8px; outline: none; min-height: 30px;
         }
-        .edit-mode .card h3:focus, .edit-mode .card p:focus {
-            border-color: #0056b3;
-            background: #fff;
-        }
+        .editable:focus { border-color: #0056b3; background-color: #fff; }
 
         /* الأزرار */
         .btn {
-            display: block; width: 100%; padding: 15px;
-            border: none; border-radius: 10px;
-            font-size: 16px; font-weight: bold; font-family: 'Tajawal', sans-serif;
-            cursor: pointer; text-align: center; margin-bottom: 10px;
-            transition: 0.2s;
+            display: block; width: 100%; padding: 15px; border: none; border-radius: 10px;
+            font-size: 16px; font-weight: bold; cursor: pointer; margin-bottom: 10px;
+            transition: 0.2s; color: white;
         }
         .btn:active { transform: scale(0.98); opacity: 0.9; }
-        
-        .btn-login { background: #00acc1; color: white; }
-        .btn-save { background: #2e7d32; color: white; display: none; }
-        .btn-add { background: #ff9800; color: white; display: none; }
-        .btn-exit { background: #757575; color: white; display: none; }
-        
+        .btn-blue { background-color: #00acc1; } /* زر الدخول */
+        .btn-green { background-color: #2e7d32; } /* زر الحفظ والإضافة */
+        .btn-red { background-color: #ef5350; } /* زر الحذف */
+        .btn-gray { background-color: #757575; } /* زر الخروج */
+
+        /* أزرار الحذف داخل البطاقة */
         .delete-btn {
-            background: #ef5350; color: white; border: none;
-            padding: 5px 10px; border-radius: 5px; font-size: 12px;
-            margin-top: 10px; display: none;
+            background: #ef5350; color: white; border: none; padding: 5px 10px;
+            border-radius: 5px; font-size: 12px; margin-top: 10px; cursor: pointer;
         }
 
-        /* النافذة المنبثقة */
+        /* النافذة المنبثقة (مخفية افتراضياً) */
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); z-index: 1000;
+            background-color: rgba(0,0,0,0.7); z-index: 1000;
             justify-content: center; align-items: center;
         }
-        .modal.open { display: flex; }
-        .modal-box {
+        .modal-content {
             background: white; padding: 25px; border-radius: 15px; width: 85%; max-width: 350px; text-align: center;
         }
         .modal input {
             width: 100%; padding: 12px; margin: 15px 0; border: 2px solid #ddd;
             border-radius: 8px; font-size: 16px; text-align: center;
         }
-        .error { color: red; font-size: 12px; display: none; margin-bottom: 10px; }
+        .error-msg { color: red; font-size: 13px; display: none; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
-<div class="container" id="mainContainer">
-    <!-- الرأس -->
-    <div class="header">
-        <h1>📢 نظام الإشعارات - الاختبارات</h1>
-        <span class="badge" id="modeBadge">وضع الطالب (عرض فقط)</span>
+    <div class="container">
+        <!-- الرأس -->
+        <div class="header">
+            <h2>📢 نظام الإشعارات - الاختبارات</h2>
+            <span class="badge" id="modeBadge">وضع الطالب (عرض فقط)</span>
+        </div>
+
+        <!-- مكان ظهور الإشعارات -->
+        <div id="notificationsList"></div>
+
+        <!-- زر دخول المعلم -->
+        <button id="loginBtn" class="btn btn-blue" onclick="showModal()">🔐 الدخول لوضع التعديل (للمعلم)</button>
+        
+        <!-- أزرار التحكم (مخفية للطالب) -->
+        <button id="saveBtn" class="btn btn-green" style="display:none;" onclick="saveAll()">💾 حفظ جميع التغييرات</button>
+        <button id="addBtn" class="btn btn-green" style="display:none;" onclick="addNotification()">➕ إضافة إشعار جديد</button>
+        <button id="exitBtn" class="btn btn-gray" style="display:none;" onclick="exitAdmin()">🔓 خروج من وضع التعديل</button>
+
+        <p style="text-align:center; color:#888; font-size:12px; margin-top:20px;">متوافق مع الجوال - محمد عيادة 2026</p>
     </div>
 
-    <!-- قائمة الإشعارات (ستظهر هنا) -->
-    <div id="notificationsArea"></div>
-
-    <!-- الأزرار الرئيسية -->
-    <button class="btn btn-login" id="loginBtn" onclick="showLoginModal()">🔐 الدخول لوضع التعديل (للمعلم)</button>
-    <button class="btn btn-save" id="saveBtn" onclick="saveChanges()">💾 حفظ التغييرات</button>
-    <button class="btn btn-add" id="addBtn" onclick="addNewNotification()">➕ إضافة إشعار جديد</button>
-    <button class="btn btn-exit" id="exitBtn" onclick="exitEditMode()">🔓 خروج من وضع التعديل</button>
-    
-    <p style="text-align:center; color:#888; font-size:12px; margin-top:20px;">متوافق مع الجوال - محمد عيادة 2026</p>
-</div>
-
-<!-- نافذة كلمة المرور -->
-<div class="modal" id="passwordModal">
-    <div class="modal-box">
-        <h3>🔐 كلمة مرور المعلم</h3>
-        <input type="password" id="passInput" placeholder="أدخل كلمة المرور..." inputmode="numeric">
-        <p class="error" id="passError">❌ كلمة المرور خطأ</p>
-        <div style="display:flex; gap:10px;">
-            <button class="btn btn-login" style="margin:0" onclick="verifyPassword()">دخول</button>
-            <button class="btn btn-exit" style="margin:0; display:block;" onclick="closeModal()">إلغاء</button>
+    <!-- نافذة كلمة المرور -->
+    <!-- إضافة style="display:none" هنا لضمان عدم تغطيتها للزر -->
+    <div id="passwordModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <h3>🔐 كلمة مرور المعلم</h3>
+            <p style="color:#666; margin:5px 0;">للدخول إلى وضع التعديل</p>
+            <input type="password" id="passInput" placeholder="أدخل كلمة المرور..." inputmode="numeric">
+            <p class="error-msg" id="errorMsg">❌ كلمة المرور غير صحيحة</p>
+            <div style="display:flex; gap:10px;">
+                <button class="btn btn-blue" style="margin:0; flex:1;" onclick="checkPassword()">دخول</button>
+                <button class="btn btn-gray" style="margin:0; flex:1;" onclick="hideModal()">إلغاء</button>
+            </div>
         </div>
     </div>
-</div>
 
 <script>
-    // 1. إعداد البيانات
-    const TEACHER_PASS = "teacher123";
+    // 1. الإعدادات والبيانات
+    const TEACHER_PASS = "2026";
     let isAdmin = false;
     
-    // بيانات افتراضية تظهر دائماً في حال عدم وجود بيانات محفوظة
+    // بيانات افتراضية (تظهر إذا كانت الذاكرة فارغة)
     const defaultData = [
         { id: 1, title: "📢 تذكير: اختبار منتصف الفصل", content: "احضر معك الكتاب والكراس، الكراس مهم جداً" },
-        { id: 2, title: "📊 نتائج الاختبار التجريبي", content: "تم إعلان النتائج. درجة النجاح 70%." },
+        { id: 2, title: "📊 نتائج الاختبار التجريبي", content: "تم إعلان النتائج. درجة النجاح 70%. يرجى المراجعة." },
         { id: 3, title: "📅 موعد التسليم", content: "آخر موعد للتسجيل هو 20 أبريل." }
     ];
 
-    // تحميل البيانات من الذاكرة أو استخدام الافتراضي
+    // تحميل البيانات من التخزين المحلي
     let notifications = JSON.parse(localStorage.getItem('testNotifs')) || defaultData;
 
-    // 2. دالة رسم الإشعارات (تعمل دائماً)
+    // 2. دالة رسم الصفحة (Render)
     function render() {
-        const area = document.getElementById('notificationsArea');
-        area.innerHTML = ''; // مسح القائمة الحالية
+        const list = document.getElementById('notificationsList');
+        list.innerHTML = ''; // مسح القائمة القديمة
 
         if (notifications.length === 0) {
-            area.innerHTML = '<p style="text-align:center; padding:20px; color:#888;">لا توجد إشعارات</p>';
+            list.innerHTML = '<p style="text-align:center; padding:20px; color:#888;">لا توجد إشعارات حالياً</p>';
         } else {
             notifications.forEach((item, index) => {
                 const card = document.createElement('div');
                 card.className = 'card';
-                // نستخدم contenteditable فقط إذا كنا في وضع المعلم
-                const editableAttr = isAdmin ? 'contenteditable="true"' : '';
                 
+                // تحديد ما إذا كان قابل للتعديل
+                const isEditable = isAdmin ? 'contenteditable="true"' : '';
+                const bgClass = isAdmin ? 'editable' : '';
+
                 card.innerHTML = `
-                    <h3 ${editableAttr} oninput="updateData(${index}, 'title', this.innerText)">${item.title}</h3>
-                    <p ${editableAttr} oninput="updateData(${index}, 'content', this.innerText)">${item.content}</p>
-                    ${isAdmin ? `<button class="delete-btn" style="display:inline-block" onclick="deleteItem(${index})">🗑️ حذف</button>` : ''}
+                    <h3 class="${bgClass}" ${isEditable} oninput="updateData(${index}, 'title', this.innerText)">${item.title}</h3>
+                    <p class="${bgClass}" ${isEditable} oninput="updateData(${index}, 'content', this.innerText)">${item.content}</p>
+                    ${isAdmin ? `<button class="delete-btn" onclick="deleteNotification(${index})">🗑️ حذف</button>` : ''}
                 `;
-                area.appendChild(card);
+                list.appendChild(card);
             });
         }
-        updateUI();
-    }
 
-    // 3. تحديث الواجهة (إظهار/إخفاء الأزرار)
-    function updateUI() {
-        const container = document.getElementById('mainContainer');
+        // تحديث ظهور الأزرار بناءً على الوضع
+        document.getElementById('loginBtn').style.display = isAdmin ? 'none' : 'block';
+        document.getElementById('saveBtn').style.display = isAdmin ? 'block' : 'none';
+        document.getElementById('addBtn').style.display = isAdmin ? 'block' : 'none';
+        document.getElementById('exitBtn').style.display = isAdmin ? 'block' : 'none';
+
+        // تحديث الشارة العلوية
         const badge = document.getElementById('modeBadge');
-        
         if (isAdmin) {
-            container.classList.add('edit-mode');
             badge.textContent = 'وضع المعلم (تعديل)';
             badge.style.background = '#ef5350';
             badge.style.color = '#fff';
-            
-            document.getElementById('loginBtn').style.display = 'none';
-            document.getElementById('saveBtn').style.display = 'block';
-            document.getElementById('addBtn').style.display = 'block';
-            document.getElementById('exitBtn').style.display = 'block';
         } else {
-            container.classList.remove('edit-mode');
             badge.textContent = 'وضع الطالب (عرض فقط)';
             badge.style.background = '#ffc107';
             badge.style.color = '#000';
-            
-            document.getElementById('loginBtn').style.display = 'block';
-            document.getElementById('saveBtn').style.display = 'none';
-            document.getElementById('addBtn').style.display = 'none';
-            document.getElementById('exitBtn').style.display = 'none';
         }
     }
 
-    // 4. التحكم في النافذة
-    function showLoginModal() {
-        document.getElementById('passwordModal').classList.add('open');
+    // 3. التحكم في النافذة المنبثقة
+    function showModal() {
+        document.getElementById('passwordModal').style.display = 'flex';
         document.getElementById('passInput').value = '';
-        document.getElementById('passError').style.display = 'none';
-        document.getElementById('passInput').focus();
-    }
-    
-    function closeModal() {
-        document.getElementById('passwordModal').classList.remove('open');
+        document.getElementById('errorMsg').style.display = 'none';
+        // فتح الكيبورد تلقائياً
+        setTimeout(() => document.getElementById('passInput').focus(), 200);
     }
 
-    // 5. التحقق من كلمة المرور
-    function verifyPassword() {
+    function hideModal() {
+        document.getElementById('passwordModal').style.display = 'none';
+    }
+
+    function checkPassword() {
         const input = document.getElementById('passInput').value.trim();
         if (input === TEACHER_PASS) {
             isAdmin = true;
-            closeModal();
-            render(); // إعادة رسم الصفحة بوضع التعديل
+            hideModal();
+            render(); // إعادة رسم الصفحة بوضع المعلم
         } else {
-            document.getElementById('passError').style.display = 'block';
+            document.getElementById('errorMsg').style.display = 'block';
         }
     }
 
-    // 6. وظائف التعديل (تحديث البيانات فورياً عند الكتابة)
+    // 4. وظائف التعديل والحفظ
     function updateData(index, field, value) {
         notifications[index][field] = value;
     }
 
-    function deleteItem(index) {
-        if(confirm('هل تريد حذف هذا الإشعار؟')) {
+    function deleteNotification(index) {
+        if (confirm('هل أنت متأكد من حذف هذا الإشعار؟')) {
             notifications.splice(index, 1);
             render();
         }
     }
 
-    function addNewNotification() {
+    function addNotification() {
+        // إضافة إشعار جديد في البداية
         notifications.unshift({ id: Date.now(), title: "إشعار جديد", content: "اكتب المحتوى هنا..." });
         render();
+        
+        // التركيز على الإشعار الجديد
+        setTimeout(() => {
+            const firstCard = document.querySelector('.card');
+            if(firstCard) {
+                firstCard.scrollIntoView({ behavior: 'smooth' });
+                firstCard.querySelector('h3').focus();
+            }
+        }, 200);
     }
 
-    function saveChanges() {
+    function saveAll() {
+        // حفظ البيانات في الذاكرة الدائمة
         localStorage.setItem('testNotifs', JSON.stringify(notifications));
-        alert('✅ تم الحفظ بنجاح!');
-        exitEditMode();
+        alert('✅ تم حفظ التغييرات بنجاح!');
+        // يمكن اختيار الخروج تلقائياً أو البقاء
+        // exitAdmin(); 
     }
 
-    function exitEditMode() {
-        if(confirm('الخروج من وضع المعلم؟')) {
+    function exitAdmin() {
+        if (confirm('الخروج من وضع المعلم؟ سيتم فقدان أي تغييرات لم تضغط على "حفظ".')) {
             isAdmin = false;
-            render(); // إعادة الرسم لوضع الطالب (إزالة حقول الكتابة)
+            render(); // إعادة الرسم لوضع الطالب (إخفاء أزرار التعديل)
         }
     }
 
-    // تشغيل الدالة عند فتح الصفحة
+    // تشغيل الصفحة عند التحميل
     render();
 </script>
 
