@@ -1,26 +1,177 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>إشعارات الاختبارات</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+<title>إشعارات الاختبارات - متوافق مع الموبايل</title>
 <style>
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{font-family:'Tajawal',Tahoma,sans-serif;background:#f4f6f9;padding:20px;direction:rtl}
-  .header{background:#0056b3;color:#fff;padding:20px;border-radius:15px;text-align:center;margin-bottom:20px}
-  .header h2{font-size:20px;margin-bottom:10px}
-  .badge{background:#ffc107;color:#000;padding:6px 14px;border-radius:15px;font-size:13px;font-weight:bold;display:inline-block}
-  .card{background:#fff;padding:15px;margin:12px 0;border-radius:12px;border-right:4px solid #0056b3;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
-  .card h3{color:#0056b3;margin-bottom:8px;font-size:17px}
-  .card p{color:#555;line-height:1.6;font-size:15px}
-  .editable{background:#fff9c4;border:2px dashed #fbc02d;padding:8px;border-radius:8px;outline:none}
-  .btn{display:block;width:100%;padding:14px;margin:8px 0;border:none;border-radius:10px;font-size:15px;font-weight:bold;cursor:pointer;color:#fff;touch-action:manipulation}
-  .btn-blue{background:#00acc1}.btn-green{background:#2e7d32}.btn-gray{background:#757575}
-  .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:9999;justify-content:center;align-items:center}
-  .modal-box{background:#fff;padding:25px;border-radius:15px;width:90%;max-width:350px;text-align:center}
-  .modal input{width:100%;padding:12px;margin:15px 0;border:2px solid #ddd;border-radius:10px;font-size:18px;text-align:center}
-  .error{color:#f44336;font-size:13px;display:none;margin:10px 0}
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent; /* إزالة الخلفية الرمادية عند اللمس */
+  }
+  body {
+    font-family: 'Tajawal', 'Segoe UI', Tahoma, sans-serif;
+    background: #f4f6f9;
+    padding: 16px;
+    direction: rtl;
+  }
+  .header {
+    background: #0056b3;
+    color: #fff;
+    padding: 18px;
+    border-radius: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  .header h2 {
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+  }
+  .badge {
+    background: #ffc107;
+    color: #000;
+    padding: 6px 16px;
+    border-radius: 40px;
+    font-size: 13px;
+    font-weight: bold;
+    display: inline-block;
+    transition: all 0.2s;
+  }
+  .card {
+    background: #fff;
+    padding: 16px;
+    margin: 12px 0;
+    border-radius: 18px;
+    border-right: 5px solid #0056b3;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+    transition: transform 0.1s;
+  }
+  .card h3 {
+    color: #0056b3;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    word-break: break-word;
+  }
+  .card p {
+    color: #333;
+    line-height: 1.5;
+    font-size: 0.95rem;
+    word-break: break-word;
+  }
+  /* تحسين مظهر الحقول القابلة للتحرير على الموبايل */
+  .editable {
+    background-color: #fff9c4;
+    border: 2px dashed #f9a825;
+    padding: 8px;
+    border-radius: 14px;
+    outline: none;
+    cursor: text;
+    -webkit-user-select: text;
+    user-select: text;
+    transition: background 0.2s;
+  }
+  .editable:focus {
+    background-color: #fff3b0;
+    border-color: #f57f17;
+  }
+  /* أزرار اللمس */
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: #fff;
+    transition: 0.2s;
+    text-align: center;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn:active {
+    transform: scale(0.97);
+    opacity: 0.9;
+  }
+  .btn-blue { background: #00acc1; }
+  .btn-green { background: #2e7d32; }
+  .btn-gray { background: #616161; }
+  .del-btn {
+    background: #c62828;
+    padding: 10px;
+    margin-top: 12px;
+    font-size: 0.9rem;
+  }
+  /* مودال محسّن للموبايل */
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.75);
+    z-index: 10000;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(3px);
+  }
+  .modal-box {
+    background: #fff;
+    padding: 24px 20px;
+    border-radius: 28px;
+    width: 85%;
+    max-width: 340px;
+    text-align: center;
+    box-shadow: 0 20px 35px rgba(0,0,0,0.3);
+    animation: fadeInUp 0.2s ease;
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .modal-box h3 {
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+  }
+  .modal-box input {
+    width: 100%;
+    padding: 14px;
+    margin: 18px 0;
+    border: 2px solid #ddd;
+    border-radius: 40px;
+    font-size: 1.2rem;
+    text-align: center;
+    letter-spacing: 2px;
+    touch-action: manipulation;
+  }
+  .error {
+    color: #d32f2f;
+    font-size: 13px;
+    display: none;
+    margin: 5px 0 10px;
+  }
+  .footer-note {
+    text-align: center;
+    color: #888;
+    font-size: 11px;
+    margin-top: 25px;
+  }
+  /* تحسين التمرير والمساحة */
+  #list {
+    margin-bottom: 20px;
+  }
+  @media (max-width: 480px) {
+    body { padding: 12px; }
+    .btn { padding: 12px; font-size: 0.95rem; }
+    .card h3 { font-size: 1.1rem; }
+  }
 </style>
 </head>
 <body>
@@ -37,112 +188,216 @@
 <button id="addBtn" class="btn btn-green" style="display:none">➕ إضافة إشعار جديد</button>
 <button id="exitBtn" class="btn btn-gray" style="display:none">🔓 الخروج من وضع التعديل</button>
 
-<p style="text-align:center;color:#888;font-size:12px;margin-top:25px">متوافق مع الجوال - محمد عيادة 2026</p>
+<div class="footer-note">✅ متوافق مع جميع الأجهزة - محمد عيادة 2026</div>
 
 <div class="modal" id="modal">
   <div class="modal-box">
-    <h3>🔐 أدخل كلمة المرور</h3>
-    <p style="color:#666;margin:10px 0">للدخول إلى وضع التعديل</p>
-    <input type="password" id="pwd" placeholder="كلمة المرور..." inputmode="numeric">
+    <h3>🔐 كلمة المرور</h3>
+    <p style="color:#555; margin:8px 0">للدخول إلى وضع التعديل</p>
+    <input type="password" id="pwd" placeholder="*****" inputmode="numeric" autocomplete="off">
     <p class="error" id="err">❌ كلمة المرور غير صحيحة</p>
-    <button id="confirmBtn" class="btn btn-blue">دخول</button>
+    <button id="confirmBtn" class="btn btn-blue">تأكيد</button>
     <button id="cancelBtn" class="btn btn-gray">إلغاء</button>
   </div>
 </div>
 
 <script>
 (function(){
-  const PASS="12345";
-  let admin=false;
+  const PASS = "12345";
+  let admin = false;
   
-  // تحميل آمن للبيانات مع fallback
-  let data;
-  try{ data=JSON.parse(localStorage.getItem('notifs')) || []; }
-  catch(e){ data=[]; }
-  if(data.length===0){
-    data=[
-      {id:1,title:"📢 تذكير: اختبار منتصف الفصل",content:"احضر معك الكتاب والكراس مهم الكراسه"},
-      {id:2,title:"📊 نتائج الاختبار التجريبي",content:"تم إعلان نتائج الاختبار التجريبي. درجة النجاح 70%."},
-      {id:3,title:"⏳ موعد التسليم",content:"آخر موعد للتسجيل في الاختبار النهائي هو 20 أبريل 2025."}
+  // تحميل البيانات بأمان
+  let data = [];
+  try {
+    const stored = localStorage.getItem('notifs');
+    if(stored) data = JSON.parse(stored);
+  } catch(e) { console.warn(e); }
+  
+  if(!data.length) {
+    data = [
+      { id: 1, title: "📢 تذكير: اختبار منتصف الفصل", content: "احضر معك الكتاب والكراس مهم الكراسه" },
+      { id: 2, title: "📊 نتائج الاختبار التجريبي", content: "تم إعلان نتائج الاختبار التجريبي. درجة النجاح 70%." },
+      { id: 3, title: "⏳ موعد التسليم", content: "آخر موعد للتسجيل في الاختبار النهائي هو 20 أبريل 2025." }
     ];
   }
 
-  const $=id=>document.getElementById(id);
-  const listEl=$('list'), badgeEl=$('badge'), modalEl=$('modal');
-  const pwdEl=$('pwd'), errEl=$('err');
-
-  function render(){
-    if(data.length===0){
-      listEl.innerHTML='<p style="text-align:center;padding:30px;color:#888">لا توجد إشعارات</p>';
-    }else{
-      listEl.innerHTML=data.map((item,i)=>`
-        <div class="card" data-idx="${i}">
-          <h3 class="${admin?'editable':''}" ${admin?'contenteditable="true"':''}>${item.title}</h3>
-          <p class="${admin?'editable':''}" ${admin?'contenteditable="true"':''}>${item.content}</p>
-          ${admin?`<button class="btn btn-gray del-btn" data-idx="${i}" style="padding:10px;margin-top:10px">🗑️ حذف</button>`:''}
+  const $ = id => document.getElementById(id);
+  const listEl = $('list');
+  const badgeEl = $('badge');
+  const modalEl = $('modal');
+  const pwdEl = $('pwd');
+  const errEl = $('err');
+  
+  // عرض الإشعارات (إعادة رسم كامل)
+  function render() {
+    if(!data.length) {
+      listEl.innerHTML = '<p style="text-align:center;padding:40px;color:#888">📭 لا توجد إشعارات</p>';
+    } else {
+      listEl.innerHTML = data.map((item, idx) => `
+        <div class="card" data-idx="${idx}">
+          <h3 class="${admin ? 'editable' : ''}" ${admin ? 'contenteditable="true"' : ''}>${escapeHtml(item.title)}</h3>
+          <p class="${admin ? 'editable' : ''}" ${admin ? 'contenteditable="true"' : ''}>${escapeHtml(item.content)}</p>
+          ${admin ? `<button class="btn del-btn" data-idx="${idx}" style="background:#c62828">🗑️ حذف الإشعار</button>` : ''}
         </div>
       `).join('');
     }
-    $('saveBtn').style.display=admin?'block':'none';
-    $('addBtn').style.display=admin?'block':'none';
-    $('exitBtn').style.display=admin?'block':'none';
-    badgeEl.textContent=admin?'وضع المعلم (تعديل مفعل)':'وضع الطالب (عرض فقط)';
-    badgeEl.style.background=admin?'#f44336':'#ffc107';
-    badgeEl.style.color=admin?'#fff':'#000';
+    
+    // إظهار/إخفاء أزرار التحكم حسب صلاحية المعلم
+    $('saveBtn').style.display = admin ? 'block' : 'none';
+    $('addBtn').style.display = admin ? 'block' : 'none';
+    $('exitBtn').style.display = admin ? 'block' : 'none';
+    badgeEl.textContent = admin ? '👨‍🏫 وضع المعلم (تعديل مفعل)' : '👩‍🎓 وضع الطالب (عرض فقط)';
+    badgeEl.style.background = admin ? '#d32f2f' : '#ffc107';
+    badgeEl.style.color = admin ? '#fff' : '#000';
   }
-
-  // ربط الأحداث بشكل آمن للموبايل
-  $('loginBtn').addEventListener('click',()=>{
-    modalEl.style.display='flex';
-    pwdEl.value=''; errEl.style.display='none';
-    setTimeout(()=>pwdEl.focus(),200);
-  });
-
-  $('cancelBtn').addEventListener('click',()=>{ modalEl.style.display='none'; });
-  modalEl.addEventListener('click',e=>{ if(e.target===modalEl) modalEl.style.display='none'; });
-
-  $('confirmBtn').addEventListener('click',checkPass);
-  pwdEl.addEventListener('keypress',e=>{ if(e.key==='Enter') checkPass(); });
-
-  function checkPass(){
-    const val=pwdEl.value.trim();
-    if(val===PASS){
-      admin=true; modalEl.style.display='none'; render();
-    }else{ errEl.style.display='block'; }
-  }
-
-  $('saveBtn').addEventListener('click',()=>{
-    // تحديث البيانات من الحقول القابلة للتعديل
-    document.querySelectorAll('.card').forEach((card,i)=>{
-      data[i].title=card.querySelector('h3').innerText.trim();
-      data[i].content=card.querySelector('p').innerText.trim();
+  
+  // دالة بسيطة لمنع حقن HTML
+  function escapeHtml(str) {
+    if(!str) return '';
+    return str.replace(/[&<>]/g, function(m) {
+      if(m === '&') return '&amp;';
+      if(m === '<') return '&lt;';
+      if(m === '>') return '&gt;';
+      return m;
+    }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+      return c;
     });
-    try{ localStorage.setItem('notifs',JSON.stringify(data)); }catch(e){}
-    alert('✅ تم حفظ التغييرات بنجاح!');
-  });
-
-  $('addBtn').addEventListener('click',()=>{
-    data.unshift({id:Date.now(),title:"عنوان إشعار جديد",content:"اكتب محتوى الإشعار هنا..."});
-    render();
-    setTimeout(()=>{
-      const first=listEl.querySelector('.card');
-      if(first){ first.scrollIntoView({behavior:'smooth',block:'center'}); first.querySelector('h3').focus(); }
-    },150);
-  });
-
-  listEl.addEventListener('click',e=>{
-    if(e.target.classList.contains('del-btn')){
-      const idx=parseInt(e.target.dataset.idx);
-      if(confirm('هل أنت متأكد من حذف هذا الإشعار؟')){
-        data.splice(idx,1); render();
+  }
+  
+  // حفظ البيانات من الحقول القابلة للتحرير إلى مصفوفة data
+  function collectFromEditable() {
+    const cards = document.querySelectorAll('.card');
+    cards.forEach((card, idx) => {
+      if(data[idx]) {
+        const titleElem = card.querySelector('h3');
+        const contentElem = card.querySelector('p');
+        if(titleElem) data[idx].title = titleElem.innerText.trim() || "بدون عنوان";
+        if(contentElem) data[idx].content = contentElem.innerText.trim() || "بدون محتوى";
       }
+    });
+  }
+  
+  // حفظ كامل إلى localStorage
+  function saveToLocal() {
+    try {
+      localStorage.setItem('notifs', JSON.stringify(data));
+      return true;
+    } catch(e) { return false; }
+  }
+  
+  // أحداث الأزرار الرئيسية (تعمل باللمس والنقر)
+  $('loginBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    modalEl.style.display = 'flex';
+    pwdEl.value = '';
+    errEl.style.display = 'none';
+    setTimeout(() => pwdEl.focus(), 100);
+  });
+  
+  $('cancelBtn').addEventListener('click', () => {
+    modalEl.style.display = 'none';
+  });
+  
+  // إغلاق المودال عند النقر على الخلفية
+  modalEl.addEventListener('click', (e) => {
+    if(e.target === modalEl) modalEl.style.display = 'none';
+  });
+  
+  function checkPassword() {
+    const val = pwdEl.value.trim();
+    if(val === PASS) {
+      admin = true;
+      modalEl.style.display = 'none';
+      render();
+    } else {
+      errEl.style.display = 'block';
+      pwdEl.classList.add('error-shake');
+      setTimeout(() => pwdEl.classList.remove('error-shake'), 300);
+    }
+  }
+  
+  $('confirmBtn').addEventListener('click', checkPassword);
+  pwdEl.addEventListener('keypress', (e) => {
+    if(e.key === 'Enter') checkPassword();
+  });
+  
+  // حفظ التغييرات (يجمع من editable ويخزن)
+  $('saveBtn').addEventListener('click', () => {
+    collectFromEditable();
+    if(saveToLocal()) {
+      alert('✅ تم حفظ جميع التغييرات بنجاح!');
+    } else {
+      alert('⚠️ فشل الحفظ في المتصفح، تأكد من المساحة المتاحة.');
+    }
+    render(); // إعادة عرض للتأكد من نظافة البيانات
+  });
+  
+  // إضافة إشعار جديد
+  $('addBtn').addEventListener('click', () => {
+    data.unshift({
+      id: Date.now(),
+      title: "✏️ عنوان جديد",
+      content: "اكتب محتوى الإشعار هنا..."
+    });
+    render();
+    // التمرير إلى أول عنصر ووضع التركيز على العنوان للمستخدم
+    setTimeout(() => {
+      const firstCard = listEl.querySelector('.card');
+      if(firstCard) {
+        firstCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const titleField = firstCard.querySelector('h3');
+        if(titleField && titleField.isContentEditable) {
+          titleField.focus();
+          // وضع المؤشر في نهاية النص
+          const range = document.createRange();
+          const sel = window.getSelection();
+          range.selectNodeContents(titleField);
+          range.collapse(false);
+          sel.removeAllRanges();
+          sel.addRange(range);
+        }
+      }
+    }, 200);
+  });
+  
+  // حذف إشعار (باستخدام delegation)
+  listEl.addEventListener('click', (e) => {
+    const delBtn = e.target.closest('.del-btn');
+    if(delBtn && admin) {
+      const idxAttr = delBtn.getAttribute('data-idx');
+      if(idxAttr !== null) {
+        const idx = parseInt(idxAttr, 10);
+        if(confirm('⚠️ هل أنت متأكد من حذف هذا الإشعار نهائياً؟')) {
+          data.splice(idx, 1);
+          render();
+          saveToLocal(); // حفظ فوري بعد الحذف
+        }
+      }
+      e.stopPropagation();
     }
   });
-
-  $('exitBtn').addEventListener('click',()=>{
-    if(confirm('الخروج من وضع المعلم؟')){ admin=false; render(); }
+  
+  // الخروج من وضع المعلم
+  $('exitBtn').addEventListener('click', () => {
+    if(confirm('🔒 الخروج من وضع المعلم؟ ستعود إلى وضع العرض فقط.')) {
+      admin = false;
+      render();
+    }
   });
-
+  
+  // إضافة ميزة: عند الضغط على "حفظ" تلقائياً يتم جمع البيانات قبل الحفظ
+  // منع إدخال HTML ضار عبر معالجة حدث paste داخل الحقول القابلة للتحرير (اختياري)
+  document.addEventListener('paste', function(e) {
+    if(!admin) return;
+    const target = e.target;
+    if(target.isContentEditable) {
+      e.preventDefault();
+      const text = (e.clipboardData || window.clipboardData).getData('text/plain');
+      document.execCommand('insertText', false, text);
+    }
+  });
+  
+  // بدء التشغيل
   render();
 })();
 </script>
