@@ -3,175 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-<title>إشعارات الاختبارات - متوافق مع الموبايل</title>
+<title>إشعارات الاختبارات - حفظ موثوق</title>
 <style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent; /* إزالة الخلفية الرمادية عند اللمس */
-  }
-  body {
-    font-family: 'Tajawal', 'Segoe UI', Tahoma, sans-serif;
-    background: #f4f6f9;
-    padding: 16px;
-    direction: rtl;
-  }
-  .header {
-    background: #0056b3;
-    color: #fff;
-    padding: 18px;
-    border-radius: 20px;
-    text-align: center;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  }
-  .header h2 {
-    font-size: 1.4rem;
-    margin-bottom: 8px;
-  }
-  .badge {
-    background: #ffc107;
-    color: #000;
-    padding: 6px 16px;
-    border-radius: 40px;
-    font-size: 13px;
-    font-weight: bold;
-    display: inline-block;
-    transition: all 0.2s;
-  }
-  .card {
-    background: #fff;
-    padding: 16px;
-    margin: 12px 0;
-    border-radius: 18px;
-    border-right: 5px solid #0056b3;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.08);
-    transition: transform 0.1s;
-  }
-  .card h3 {
-    color: #0056b3;
-    margin-bottom: 10px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    word-break: break-word;
-  }
-  .card p {
-    color: #333;
-    line-height: 1.5;
-    font-size: 0.95rem;
-    word-break: break-word;
-  }
-  /* تحسين مظهر الحقول القابلة للتحرير على الموبايل */
-  .editable {
-    background-color: #fff9c4;
-    border: 2px dashed #f9a825;
-    padding: 8px;
-    border-radius: 14px;
-    outline: none;
-    cursor: text;
-    -webkit-user-select: text;
-    user-select: text;
-    transition: background 0.2s;
-  }
-  .editable:focus {
-    background-color: #fff3b0;
-    border-color: #f57f17;
-  }
-  /* أزرار اللمس */
-  .btn {
-    display: block;
-    width: 100%;
-    padding: 14px;
-    margin: 10px 0;
-    border: none;
-    border-radius: 50px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    color: #fff;
-    transition: 0.2s;
-    text-align: center;
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .btn:active {
-    transform: scale(0.97);
-    opacity: 0.9;
-  }
-  .btn-blue { background: #00acc1; }
-  .btn-green { background: #2e7d32; }
-  .btn-gray { background: #616161; }
-  .del-btn {
-    background: #c62828;
-    padding: 10px;
-    margin-top: 12px;
-    font-size: 0.9rem;
-  }
-  /* مودال محسّن للموبايل */
-  .modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.75);
-    z-index: 10000;
-    justify-content: center;
-    align-items: center;
-    backdrop-filter: blur(3px);
-  }
-  .modal-box {
-    background: #fff;
-    padding: 24px 20px;
-    border-radius: 28px;
-    width: 85%;
-    max-width: 340px;
-    text-align: center;
-    box-shadow: 0 20px 35px rgba(0,0,0,0.3);
-    animation: fadeInUp 0.2s ease;
-  }
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .modal-box h3 {
-    font-size: 1.6rem;
-    margin-bottom: 8px;
-  }
-  .modal-box input {
-    width: 100%;
-    padding: 14px;
-    margin: 18px 0;
-    border: 2px solid #ddd;
-    border-radius: 40px;
-    font-size: 1.2rem;
-    text-align: center;
-    letter-spacing: 2px;
-    touch-action: manipulation;
-  }
-  .error {
-    color: #d32f2f;
-    font-size: 13px;
-    display: none;
-    margin: 5px 0 10px;
-  }
-  .footer-note {
-    text-align: center;
-    color: #888;
-    font-size: 11px;
-    margin-top: 25px;
-  }
-  /* تحسين التمرير والمساحة */
-  #list {
-    margin-bottom: 20px;
-  }
-  @media (max-width: 480px) {
-    body { padding: 12px; }
-    .btn { padding: 12px; font-size: 0.95rem; }
-    .card h3 { font-size: 1.1rem; }
-  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{font-family:'Tajawad','Segoe UI',sans-serif;background:#f4f6f9;padding:16px;direction:rtl}
+  .header{background:#0056b3;color:#fff;padding:18px;border-radius:20px;text-align:center;margin-bottom:20px}
+  .header h2{font-size:1.4rem;margin-bottom:8px}
+  .badge{background:#ffc107;padding:6px 16px;border-radius:40px;font-size:13px;font-weight:bold;display:inline-block}
+  .card{background:#fff;padding:16px;margin:12px 0;border-radius:18px;border-right:5px solid #0056b3;box-shadow:0 3px 8px rgba(0,0,0,0.08)}
+  .card h3{color:#0056b3;margin-bottom:10px;font-size:1.2rem;word-break:break-word}
+  .card p{color:#333;line-height:1.5;font-size:0.95rem;word-break:break-word}
+  .editable{background:#fff9c4;border:2px dashed #f9a825;padding:8px;border-radius:14px;outline:none;cursor:text}
+  .editable:focus{background:#fff3b0}
+  .btn{display:block;width:100%;padding:14px;margin:10px 0;border:none;border-radius:50px;font-size:1rem;font-weight:bold;cursor:pointer;transition:0.2s;text-align:center;touch-action:manipulation}
+  .btn:active{transform:scale(0.97);opacity:0.9}
+  .btn-blue{background:#00acc1}
+  .btn-green{background:#2e7d32}
+  .btn-gray{background:#616161}
+  .del-btn{background:#c62828;padding:10px;margin-top:12px}
+  .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:10000;justify-content:center;align-items:center;backdrop-filter:blur(3px)}
+  .modal-box{background:#fff;padding:24px;border-radius:28px;width:85%;max-width:340px;text-align:center}
+  .modal-box input{width:100%;padding:14px;margin:18px 0;border:2px solid #ddd;border-radius:40px;font-size:1.2rem;text-align:center}
+  .error{color:#d32f2f;font-size:13px;display:none;margin:5px 0}
+  .footer{text-align:center;color:#888;font-size:11px;margin-top:25px}
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:8px 20px;border-radius:40px;font-size:14px;z-index:11000;opacity:0;transition:0.3s;pointer-events:none}
 </style>
 </head>
 <body>
@@ -188,49 +43,90 @@
 <button id="addBtn" class="btn btn-green" style="display:none">➕ إضافة إشعار جديد</button>
 <button id="exitBtn" class="btn btn-gray" style="display:none">🔓 الخروج من وضع التعديل</button>
 
-<div class="footer-note">✅ متوافق مع جميع الأجهزة - محمد عيادة 2026</div>
+<div class="footer">✅ متوافق مع جميع الأجهزة - حفظ تلقائي في المتصفح</div>
 
 <div class="modal" id="modal">
   <div class="modal-box">
     <h3>🔐 كلمة المرور</h3>
-    <p style="color:#555; margin:8px 0">للدخول إلى وضع التعديل</p>
-    <input type="password" id="pwd" placeholder="*****" inputmode="numeric" autocomplete="off">
+    <p style="margin:8px 0">للدخول إلى وضع التعديل</p>
+    <input type="password" id="pwd" placeholder="12345" inputmode="numeric">
     <p class="error" id="err">❌ كلمة المرور غير صحيحة</p>
     <button id="confirmBtn" class="btn btn-blue">تأكيد</button>
     <button id="cancelBtn" class="btn btn-gray">إلغاء</button>
   </div>
 </div>
 
+<div id="toast" class="toast"></div>
+
 <script>
 (function(){
   const PASS = "12345";
   let admin = false;
-  
-  // تحميل البيانات بأمان
-  let data = [];
-  try {
-    const stored = localStorage.getItem('notifs');
-    if(stored) data = JSON.parse(stored);
-  } catch(e) { console.warn(e); }
-  
-  if(!data.length) {
-    data = [
-      { id: 1, title: "📢 تذكير: اختبار منتصف الفصل", content: "احضر معك الكتاب والكراس مهم الكراسه" },
-      { id: 2, title: "📊 نتائج الاختبار التجريبي", content: "تم إعلان نتائج الاختبار التجريبي. درجة النجاح 70%." },
-      { id: 3, title: "⏳ موعد التسليم", content: "آخر موعد للتسجيل في الاختبار النهائي هو 20 أبريل 2025." }
-    ];
+
+  // === تحميل البيانات من localStorage بشكل آمن ===
+  function loadData() {
+    let savedData = null;
+    try {
+      const raw = localStorage.getItem('exam_notifications');
+      if (raw) {
+        savedData = JSON.parse(raw);
+      }
+    } catch(e) {
+      console.warn("خطأ في قراءة localStorage", e);
+    }
+    
+    // إذا كانت هناك بيانات مخزنة سليمة نستخدمها، وإلا نستخدم البيانات الافتراضية
+    if (savedData && Array.isArray(savedData) && savedData.length > 0) {
+      return savedData;
+    } else {
+      // البيانات الافتراضية (تستخدم مرة واحدة فقط إذا لم يكن هناك شيء)
+      return [
+        { id: 1, title: "📢 تذكير: اختبار منتصف الفصل", content: "احضر معك الكتاب والكراس مهم الكراسه" },
+        { id: 2, title: "📊 نتائج الاختبار التجريبي", content: "تم إعلان نتائج الاختبار التجريبي. درجة النجاح 70%." },
+        { id: 3, title: "⏳ موعد التسليم", content: "آخر موعد للتسجيل في الاختبار النهائي هو 20 أبريل 2025." }
+      ];
+    }
   }
 
+  let data = loadData();
+
+  // === حفظ البيانات إلى localStorage ===
+  function persistData() {
+    try {
+      localStorage.setItem('exam_notifications', JSON.stringify(data));
+      showToast("✅ تم الحفظ بنجاح في المتصفح");
+      return true;
+    } catch(e) {
+      console.error("فشل الحفظ", e);
+      showToast("❌ فشل الحفظ! تأكد من المساحة المتاحة", true);
+      return false;
+    }
+  }
+
+  // === عرض رسالة عائمة ===
+  let toastTimeout;
+  function showToast(msg, isError = false) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.style.backgroundColor = isError ? '#c62828' : '#2e7d32';
+    toast.style.opacity = '1';
+    clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => {
+      toast.style.opacity = '0';
+    }, 2500);
+  }
+
+  // === أدوات DOM ===
   const $ = id => document.getElementById(id);
   const listEl = $('list');
   const badgeEl = $('badge');
   const modalEl = $('modal');
   const pwdEl = $('pwd');
   const errEl = $('err');
-  
-  // عرض الإشعارات (إعادة رسم كامل)
+
+  // === عرض القائمة (مع دعم التحرير) ===
   function render() {
-    if(!data.length) {
+    if (!data.length) {
       listEl.innerHTML = '<p style="text-align:center;padding:40px;color:#888">📭 لا توجد إشعارات</p>';
     } else {
       listEl.innerHTML = data.map((item, idx) => `
@@ -242,7 +138,7 @@
       `).join('');
     }
     
-    // إظهار/إخفاء أزرار التحكم حسب صلاحية المعلم
+    // أزرار التحكم
     $('saveBtn').style.display = admin ? 'block' : 'none';
     $('addBtn').style.display = admin ? 'block' : 'none';
     $('exitBtn').style.display = admin ? 'block' : 'none';
@@ -250,8 +146,8 @@
     badgeEl.style.background = admin ? '#d32f2f' : '#ffc107';
     badgeEl.style.color = admin ? '#fff' : '#000';
   }
-  
-  // دالة بسيطة لمنع حقن HTML
+
+  // === منع حقن HTML ===
   function escapeHtml(str) {
     if(!str) return '';
     return str.replace(/[&<>]/g, function(m) {
@@ -259,80 +155,64 @@
       if(m === '<') return '&lt;';
       if(m === '>') return '&gt;';
       return m;
-    }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-      return c;
     });
   }
-  
-  // حفظ البيانات من الحقول القابلة للتحرير إلى مصفوفة data
-  function collectFromEditable() {
+
+  // === جمع التعديلات من حقول contenteditable وتحديث data ===
+  function collectChanges() {
     const cards = document.querySelectorAll('.card');
+    let changed = false;
     cards.forEach((card, idx) => {
-      if(data[idx]) {
-        const titleElem = card.querySelector('h3');
-        const contentElem = card.querySelector('p');
-        if(titleElem) data[idx].title = titleElem.innerText.trim() || "بدون عنوان";
-        if(contentElem) data[idx].content = contentElem.innerText.trim() || "بدون محتوى";
+      if (data[idx]) {
+        const newTitle = card.querySelector('h3').innerText.trim();
+        const newContent = card.querySelector('p').innerText.trim();
+        if (data[idx].title !== newTitle || data[idx].content !== newContent) {
+          data[idx].title = newTitle || "بدون عنوان";
+          data[idx].content = newContent || "بدون محتوى";
+          changed = true;
+        }
       }
     });
+    return changed;
   }
-  
-  // حفظ كامل إلى localStorage
-  function saveToLocal() {
-    try {
-      localStorage.setItem('notifs', JSON.stringify(data));
-      return true;
-    } catch(e) { return false; }
+
+  // === حفظ التغييرات (جمع + تخزين) ===
+  function saveChanges() {
+    const changed = collectChanges();
+    if (changed) {
+      if (persistData()) {
+        render(); // إعادة عرض للتأكد من تطابق البيانات
+      }
+    } else {
+      showToast("⚠️ لا توجد تغييرات لحفظها");
+    }
   }
-  
-  // أحداث الأزرار الرئيسية (تعمل باللمس والنقر)
-  $('loginBtn').addEventListener('click', (e) => {
-    e.preventDefault();
+
+  // === أحداث الأزرار ===
+  $('loginBtn').addEventListener('click', () => {
     modalEl.style.display = 'flex';
     pwdEl.value = '';
     errEl.style.display = 'none';
     setTimeout(() => pwdEl.focus(), 100);
   });
-  
-  $('cancelBtn').addEventListener('click', () => {
-    modalEl.style.display = 'none';
-  });
-  
-  // إغلاق المودال عند النقر على الخلفية
-  modalEl.addEventListener('click', (e) => {
-    if(e.target === modalEl) modalEl.style.display = 'none';
-  });
-  
+
+  $('cancelBtn').addEventListener('click', () => modalEl.style.display = 'none');
+  modalEl.addEventListener('click', (e) => { if(e.target === modalEl) modalEl.style.display = 'none'; });
+
   function checkPassword() {
-    const val = pwdEl.value.trim();
-    if(val === PASS) {
+    if (pwdEl.value.trim() === PASS) {
       admin = true;
       modalEl.style.display = 'none';
       render();
     } else {
       errEl.style.display = 'block';
-      pwdEl.classList.add('error-shake');
-      setTimeout(() => pwdEl.classList.remove('error-shake'), 300);
     }
   }
-  
   $('confirmBtn').addEventListener('click', checkPassword);
-  pwdEl.addEventListener('keypress', (e) => {
-    if(e.key === 'Enter') checkPassword();
-  });
-  
-  // حفظ التغييرات (يجمع من editable ويخزن)
-  $('saveBtn').addEventListener('click', () => {
-    collectFromEditable();
-    if(saveToLocal()) {
-      alert('✅ تم حفظ جميع التغييرات بنجاح!');
-    } else {
-      alert('⚠️ فشل الحفظ في المتصفح، تأكد من المساحة المتاحة.');
-    }
-    render(); // إعادة عرض للتأكد من نظافة البيانات
-  });
-  
-  // إضافة إشعار جديد
+  pwdEl.addEventListener('keypress', (e) => { if(e.key === 'Enter') checkPassword(); });
+
+  $('saveBtn').addEventListener('click', saveChanges);
+
   $('addBtn').addEventListener('click', () => {
     data.unshift({
       id: Date.now(),
@@ -340,54 +220,39 @@
       content: "اكتب محتوى الإشعار هنا..."
     });
     render();
-    // التمرير إلى أول عنصر ووضع التركيز على العنوان للمستخدم
+    persistData(); // حفظ فوري بعد الإضافة
     setTimeout(() => {
       const firstCard = listEl.querySelector('.card');
       if(firstCard) {
         firstCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
         const titleField = firstCard.querySelector('h3');
-        if(titleField && titleField.isContentEditable) {
-          titleField.focus();
-          // وضع المؤشر في نهاية النص
-          const range = document.createRange();
-          const sel = window.getSelection();
-          range.selectNodeContents(titleField);
-          range.collapse(false);
-          sel.removeAllRanges();
-          sel.addRange(range);
-        }
+        if(titleField && titleField.isContentEditable) titleField.focus();
       }
-    }, 200);
+    }, 150);
   });
-  
-  // حذف إشعار (باستخدام delegation)
+
+  // حذف إشعار
   listEl.addEventListener('click', (e) => {
     const delBtn = e.target.closest('.del-btn');
     if(delBtn && admin) {
-      const idxAttr = delBtn.getAttribute('data-idx');
-      if(idxAttr !== null) {
-        const idx = parseInt(idxAttr, 10);
-        if(confirm('⚠️ هل أنت متأكد من حذف هذا الإشعار نهائياً؟')) {
-          data.splice(idx, 1);
-          render();
-          saveToLocal(); // حفظ فوري بعد الحذف
-        }
+      const idx = parseInt(delBtn.getAttribute('data-idx'), 10);
+      if(confirm('⚠️ هل أنت متأكد من حذف هذا الإشعار نهائياً؟')) {
+        data.splice(idx, 1);
+        render();
+        persistData();
       }
-      e.stopPropagation();
     }
   });
-  
-  // الخروج من وضع المعلم
+
   $('exitBtn').addEventListener('click', () => {
     if(confirm('🔒 الخروج من وضع المعلم؟ ستعود إلى وضع العرض فقط.')) {
       admin = false;
       render();
     }
   });
-  
-  // إضافة ميزة: عند الضغط على "حفظ" تلقائياً يتم جمع البيانات قبل الحفظ
-  // منع إدخال HTML ضار عبر معالجة حدث paste داخل الحقول القابلة للتحرير (اختياري)
-  document.addEventListener('paste', function(e) {
+
+  // منع لصق HTML داخل contenteditable
+  document.addEventListener('paste', (e) => {
     if(!admin) return;
     const target = e.target;
     if(target.isContentEditable) {
@@ -396,8 +261,9 @@
       document.execCommand('insertText', false, text);
     }
   });
-  
-  // بدء التشغيل
+
+  // عرض عدد الإشعارات المحفوظة عند التحميل
+  console.log(`تم تحميل ${data.length} إشعاراً من localStorage`);
   render();
 })();
 </script>
