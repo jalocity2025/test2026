@@ -2,338 +2,258 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <!-- هذا السطر هو مفتحل حل مشاكل العرض على الموبايل -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>إشعارات الاختبارات</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* إعدادات أساسية لضبط الصفحة على الجوال */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: Tajawal, sans-serif; background: #f0f2f5; padding: 15px; direction: rtl; min-height: 100vh; touch-action: manipulation; }
-        .container { max-width: 800px; margin: 0 auto; }
-        .header { background: #1e4663; color: white; padding: 20px; border-radius: 20px; text-align: center; margin-bottom: 25px; }
-        .header h1 { font-size: 1.3rem; }
-        .badge { background: #ffc107; color: #333; display: inline-block; padding: 5px 12px; border-radius: 20px; font-size: 12px; margin-top: 10px; }
-        .badge.admin { background: #dc3545; color: white; }
+        body { font-family: 'Tajawal', sans-serif; background: #f4f6f9; color: #333; padding-bottom: 50px; }
         
-        .notification-card { background: white; border-radius: 20px; padding: 18px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-right: 4px solid #1e4663; position: relative; }
+        /* الحاوية الرئيسية */
+        .container { max-width: 600px; margin: 0 auto; padding: 15px; }
+
+        /* رأس الصفحة */
+        .header {
+            background: linear-gradient(135deg, #0056b3, #004494);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .header h1 { font-size: 20px; margin-bottom: 10px; }
+        .badge {
+            background: #ffc107; color: #000; padding: 5px 15px;
+            border-radius: 20px; font-size: 12px; font-weight: bold;
+            display: inline-block;
+        }
+
+        /* بطاقة الإشعار */
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-right: 4px solid #0056b3;
+        }
+        .card h3 { font-size: 16px; color: #0056b3; margin-bottom: 8px; }
+        .card p { font-size: 14px; line-height: 1.6; color: #555; }
+
+        /* تنسيق وضع التعديل */
+        .edit-mode .card h3, .edit-mode .card p {
+            background: #fff9c4; /* خلفية صفراء خفيفة لتمييز القابل للتعديل */
+            border: 1px dashed #fbc02d;
+            padding: 8px;
+            border-radius: 8px;
+            outline: none;
+            min-height: 30px;
+        }
+        .edit-mode .card h3:focus, .edit-mode .card p:focus {
+            border-color: #0056b3;
+            background: #fff;
+        }
+
+        /* الأزرار */
+        .btn {
+            display: block; width: 100%; padding: 15px;
+            border: none; border-radius: 10px;
+            font-size: 16px; font-weight: bold; font-family: 'Tajawal', sans-serif;
+            cursor: pointer; text-align: center; margin-bottom: 10px;
+            transition: 0.2s;
+        }
+        .btn:active { transform: scale(0.98); opacity: 0.9; }
         
-        /* === العنوان والمحتوى القابل للتعديل === */
-        .notification-title, .notification-content {
-            word-wrap: break-word; outline: none;
-        }
-        .notification-title { 
-            font-size: 1.1rem; font-weight: bold; color: #1e4663; margin-bottom: 10px; 
-            min-height: 24px; padding: 4px 0;
-        }
-        .notification-content { 
-            color: #333; line-height: 1.6; min-height: 40px; padding: 4px 0;
-        }
+        .btn-login { background: #00acc1; color: white; }
+        .btn-save { background: #2e7d32; color: white; display: none; }
+        .btn-add { background: #ff9800; color: white; display: none; }
+        .btn-exit { background: #757575; color: white; display: none; }
         
-        /* === عند التعديل: إطار أصفر متقطع === */
-        .admin-mode .notification-title[contenteditable="true"],
-        .admin-mode .notification-content[contenteditable="true"] {
-            background: #fff9e6; 
-            border-radius: 8px; 
-            outline: 2px dashed #ffc107;
-            padding: 6px 8px;
+        .delete-btn {
+            background: #ef5350; color: white; border: none;
+            padding: 5px 10px; border-radius: 5px; font-size: 12px;
+            margin-top: 10px; display: none;
         }
-        
-        /* === مؤثرات اللمس للموبايل === */
-        .admin-mode .notification-title[contenteditable="true"]:focus,
-        .admin-mode .notification-content[contenteditable="true"]:focus {
-            background: #fff3cd;
-            outline-color: #1e4663;
+
+        /* النافذة المنبثقة */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); z-index: 1000;
+            justify-content: center; align-items: center;
         }
-        
-        /* أزرار التحكم */
-        .edit-controls { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #ccc; }
-        .admin-mode .edit-controls { display: flex; gap: 8px; flex-wrap: wrap; }
-        
-        button { 
-            background: #28a745; color: white; border: none; padding: 10px 18px; 
-            border-radius: 25px; cursor: pointer; font-size: 14px; margin: 3px; 
-            touch-action: manipulation; -webkit-appearance: none; 
+        .modal.open { display: flex; }
+        .modal-box {
+            background: white; padding: 25px; border-radius: 15px; width: 85%; max-width: 350px; text-align: center;
         }
-        button:active { transform: scale(0.98); }
-        .btn-danger { background: #dc3545; }
-        .btn-secondary { background: #6c757d; }
-        .btn-edit-mode { background: #17a2b8; display: block; width: 100%; margin: 20px 0; padding: 14px; font-size: 16px; }
-        .btn-save-all { background: #1e4663; width: 100%; padding: 14px; margin-top: 15px; font-size: 16px; display: none; }
-        .btn-add { background: #28a745; width: 100%; padding: 14px; margin: 10px 0; font-size: 16px; display: none; }
-        
-        footer { text-align: center; margin-top: 30px; font-size: 12px; color: #777; padding-bottom: 20px; }
-        
-        /* نافذة كلمة المرور */
-        .modal { 
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.6); z-index: 9999; justify-content: center; 
-            align-items: center; padding: 20px; touch-action: manipulation;
+        .modal input {
+            width: 100%; padding: 12px; margin: 15px 0; border: 2px solid #ddd;
+            border-radius: 8px; font-size: 16px; text-align: center;
         }
-        .modal.active { display: flex; }
-        .modal-content { 
-            background: white; padding: 25px; border-radius: 20px; width: 100%; 
-            max-width: 380px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-        .modal input { 
-            width: 100%; padding: 14px; margin: 15px 0; border: 2px solid #ccc; 
-            border-radius: 12px; font-size: 16px; text-align: center; 
-        }
-        .modal input:focus { outline: none; border-color: #1e4663; }
-        .error-msg { color: #dc3545; font-size: 14px; display: none; margin-bottom: 10px; min-height: 20px; }
-        .modal-buttons { display: flex; gap: 10px; justify-content: center; margin-top: 10px; }
-        .modal-buttons button { flex: 1; padding: 12px; }
-        
-        /* تحسين لوحة المفاتيح للموبايل */
-        [contenteditable="true"] {
-            -webkit-user-modify: read-write-plaintext-only;
-        }
+        .error { color: red; font-size: 12px; display: none; margin-bottom: 10px; }
     </style>
 </head>
 <body>
-<div class="container">
+
+<div class="container" id="mainContainer">
+    <!-- الرأس -->
     <div class="header">
         <h1>📢 نظام الإشعارات - الاختبارات</h1>
-        <div class="badge" id="modeLabel">وضع الطالب (عرض فقط)</div>
+        <span class="badge" id="modeBadge">وضع الطالب (عرض فقط)</span>
     </div>
 
-    <div id="notificationsList"></div>
+    <!-- قائمة الإشعارات (ستظهر هنا) -->
+    <div id="notificationsArea"></div>
 
-    <button id="toggleModeBtn" class="btn-edit-mode">🔐 الدخول لوضع التعديل (للمعلم)</button>
-    <button id="saveAllBtn" class="btn-save-all">💾 حفظ جميع التغييرات</button>
-    <button id="addNotificationBtn" class="btn-add">➕ إضافة إشعار جديد</button>
-
-    <footer>متوافق مع الجوال - محمد عيادة 2026</footer>
+    <!-- الأزرار الرئيسية -->
+    <button class="btn btn-login" id="loginBtn" onclick="showLoginModal()">🔐 الدخول لوضع التعديل (للمعلم)</button>
+    <button class="btn btn-save" id="saveBtn" onclick="saveChanges()">💾 حفظ التغييرات</button>
+    <button class="btn btn-add" id="addBtn" onclick="addNewNotification()">➕ إضافة إشعار جديد</button>
+    <button class="btn btn-exit" id="exitBtn" onclick="exitEditMode()">🔓 خروج من وضع التعديل</button>
+    
+    <p style="text-align:center; color:#888; font-size:12px; margin-top:20px;">متوافق مع الجوال - محمد عيادة 2026</p>
 </div>
 
 <!-- نافذة كلمة المرور -->
 <div class="modal" id="passwordModal">
-    <div class="modal-content">
-        <h3>🔐 أدخل كلمة المرور</h3>
-        <p style="color:#666; margin:10px 0">للدخول إلى وضع التعديل</p>
-        <input type="password" id="passwordInput" placeholder="كلمة المرور..." autocomplete="off">
-        <div class="error-msg" id="errorMsg">❌ كلمة المرور غير صحيحة</div>
-        <div class="modal-buttons">
-            <button id="loginBtn">دخول</button>
-            <button id="cancelBtn" class="btn-secondary">إلغاء</button>
+    <div class="modal-box">
+        <h3>🔐 كلمة مرور المعلم</h3>
+        <input type="password" id="passInput" placeholder="أدخل كلمة المرور..." inputmode="numeric">
+        <p class="error" id="passError">❌ كلمة المرور خطأ</p>
+        <div style="display:flex; gap:10px;">
+            <button class="btn btn-login" style="margin:0" onclick="verifyPassword()">دخول</button>
+            <button class="btn btn-exit" style="margin:0; display:block;" onclick="closeModal()">إلغاء</button>
         </div>
     </div>
 </div>
 
 <script>
-    const ADMIN_PASSWORD = "teacher123";
-    let isAdminMode = false;
-    let originalNotifications = [];
-
-    let notifications = JSON.parse(localStorage.getItem('testNotifications')) || [
-        { id: 1, title: "📢 تذكير: اختبار منتصف الفصل", content: "احضر معك الكتاب والكراس مهم الكراسه" },
-        { id: 2, title: "📊 نتائج الاختبار التجريبي", content: "تم إعلان نتائج الاختبار التجريبي. درجة النجاح 70%. يرجى مراجعة حساباتكم." },
-        { id: 3, title: "⚙️ تحديث المنصة", content: "تم إضافة ميزة مراجعة الإجابات بعد الاختبار." },
-        { id: 4, title: "⏳ موعد التسليم", content: "آخر موعد للتسجيل في الاختبار النهائي هو 20 أبريل 2025." },
-        { id: 5, title: "📚 محاضرة مراجعة", content: "محاضرة مراجعة شاملة يوم السبت من 2 إلى 4 مساءً." }
+    // 1. إعداد البيانات
+    const TEACHER_PASS = "teacher123";
+    let isAdmin = false;
+    
+    // بيانات افتراضية تظهر دائماً في حال عدم وجود بيانات محفوظة
+    const defaultData = [
+        { id: 1, title: "📢 تذكير: اختبار منتصف الفصل", content: "احضر معك الكتاب والكراس، الكراس مهم جداً" },
+        { id: 2, title: "📊 نتائج الاختبار التجريبي", content: "تم إعلان النتائج. درجة النجاح 70%." },
+        { id: 3, title: "📅 موعد التسليم", content: "آخر موعد للتسجيل هو 20 أبريل." }
     ];
 
-    document.addEventListener('DOMContentLoaded', () => {
-        renderNotifications();
-        setupEventListeners();
-    });
+    // تحميل البيانات من الذاكرة أو استخدام الافتراضي
+    let notifications = JSON.parse(localStorage.getItem('testNotifs')) || defaultData;
 
-    // 🎨 عرض الإشعارات - مع contenteditable للعنوان والمحتوى
-    function renderNotifications() {
-        const list = document.getElementById('notificationsList');
-        list.innerHTML = notifications.map(notif => `
-            <div class="notification-card" data-id="${notif.id}">
-                <div class="notification-title" 
-                     contenteditable="${isAdminMode}" 
-                     data-field="title">${escapeHtml(notif.title)}</div>
-                <div class="notification-content" 
-                     contenteditable="${isAdminMode}" 
-                     data-field="content">${escapeHtml(notif.content)}</div>
-                <div class="edit-controls">
-                    <button class="btn-danger btn-delete" data-id="${notif.id}">🗑️ حذف</button>
-                    <button class="btn-secondary btn-reset" data-id="${notif.id}">↩️ تراجع</button>
-                </div>
-            </div>
-        `).join('');
-        
-        // تحديث الواجهة
-        document.body.classList.toggle('admin-mode', isAdminMode);
-        document.getElementById('modeLabel').textContent = isAdminMode ? 'وضع المعلم (تعديل مفعل)' : 'وضع الطالب (عرض فقط)';
-        document.getElementById('modeLabel').classList.toggle('admin', isAdminMode);
-        document.getElementById('saveAllBtn').style.display = isAdminMode ? 'block' : 'none';
-        document.getElementById('addNotificationBtn').style.display = isAdminMode ? 'block' : 'none';
-        document.getElementById('toggleModeBtn').textContent = isAdminMode ? '🔓 الخروج من وضع التعديل' : '🔐 الدخول لوضع التعديل (للمعلم)';
-    }
+    // 2. دالة رسم الإشعارات (تعمل دائماً)
+    function render() {
+        const area = document.getElementById('notificationsArea');
+        area.innerHTML = ''; // مسح القائمة الحالية
 
-    function openPasswordModal() {
-        const modal = document.getElementById('passwordModal');
-        const input = document.getElementById('passwordInput');
-        modal.classList.add('active');
-        input.value = '';
-        document.getElementById('errorMsg').style.display = 'none';
-        setTimeout(() => {
-            input.focus();
-            input.setSelectionRange(input.value.length, input.value.length);
-        }, 150);
-    }
-
-    function closePasswordModal() {
-        document.getElementById('passwordModal').classList.remove('active');
-        document.getElementById('passwordInput').value = '';
-        document.getElementById('errorMsg').style.display = 'none';
-    }
-
-    function checkPassword() {
-        const input = document.getElementById('passwordInput').value.trim();
-        const errorMsg = document.getElementById('errorMsg');
-        if (input === ADMIN_PASSWORD) {
-            isAdminMode = true;
-            originalNotifications = JSON.parse(JSON.stringify(notifications));
-            closePasswordModal();
-            renderNotifications();
+        if (notifications.length === 0) {
+            area.innerHTML = '<p style="text-align:center; padding:20px; color:#888;">لا توجد إشعارات</p>';
         } else {
-            errorMsg.style.display = 'block';
-            const inputEl = document.getElementById('passwordInput');
-            inputEl.style.borderColor = '#dc3545';
-            setTimeout(() => inputEl.style.borderColor = '#ccc', 500);
+            notifications.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                // نستخدم contenteditable فقط إذا كنا في وضع المعلم
+                const editableAttr = isAdmin ? 'contenteditable="true"' : '';
+                
+                card.innerHTML = `
+                    <h3 ${editableAttr} oninput="updateData(${index}, 'title', this.innerText)">${item.title}</h3>
+                    <p ${editableAttr} oninput="updateData(${index}, 'content', this.innerText)">${item.content}</p>
+                    ${isAdmin ? `<button class="delete-btn" style="display:inline-block" onclick="deleteItem(${index})">🗑️ حذف</button>` : ''}
+                `;
+                area.appendChild(card);
+            });
+        }
+        updateUI();
+    }
+
+    // 3. تحديث الواجهة (إظهار/إخفاء الأزرار)
+    function updateUI() {
+        const container = document.getElementById('mainContainer');
+        const badge = document.getElementById('modeBadge');
+        
+        if (isAdmin) {
+            container.classList.add('edit-mode');
+            badge.textContent = 'وضع المعلم (تعديل)';
+            badge.style.background = '#ef5350';
+            badge.style.color = '#fff';
+            
+            document.getElementById('loginBtn').style.display = 'none';
+            document.getElementById('saveBtn').style.display = 'block';
+            document.getElementById('addBtn').style.display = 'block';
+            document.getElementById('exitBtn').style.display = 'block';
+        } else {
+            container.classList.remove('edit-mode');
+            badge.textContent = 'وضع الطالب (عرض فقط)';
+            badge.style.background = '#ffc107';
+            badge.style.color = '#000';
+            
+            document.getElementById('loginBtn').style.display = 'block';
+            document.getElementById('saveBtn').style.display = 'none';
+            document.getElementById('addBtn').style.display = 'none';
+            document.getElementById('exitBtn').style.display = 'none';
         }
     }
 
-    function deleteNotification(id) {
-        if (confirm('هل أنت متأكد من حذف هذا الإشعار؟')) {
-            notifications = notifications.filter(n => n.id !== id);
-            renderNotifications();
+    // 4. التحكم في النافذة
+    function showLoginModal() {
+        document.getElementById('passwordModal').classList.add('open');
+        document.getElementById('passInput').value = '';
+        document.getElementById('passError').style.display = 'none';
+        document.getElementById('passInput').focus();
+    }
+    
+    function closeModal() {
+        document.getElementById('passwordModal').classList.remove('open');
+    }
+
+    // 5. التحقق من كلمة المرور
+    function verifyPassword() {
+        const input = document.getElementById('passInput').value.trim();
+        if (input === TEACHER_PASS) {
+            isAdmin = true;
+            closeModal();
+            render(); // إعادة رسم الصفحة بوضع التعديل
+        } else {
+            document.getElementById('passError').style.display = 'block';
         }
     }
 
-    function resetNotification(id) {
-        const orig = originalNotifications.find(n => n.id === id);
-        if (orig) {
-            const card = document.querySelector(`.notification-card[data-id="${id}"]`);
-            card.querySelector('.notification-title').textContent = orig.title;
-            card.querySelector('.notification-content').textContent = orig.content;
-        }
+    // 6. وظائف التعديل (تحديث البيانات فورياً عند الكتابة)
+    function updateData(index, field, value) {
+        notifications[index][field] = value;
     }
 
-    // 💾 حفظ التغييرات - قراءة من contenteditable
-    function saveNotifications() {
-        const cards = document.querySelectorAll('.notification-card');
-        notifications = Array.from(cards).map(card => {
-            const id = parseInt(card.dataset.id);
-            const titleEl = card.querySelector('.notification-title');
-            const contentEl = card.querySelector('.notification-content');
-            return {
-                id: id,
-                title: titleEl.innerText.trim(),
-                content: contentEl.innerText.trim()
-            };
-        });
-        localStorage.setItem('testNotifications', JSON.stringify(notifications));
-        originalNotifications = JSON.parse(JSON.stringify(notifications));
-        alert('✅ تم حفظ التغييرات بنجاح!');
+    function deleteItem(index) {
+        if(confirm('هل تريد حذف هذا الإشعار؟')) {
+            notifications.splice(index, 1);
+            render();
+        }
     }
 
     function addNewNotification() {
-        const newId = Date.now();
-        notifications.unshift({
-            id: newId,
-            title: "عنوان إشعار جديد",
-            content: "اكتب محتوى الإشعار هنا..."
-        });
-        renderNotifications();
-        
-        // التركيز على المحتوى الجديد للكتابة فوراً
-        setTimeout(() => {
-            const newCard = document.querySelector(`.notification-card[data-id="${newId}"]`);
-            if (newCard) {
-                newCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                const contentEl = newCard.querySelector('.notification-content');
-                contentEl.focus();
-                // تحديد النص الافتراضي للاستبدال السريع
-                if (window.getSelection && document.createRange) {
-                    const range = document.createRange();
-                    range.selectNodeContents(contentEl);
-                    const sel = window.getSelection();
-                    sel.removeAllRanges();
-                    sel.addRange(range);
-                }
-            }
-        }, 300);
+        notifications.unshift({ id: Date.now(), title: "إشعار جديد", content: "اكتب المحتوى هنا..." });
+        render();
     }
 
-    function setupEventListeners() {
-        document.getElementById('toggleModeBtn').addEventListener('click', (e) => {
-            e.preventDefault();
-            if (isAdminMode) {
-                isAdminMode = false;
-                renderNotifications();
-            } else {
-                openPasswordModal();
-            }
-        });
-
-        document.getElementById('loginBtn').addEventListener('click', (e) => {
-            e.preventDefault();
-            checkPassword();
-        });
-        
-        document.getElementById('cancelBtn').addEventListener('click', (e) => {
-            e.preventDefault();
-            closePasswordModal();
-        });
-
-        document.getElementById('saveAllBtn').addEventListener('click', (e) => {
-            e.preventDefault();
-            saveNotifications();
-        });
-
-        document.getElementById('addNotificationBtn').addEventListener('click', (e) => {
-            e.preventDefault();
-            addNewNotification();
-        });
-
-        document.getElementById('passwordModal').addEventListener('click', (e) => {
-            if (e.target.id === 'passwordModal') closePasswordModal();
-        });
-
-        document.getElementById('passwordInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                checkPassword();
-            }
-        });
-
-        // تفويض الأحداث لأزرار الحذف/التراجع
-        document.getElementById('notificationsList').addEventListener('click', (e) => {
-            const btn = e.target.closest('button');
-            if (!btn) return;
-            e.preventDefault();
-            const id = parseInt(btn.dataset.id);
-            if (btn.classList.contains('btn-delete')) {
-                deleteNotification(id);
-            } else if (btn.classList.contains('btn-reset')) {
-                resetNotification(id);
-            }
-        });
-
-        // === تحسين تجربة التعديل على الموبايل ===
-        // منع سلوكات غير مرغوبة في contenteditable
-        document.getElementById('notificationsList').addEventListener('input', (e) => {
-            if (e.target.classList.contains('notification-title') || 
-                e.target.classList.contains('notification-content')) {
-                // تحديث فوري للبيانات (اختياري)
-            }
-        });
-
-        // إغلاق الكيبورد عند الضغط على زر الحفظ
-        document.getElementById('saveAllBtn').addEventListener('touchstart', () => {
-            document.activeElement?.blur();
-        });
+    function saveChanges() {
+        localStorage.setItem('testNotifs', JSON.stringify(notifications));
+        alert('✅ تم الحفظ بنجاح!');
+        exitEditMode();
     }
 
-    function escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
+    function exitEditMode() {
+        if(confirm('الخروج من وضع المعلم؟')) {
+            isAdmin = false;
+            render(); // إعادة الرسم لوضع الطالب (إزالة حقول الكتابة)
+        }
     }
+
+    // تشغيل الدالة عند فتح الصفحة
+    render();
 </script>
+
 </body>
 </html>
