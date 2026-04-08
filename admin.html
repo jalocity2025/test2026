@@ -53,7 +53,7 @@
   <div class="modal-box">
     <h3>🔐 كلمة المرور</h3>
     <p style="margin:8px 0">للدخول إلى وضع التعديل (للمعلم)</p>
-    <input type="password" id="pwd" placeholder="2026" inputmode="numeric">
+    <input type="password" id="pwd" placeholder="12345" inputmode="numeric">
     <p class="error" id="err">❌ كلمة المرور غير صحيحة</p>
     <button id="confirmBtn" class="btn btn-blue">تأكيد</button>
     <button id="cancelBtn" class="btn btn-gray">إلغاء</button>
@@ -196,7 +196,7 @@
   modalEl.onclick = (e) => { if(e.target === modalEl) modalEl.style.display = 'none'; };
   
   function checkPassword() {
-    if (pwdEl.value.trim() === "12345") {
+    if (pwdEl.value.trim() === "2026") {
       admin = true;
       modalEl.style.display = 'none';
       render();
