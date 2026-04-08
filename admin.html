@@ -3,14 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-<title>إشعارات الاختبارات - حفظ موثوق</title>
+<title>إشعارات الاختبارات - النظام السحابي</title>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  body{font-family:'Tajawad','Segoe UI',sans-serif;background:#f4f6f9;padding:16px;direction:rtl}
+  body{font-family:'Tajawal','Segoe UI',sans-serif;background:#f4f6f9;padding:16px;direction:rtl}
   .header{background:#0056b3;color:#fff;padding:18px;border-radius:20px;text-align:center;margin-bottom:20px}
   .header h2{font-size:1.4rem;margin-bottom:8px}
   .badge{background:#ffc107;padding:6px 16px;border-radius:40px;font-size:13px;font-weight:bold;display:inline-block}
-  .card{background:#fff;padding:16px;margin:12px 0;border-radius:18px;border-right:5px solid #0056b3;box-shadow:0 3px 8px rgba(0,0,0,0.08)}
+  .card{background:#fff;padding:16px;margin:12px 0;border-radius:18px;border-right:5px solid #0056b3;box-shadow:0 3px 8px rgba(0,0,0,0.08);transition:0.2s}
   .card h3{color:#0056b3;margin-bottom:10px;font-size:1.2rem;word-break:break-word}
   .card p{color:#333;line-height:1.5;font-size:0.95rem;word-break:break-word}
   .editable{background:#fff9c4;border:2px dashed #f9a825;padding:8px;border-radius:14px;outline:none;cursor:text}
@@ -27,28 +30,29 @@
   .error{color:#d32f2f;font-size:13px;display:none;margin:5px 0}
   .footer{text-align:center;color:#888;font-size:11px;margin-top:25px}
   .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:8px 20px;border-radius:40px;font-size:14px;z-index:11000;opacity:0;transition:0.3s;pointer-events:none}
+  .loading{text-align:center;padding:40px;color:#0056b3}
 </style>
 </head>
 <body>
 
 <div class="header">
   <h2>📢 نظام الإشعارات - الاختبارات</h2>
-  <span class="badge" id="badge">وضع الطالب (عرض فقط)</span>
+  <span class="badge" id="badge">جاري التحميل...</span>
 </div>
 
-<div id="list"></div>
+<div id="list"><div class="loading">⏳ جلب الإشعارات من السحاب...</div></div>
 
 <button id="loginBtn" class="btn btn-blue">🔐 الدخول لوضع التعديل (للمعلم)</button>
-<button id="saveBtn" class="btn btn-green" style="display:none">💾 حفظ جميع التغييرات</button>
+<button id="saveBtn" class="btn btn-green" style="display:none">💾 حفظ التغييرات للسحاب (لجميع الطلاب)</button>
 <button id="addBtn" class="btn btn-green" style="display:none">➕ إضافة إشعار جديد</button>
 <button id="exitBtn" class="btn btn-gray" style="display:none">🔓 الخروج من وضع التعديل</button>
 
-<div class="footer">✅ متوافق مع جميع الأجهزة - حفظ تلقائي في المتصفح</div>
+<div class="footer">✅ الإشعارات مخزنة سحابياً - تظهر فوراً لجميع الطلاب</div>
 
 <div class="modal" id="modal">
   <div class="modal-box">
     <h3>🔐 كلمة المرور</h3>
-    <p style="margin:8px 0">للدخول إلى وضع التعديل</p>
+    <p style="margin:8px 0">للدخول إلى وضع التعديل (للمعلم)</p>
     <input type="password" id="pwd" placeholder="12345" inputmode="numeric">
     <p class="error" id="err">❌ كلمة المرور غير صحيحة</p>
     <button id="confirmBtn" class="btn btn-blue">تأكيد</button>
@@ -59,64 +63,26 @@
 <div id="toast" class="toast"></div>
 
 <script>
-(function(){
-  const PASS = "12345";
+  // إعدادات Firebase الخاصة بمشروعك
+  const firebaseConfig = {
+    apiKey: "AIzaSyCwEe57wyZVqPKfH8bhvAj9d50QiBYj39s",
+    authDomain: "lessons-65787.firebaseapp.com",
+    databaseURL: "https://lessons-65787-default-rtdb.firebaseio.com",
+    projectId: "lessons-65787",
+    storageBucket: "lessons-65787.firebasestorage.app",
+    messagingSenderId: "717657000730",
+    appId: "1:717657000730:web:e3587df694dad7779ebaa3",
+    measurementId: "G-G3YZPYB3W1"
+  };
+
+  // تهيئة Firebase
+  firebase.initializeApp(firebaseConfig);
+  const database = firebase.database();
+  const notifsRef = database.ref('notifications');
+
   let admin = false;
+  let localData = [];
 
-  // === تحميل البيانات من localStorage بشكل آمن ===
-  function loadData() {
-    let savedData = null;
-    try {
-      const raw = localStorage.getItem('exam_notifications');
-      if (raw) {
-        savedData = JSON.parse(raw);
-      }
-    } catch(e) {
-      console.warn("خطأ في قراءة localStorage", e);
-    }
-    
-    // إذا كانت هناك بيانات مخزنة سليمة نستخدمها، وإلا نستخدم البيانات الافتراضية
-    if (savedData && Array.isArray(savedData) && savedData.length > 0) {
-      return savedData;
-    } else {
-      // البيانات الافتراضية (تستخدم مرة واحدة فقط إذا لم يكن هناك شيء)
-      return [
-        { id: 1, title: "📢 تذكير: اختبار منتصف الفصل", content: "احضر معك الكتاب والكراس مهم الكراسه" },
-        { id: 2, title: "📊 نتائج الاختبار التجريبي", content: "تم إعلان نتائج الاختبار التجريبي. درجة النجاح 70%." },
-        { id: 3, title: "⏳ موعد التسليم", content: "آخر موعد للتسجيل في الاختبار النهائي هو 20 أبريل 2025." }
-      ];
-    }
-  }
-
-  let data = loadData();
-
-  // === حفظ البيانات إلى localStorage ===
-  function persistData() {
-    try {
-      localStorage.setItem('exam_notifications', JSON.stringify(data));
-      showToast("✅ تم الحفظ بنجاح في المتصفح");
-      return true;
-    } catch(e) {
-      console.error("فشل الحفظ", e);
-      showToast("❌ فشل الحفظ! تأكد من المساحة المتاحة", true);
-      return false;
-    }
-  }
-
-  // === عرض رسالة عائمة ===
-  let toastTimeout;
-  function showToast(msg, isError = false) {
-    const toast = document.getElementById('toast');
-    toast.textContent = msg;
-    toast.style.backgroundColor = isError ? '#c62828' : '#2e7d32';
-    toast.style.opacity = '1';
-    clearTimeout(toastTimeout);
-    toastTimeout = setTimeout(() => {
-      toast.style.opacity = '0';
-    }, 2500);
-  }
-
-  // === أدوات DOM ===
   const $ = id => document.getElementById(id);
   const listEl = $('list');
   const badgeEl = $('badge');
@@ -124,12 +90,24 @@
   const pwdEl = $('pwd');
   const errEl = $('err');
 
-  // === عرض القائمة (مع دعم التحرير) ===
+  function showToast(msg, isError = false) {
+    const toast = $('toast');
+    toast.textContent = msg;
+    toast.style.backgroundColor = isError ? '#c62828' : '#2e7d32';
+    toast.style.opacity = '1';
+    setTimeout(() => toast.style.opacity = '0', 2500);
+  }
+
+  function escapeHtml(str) {
+    if(!str) return '';
+    return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
+  }
+
   function render() {
-    if (!data.length) {
+    if (!localData.length) {
       listEl.innerHTML = '<p style="text-align:center;padding:40px;color:#888">📭 لا توجد إشعارات</p>';
     } else {
-      listEl.innerHTML = data.map((item, idx) => `
+      listEl.innerHTML = localData.map((item, idx) => `
         <div class="card" data-idx="${idx}">
           <h3 class="${admin ? 'editable' : ''}" ${admin ? 'contenteditable="true"' : ''}>${escapeHtml(item.title)}</h3>
           <p class="${admin ? 'editable' : ''}" ${admin ? 'contenteditable="true"' : ''}>${escapeHtml(item.content)}</p>
@@ -137,70 +115,88 @@
         </div>
       `).join('');
     }
-    
-    // أزرار التحكم
     $('saveBtn').style.display = admin ? 'block' : 'none';
     $('addBtn').style.display = admin ? 'block' : 'none';
     $('exitBtn').style.display = admin ? 'block' : 'none';
-    badgeEl.textContent = admin ? '👨‍🏫 وضع المعلم (تعديل مفعل)' : '👩‍🎓 وضع الطالب (عرض فقط)';
+    badgeEl.textContent = admin ? '👨‍🏫 وضع المعلم (تعديل سحابي)' : '👩‍🎓 وضع الطالب (قراءة فقط)';
     badgeEl.style.background = admin ? '#d32f2f' : '#ffc107';
     badgeEl.style.color = admin ? '#fff' : '#000';
   }
 
-  // === منع حقن HTML ===
-  function escapeHtml(str) {
-    if(!str) return '';
-    return str.replace(/[&<>]/g, function(m) {
-      if(m === '&') return '&amp;';
-      if(m === '<') return '&lt;';
-      if(m === '>') return '&gt;';
-      return m;
-    });
-  }
-
-  // === جمع التعديلات من حقول contenteditable وتحديث data ===
-  function collectChanges() {
-    const cards = document.querySelectorAll('.card');
-    let changed = false;
-    cards.forEach((card, idx) => {
-      if (data[idx]) {
-        const newTitle = card.querySelector('h3').innerText.trim();
-        const newContent = card.querySelector('p').innerText.trim();
-        if (data[idx].title !== newTitle || data[idx].content !== newContent) {
-          data[idx].title = newTitle || "بدون عنوان";
-          data[idx].content = newContent || "بدون محتوى";
-          changed = true;
+  function loadFromFirebase() {
+    listEl.innerHTML = '<div class="loading">⏳ جلب الإشعارات من السحاب...</div>';
+    notifsRef.on('value', (snapshot) => {
+      const firebaseData = snapshot.val();
+      if (firebaseData && Array.isArray(firebaseData) && firebaseData.length > 0) {
+        localData = firebaseData;
+      } else {
+        const defaultData = [
+          { id: 1, title: "📢 تذكير: اختبار منتصف الفصل", content: "احضر معك الكتاب والكراس مهم الكراسه" },
+          { id: 2, title: "📊 نتائج الاختبار التجريبي", content: "تم إعلان نتائج الاختبار التجريبي. درجة النجاح 70%." },
+          { id: 3, title: "⏳ موعد التسليم", content: "آخر موعد للتسجيل في الاختبار النهائي هو 20 أبريل 2025." }
+        ];
+        if (!firebaseData || firebaseData.length === 0) {
+          notifsRef.set(defaultData).catch(err => showToast("خطأ في الكتابة الأولى", true));
         }
+        localData = defaultData;
       }
+      render();
+      showToast("✅ تم تحديث الإشعارات من السحاب");
+    }, (error) => {
+      console.error(error);
+      listEl.innerHTML = '<p style="color:red;text-align:center">⚠️ فشل الاتصال بقاعدة البيانات</p>';
+      showToast("❌ لا يمكن الاتصال بالسحاب", true);
     });
-    return changed;
   }
 
-  // === حفظ التغييرات (جمع + تخزين) ===
-  function saveChanges() {
-    const changed = collectChanges();
-    if (changed) {
-      if (persistData()) {
-        render(); // إعادة عرض للتأكد من تطابق البيانات
+  function saveToFirebase() {
+    if (!admin) return;
+    const cards = document.querySelectorAll('.card');
+    cards.forEach((card, idx) => {
+      if (localData[idx]) {
+        localData[idx].title = card.querySelector('h3').innerText.trim() || "بدون عنوان";
+        localData[idx].content = card.querySelector('p').innerText.trim() || "بدون محتوى";
       }
-    } else {
-      showToast("⚠️ لا توجد تغييرات لحفظها");
+    });
+    notifsRef.set(localData)
+      .then(() => showToast("💾 تم حفظ الإشعارات في السحاب وجميع الطلاب سيرونها"))
+      .catch(err => showToast("❌ فشل الحفظ: " + err.message, true));
+  }
+
+  function addNotification() {
+    localData.unshift({
+      id: Date.now(),
+      title: "✏️ عنوان جديد",
+      content: "اكتب محتوى الإشعار هنا..."
+    });
+    notifsRef.set(localData).then(() => {
+      render();
+      setTimeout(() => {
+        const firstCard = listEl.querySelector('.card');
+        if(firstCard && firstCard.querySelector('h3')) firstCard.querySelector('h3').focus();
+      }, 150);
+    }).catch(err => showToast("خطأ في الإضافة", true));
+  }
+
+  function deleteNotification(idx) {
+    if (confirm('⚠️ هل أنت متأكد من حذف هذا الإشعار نهائياً؟ سيختفي من جميع الطلاب.')) {
+      localData.splice(idx, 1);
+      notifsRef.set(localData).catch(err => showToast("خطأ في الحذف", true));
     }
   }
 
-  // === أحداث الأزرار ===
-  $('loginBtn').addEventListener('click', () => {
+  // أحداث الأزرار
+  $('loginBtn').onclick = () => {
     modalEl.style.display = 'flex';
     pwdEl.value = '';
     errEl.style.display = 'none';
     setTimeout(() => pwdEl.focus(), 100);
-  });
-
-  $('cancelBtn').addEventListener('click', () => modalEl.style.display = 'none');
-  modalEl.addEventListener('click', (e) => { if(e.target === modalEl) modalEl.style.display = 'none'; });
-
+  };
+  $('cancelBtn').onclick = () => modalEl.style.display = 'none';
+  modalEl.onclick = (e) => { if(e.target === modalEl) modalEl.style.display = 'none'; };
+  
   function checkPassword() {
-    if (pwdEl.value.trim() === PASS) {
+    if (pwdEl.value.trim() === "12345") {
       admin = true;
       modalEl.style.display = 'none';
       render();
@@ -208,50 +204,23 @@
       errEl.style.display = 'block';
     }
   }
-  $('confirmBtn').addEventListener('click', checkPassword);
-  pwdEl.addEventListener('keypress', (e) => { if(e.key === 'Enter') checkPassword(); });
-
-  $('saveBtn').addEventListener('click', saveChanges);
-
-  $('addBtn').addEventListener('click', () => {
-    data.unshift({
-      id: Date.now(),
-      title: "✏️ عنوان جديد",
-      content: "اكتب محتوى الإشعار هنا..."
-    });
-    render();
-    persistData(); // حفظ فوري بعد الإضافة
-    setTimeout(() => {
-      const firstCard = listEl.querySelector('.card');
-      if(firstCard) {
-        firstCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        const titleField = firstCard.querySelector('h3');
-        if(titleField && titleField.isContentEditable) titleField.focus();
-      }
-    }, 150);
-  });
-
-  // حذف إشعار
+  $('confirmBtn').onclick = checkPassword;
+  pwdEl.onkeypress = (e) => { if(e.key === 'Enter') checkPassword(); };
+  
+  $('saveBtn').onclick = saveToFirebase;
+  $('addBtn').onclick = addNotification;
+  $('exitBtn').onclick = () => { if(confirm('الخروج من وضع المعلم؟')) { admin = false; render(); } };
+  
+  // حذف باستخدام delegation
   listEl.addEventListener('click', (e) => {
     const delBtn = e.target.closest('.del-btn');
     if(delBtn && admin) {
       const idx = parseInt(delBtn.getAttribute('data-idx'), 10);
-      if(confirm('⚠️ هل أنت متأكد من حذف هذا الإشعار نهائياً؟')) {
-        data.splice(idx, 1);
-        render();
-        persistData();
-      }
+      deleteNotification(idx);
     }
   });
-
-  $('exitBtn').addEventListener('click', () => {
-    if(confirm('🔒 الخروج من وضع المعلم؟ ستعود إلى وضع العرض فقط.')) {
-      admin = false;
-      render();
-    }
-  });
-
-  // منع لصق HTML داخل contenteditable
+  
+  // منع لصق HTML داخل الحقول القابلة للتحرير
   document.addEventListener('paste', (e) => {
     if(!admin) return;
     const target = e.target;
@@ -261,11 +230,9 @@
       document.execCommand('insertText', false, text);
     }
   });
-
-  // عرض عدد الإشعارات المحفوظة عند التحميل
-  console.log(`تم تحميل ${data.length} إشعاراً من localStorage`);
-  render();
-})();
+  
+  // بدء التحميل
+  loadFromFirebase();
 </script>
 </body>
 </html>
