@@ -2,36 +2,40 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>إشعارات نظام الاختبارات</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* === الحل لمشكلة التمرير (scroll) === */
         * { 
             margin: 0; 
             padding: 0; 
             box-sizing: border-box; 
         }
         
-        html, body {
-            height: auto !important;
-            min-height: 100vh;
-            overflow-y: auto !important;
-            overflow-x: hidden;
+        /* === الحل الأساسي لمشكلة التمرير على الموبايل === */
+        html {
+            height: 100%;
+            overflow-y: scroll !important;
+            -webkit-overflow-scrolling: touch;
         }
         
         body {
             font-family: 'Tajawal', sans-serif;
             background: #f5f7fb;
-            padding: 20px;
+            padding: 15px;
             direction: rtl;
-            padding-bottom: 60px;
+            min-height: 100%;
+            height: auto;
+            overflow-y: visible;
+            padding-bottom: 80px;
         }
         
         .container {
             max-width: 1200px;
             margin: auto;
+            display: block;
+            width: 100%;
         }
         
         .header {
@@ -39,14 +43,19 @@
             color: white;
             padding: 20px;
             border-radius: 25px;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 1.3rem;
+            margin: 5px 0;
         }
         
         .mode-badge {
             display: inline-block;
-            background: #ffc107;
-            color: #333;
+            background: #17a2b8;
+            color: white;
             padding: 5px 15px;
             border-radius: 30px;
             font-size: 14px;
@@ -55,23 +64,21 @@
         
         .notifications-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 20px;
+            grid-template-columns: 1fr;
+            gap: 18px;
         }
         
         .card {
             background: white;
             border-radius: 24px;
-            padding: 20px;
+            padding: 18px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.05);
             transition: transform 0.2s;
             border-right: 5px solid #2a5a82;
         }
         
-        .card:hover { transform: translateY(-3px); }
-        
         .card-title {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: bold;
             color: #1e4663;
             margin-bottom: 12px;
@@ -86,67 +93,34 @@
             font-size: 0.95rem;
         }
         
-        .admin-controls {
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px dashed #ccc;
-        }
-        
-        input, textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 12px;
-            border: 1px solid #ddd;
-            border-radius: 15px;
-            font-family: 'Tajawal', sans-serif;
-            font-size: 14px;
-        }
-        
-        .save-single {
-            background: #28a745;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 13px;
-        }
-        
-        .save-all-btn {
-            background: #1e4663;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 40px;
-            font-size: 16px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 20px;
-            font-weight: bold;
-        }
-        
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background: #28a745;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 30px;
-            display: none;
-            z-index: 1000;
-        }
-        
-        @media (max-width: 700px) {
-            .notifications-grid { grid-template-columns: 1fr; }
-        }
-        
         footer {
             text-align: center;
-            margin-top: 40px;
+            margin-top: 35px;
             color: #7f8c8d;
             font-size: 12px;
-            padding-bottom: 20px;
+            padding: 15px 0 10px;
+            clear: both;
+            position: relative;
+        }
+        
+        /* للشاشات المتوسطة والكبيرة */
+        @media (min-width: 700px) {
+            .notifications-grid {
+                grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            }
+            body {
+                padding: 25px;
+            }
+        }
+        
+        /* تحسين اللمس على الموبايل */
+        .card {
+            cursor: pointer;
+        }
+        
+        /* جعل الصفحة قابلة للتمرير بشكل مؤكد */
+        body, html {
+            overflow-x: hidden;
         }
     </style>
 </head>
@@ -155,38 +129,23 @@
 <div class="container">
     <div class="header">
         <h1><i class="fas fa-graduation-cap"></i> ثانوية صلاح الدين جالو</h1>
-        <h1><i class="fas fa-graduation-cap"></i> نظام الإشعارات - الاختبارات</h1>
-        <div class="mode-badge" id="modeBadge"></div>
+        <h1><i class="fas fa-bullhorn"></i> نظام الإشعارات - الاختبارات</h1>
+        <div class="mode-badge" id="modeBadge">
+            <i class="fas fa-eye"></i> وضع الطالب (عرض فقط)
+        </div>
     </div>
 
-    <div class="notifications-grid" id="notificationsContainer"></div>
+    <div class="notifications-grid" id="notificationsContainer">
+        <!-- الإشعارات ستظهر هنا -->
+    </div>
     
     <footer>
         <i class="fas fa-mobile-alt"></i> متوافق مع جميع الأجهزة - محمد عيادة 2026
     </footer>
 </div>
-<div id="toastMsg" class="toast">✓ تم الحفظ</div>
 
 <script>
-    // تحديد وضع الصفحة: edit للمعلم, view للطلاب
-    const urlParams = new URLSearchParams(window.location.search);
-    const mode = urlParams.get('mode'); // mode=edit   أو mode=view أو بدونها تعتبر view
-
-    let isAdmin = (mode === 'edit'); // إذا وضعت ?mode=edit في الرابط تصبح مديراً
-
-    // عرض شارة الوضع
-    const badge = document.getElementById('modeBadge');
-    if (isAdmin) {
-        badge.innerHTML = '<i class="fas fa-user-cog"></i> وضع الإدارة (يمكنك التعديل)';
-        badge.style.background = "#dc3545";
-        badge.style.color = "white";
-    } else {
-        badge.innerHTML = '<i class="fas fa-eye"></i> وضع الطالب (عرض فقط)';
-        badge.style.background = "#17a2b8";
-        badge.style.color = "white";
-    }
-
-    // البيانات الافتراضية (ستحفظ في localStorage عند التعديل)
+    // البيانات الافتراضية للإشعارات (وضع الطالب - عرض فقط)
     let notifications = [
         { id: 1, title: "📢 تذكير: اختبار منتصف الفصل", content: "موعد اختبار منتصف الفصل لمادة قواعد البيانات: الأربعاء القادم الساعة 10 صباحاً." },
         { id: 2, title: "📊 نتائج الاختبار التجريبي", content: "تم إعلان نتائج الاختبار التجريبي. درجة النجاح 70%. يرجى مراجعة حساباتكم." },
@@ -194,88 +153,32 @@
         { id: 4, title: "⏳ موعد التسليم", content: "آخر موعد للتسجيل في الاختبار النهائي هو 20 أبريل 2025." },
         { id: 5, title: "📚 محاضرة مراجعة", content: "محاضرة مراجعة شاملة يوم السبت من 2 إلى 4 مساءً (قاعة A101)." }
     ];
-
-    // تحميل البيانات المخزنة (حتى يرى الطالب آخر تعديلات المعلم)
-    function loadNotifications() {
-        const stored = localStorage.getItem("exam_app_notifications");
-        if (stored) {
-            notifications = JSON.parse(stored);
-        }
-        render();
-    }
-
-    // عرض الإشعارات حسب الوضع
-    function render() {
+    
+    // عرض الإشعارات بشكل جميل
+    function renderNotifications() {
         const container = document.getElementById("notificationsContainer");
+        if (!container) return;
+        
         container.innerHTML = "";
         
-        notifications.forEach((notif, idx) => {
+        notifications.forEach((notif, index) => {
             const card = document.createElement("div");
             card.className = "card";
-            
-            if (isAdmin) {
-                // وضع المعلم: يعرض حقول editable
-                card.innerHTML = `
-                    <div class="card-title"><i class="fas fa-pen"></i> <input type="text" id="title-${notif.id}" value="${escapeHtml(notif.title)}" style="font-weight:bold; border:1px solid #ccc; background:#f9f9f9;"></div>
-                    <textarea id="content-${notif.id}" rows="3">${escapeHtml(notif.content)}</textarea>
-                    <div class="admin-controls">
-                        <button class="save-single" data-id="${notif.id}"><i class="fas fa-save"></i> حفظ هذا الإشعار</button>
-                    </div>
-                `;
-            } else {
-                // وضع الطالب: عرض نص فقط
-                card.innerHTML = `
-                    <div class="card-title"><i class="fas fa-bell"></i> ${escapeHtml(notif.title)}</div>
-                    <div class="card-content">${escapeHtml(notif.content)}</div>
-                `;
-            }
+            card.innerHTML = `
+                <div class="card-title">
+                    <i class="fas fa-bell" style="color: #2a5a82;"></i>
+                    ${escapeHtml(notif.title)}
+                </div>
+                <div class="card-content">
+                    ${escapeHtml(notif.content)}
+                </div>
+            `;
             container.appendChild(card);
         });
-
-        if (isAdmin) {
-            // إضافة زر حفظ الكل في الأسفل
-            const saveAllBtn = document.createElement("button");
-            saveAllBtn.className = "save-all-btn";
-            saveAllBtn.innerHTML = '<i class="fas fa-save"></i> حفظ جميع التغييرات نهائياً (سيظهر للطلاب)';
-            saveAllBtn.onclick = saveAllChanges;
-            container.appendChild(saveAllBtn);
-
-            // ربط أزرار الحفظ الفردية
-            document.querySelectorAll('.save-single').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const id = parseInt(btn.getAttribute('data-id'));
-                    saveSingleNotification(id);
-                });
-            });
-        }
     }
-
-    function saveSingleNotification(id) {
-        const newTitle = document.getElementById(`title-${id}`).value;
-        const newContent = document.getElementById(`content-${id}`).value;
-        const index = notifications.findIndex(n => n.id === id);
-        if (index !== -1) {
-            notifications[index].title = newTitle;
-            notifications[index].content = newContent;
-            localStorage.setItem("exam_app_notifications", JSON.stringify(notifications));
-            showToast("تم حفظ هذا الإشعار بنجاح");
-        }
-    }
-
-    function saveAllChanges() {
-        notifications.forEach(notif => {
-            const titleEl = document.getElementById(`title-${notif.id}`);
-            const contentEl = document.getElementById(`content-${notif.id}`);
-            if (titleEl && contentEl) {
-                notif.title = titleEl.value;
-                notif.content = contentEl.value;
-            }
-        });
-        localStorage.setItem("exam_app_notifications", JSON.stringify(notifications));
-        showToast("✅ تم حفظ جميع الإشعارات! الطلاب سيرون النسخة المحدثة عند تحديث الصفحة.");
-    }
-
+    
     function escapeHtml(str) {
+        if (!str) return "";
         return str.replace(/[&<>]/g, function(m) {
             if (m === '&') return '&amp;';
             if (m === '<') return '&lt;';
@@ -283,15 +186,22 @@
             return m;
         });
     }
-
-    function showToast(msg) {
-        const toast = document.getElementById('toastMsg');
-        toast.innerText = msg;
-        toast.style.display = "block";
-        setTimeout(() => { toast.style.display = "none"; }, 2000);
+    
+    // تحميل أي بيانات محفوظة (إذا وجدت)
+    function loadData() {
+        const stored = localStorage.getItem("exam_app_notifications");
+        if (stored) {
+            try {
+                const parsed = JSON.parse(stored);
+                if (Array.isArray(parsed) && parsed.length > 0) {
+                    notifications = parsed;
+                }
+            } catch(e) {}
+        }
+        renderNotifications();
     }
-
-    loadNotifications();
+    
+    loadData();
 </script>
 </body>
 </html>
