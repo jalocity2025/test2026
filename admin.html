@@ -2,110 +2,127 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Notifications</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>إشعارات الاختبارات</title>
 <style>
-body{font-family:Tahoma,sans-serif;background:#f5f5f5;padding:20px;margin:0}
-.header{background:#0056b3;color:white;padding:20px;border-radius:15px;text-align:center;margin-bottom:20px}
-.badge{background:#ffc107;color:black;padding:5px 15px;border-radius:15px;font-size:12px}
-.card{background:white;padding:15px;margin:10px 0;border-radius:10px;border-right:4px solid #0056b3}
-.editable{background:#fff9c4;border:2px dashed orange;padding:5px}
-.btn{display:block;width:100%;padding:15px;margin:10px 0;border:none;border-radius:10px;font-size:16px;color:white;cursor:pointer}
-.blue{background:#00acc1}
-.green{background:#2e7d32}
-.gray{background:#757575}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Tajawal',Tahoma,sans-serif;background:#f4f6f9;padding:20px}
+.header{background:#0056b3;color:#fff;padding:20px;border-radius:15px;text-align:center;margin-bottom:20px}
+.header h2{font-size:20px;margin-bottom:10px}
+.badge{background:#ffc107;color:#000;padding:5px 12px;border-radius:15px;font-size:12px;font-weight:bold;display:inline-block}
+.card{background:#fff;padding:15px;margin:12px 0;border-radius:12px;border-right:4px solid #0056b3;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
+.card h3{color:#0056b3;margin-bottom:8px;font-size:16px}
+.card p{color:#555;line-height:1.6;font-size:14px}
+.editable{background:#fff9c4;border:2px dashed #fbc02d;padding:8px;border-radius:8px;outline:none}
+.btn{display:block;width:100%;padding:14px;margin:8px 0;border:none;border-radius:10px;font-size:15px;font-weight:bold;cursor:pointer;color:#fff}
+.btn-blue{background:#00acc1}.btn-green{background:#2e7d32}.btn-gray{background:#757575}
 .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:9999;justify-content:center;align-items:center}
-.modal-box{background:white;padding:25px;border-radius:15px;width:90%;max-width:350px;text-align:center}
-.modal input{width:100%;padding:12px;margin:15px 0;border:2px solid #ddd;border-radius:8px;font-size:18px}
+.modal-box{background:#fff;padding:25px;border-radius:15px;width:90%;max-width:350px;text-align:center}
+.modal input{width:100%;padding:12px;margin:15px 0;border:2px solid #ddd;border-radius:10px;font-size:18px;text-align:center}
+.error{color:#f44336;font-size:13px;display:none;margin:10px 0}
 </style>
 </head>
 <body>
 
 <div class="header">
-<h2>📢 إشعارات الاختبارات</h2>
-<span class="badge" id="badge">وضع الطالب</span>
+<h2>📢 نظام الإشعارات - الاختبارات</h2>
+<span class="badge" id="badge">وضع الطالب (عرض فقط)</span>
 </div>
 
 <div id="list"></div>
 
-<button class="btn blue" onclick="openModal()">🔐 دخول المعلم</button>
-<button class="btn green" id="saveBtn" style="display:none" onclick="save()">💾 حفظ</button>
-<button class="btn green" id="addBtn" style="display:none" onclick="add()">➕ إضافة</button>
-<button class="btn gray" id="exitBtn" style="display:none" onclick="exit()">🔓 خروج</button>
+<button class="btn btn-blue" onclick="openModal()">🔐 الدخول لوضع التعديل (للمعلم)</button>
+<button class="btn btn-green" id="saveBtn" style="display:none" onclick="saveAll()">💾 حفظ جميع التغييرات</button>
+<button class="btn btn-green" id="addBtn" style="display:none" onclick="addNew()">➕ إضافة إشعار جديد</button>
+<button class="btn btn-gray" id="exitBtn" style="display:none" onclick="exitMode()">🔓 الخروج من وضع التعديل</button>
+
+<p style="text-align:center;color:#888;font-size:12px;margin-top:25px">متوافق مع الجوال - محمد عيادة 2026</p>
 
 <div class="modal" id="modal">
 <div class="modal-box">
-<h3>🔐 كلمة المرور</h3>
-<input type="password" id="pwd" placeholder="أدخل 12345">
-<p id="err" style="color:red;display:none">❌ خطأ</p>
-<button class="btn blue" onclick="check()">دخول</button>
-<button class="btn gray" onclick="closeModal()">إلغاء</button>
+<h3>🔐 أدخل كلمة المرور</h3>
+<p style="color:#666;margin:10px 0">للدخول إلى وضع التعديل</p>
+<input type="password" id="pwd" placeholder="كلمة المرور..." inputmode="numeric">
+<p class="error" id="err">❌ كلمة المرور غير صحيحة</p>
+<button class="btn btn-blue" onclick="checkPass()">دخول</button>
+<button class="btn btn-gray" onclick="closeModal()">إلغاء</button>
 </div>
 </div>
 
 <script>
 const PASS="12345";
 let admin=false;
-let data=JSON.parse(localStorage.getItem('n')||'null')||[
-{t:"تذكير اختبار",c:"احضر الكتاب والكراس"},
-{t:"نتائج الاختبار",c:"النجاح 70%"}
+let data=JSON.parse(localStorage.getItem('notifs')||'null')||[
+{id:1,title:"📢 تذكير: اختبار منتصف الفصل",content:"احضر معك الكتاب والكراس مهم الكراسه"},
+{id:2,title:"📊 نتائج الاختبار التجريبي",content:"تم إعلان نتائج الاختبار التجريبي. درجة النجاح 70%."},
+{id:3,title:"⏳ موعد التسليم",content:"آخر موعد للتسجيل في الاختبار النهائي هو 20 أبريل 2025."}
 ];
 
-function show(){
-var h='';
-if(data.length===0){h='<p style="text-align:center;color:#888;padding:20px">لا توجد إشعارات</p>';}
-else{
-for(var i=0;i<data.length;i++){
-h+='<div class="card"><div class="'+(admin?'editable':'')+'" '+(admin?'contenteditable="true"':'')+' oninput="data['+i+'].t=this.innerText"><b>'+data[i].t+'</b></div><div class="'+(admin?'editable':'')+'" '+(admin?'contenteditable="true"':'')+' oninput="data['+i+'].c=this.innerText" style="margin-top:8px">'+data[i].c+'</div>';
-if(admin){h+='<button class="btn gray" style="padding:8px;margin-top:10px" onclick="del('+i+')">🗑️ حذف</button>';}
-h+='</div>';
+function render(){
+const list=document.getElementById('list');
+if(data.length===0){
+list.innerHTML='<p style="text-align:center;padding:30px;color:#888">لا توجد إشعارات</p>';
+}else{
+list.innerHTML=data.map((item,i)=>'<div class="card"><h3 class="'+(admin?'editable':'')+'" '+(admin?'contenteditable="true"':'')+' oninput="data['+i+'].title=this.innerText">'+item.title+'</h3><p class="'+(admin?'editable':'')+'" '+(admin?'contenteditable="true"':'')+' oninput="data['+i+'].content=this.innerText">'+item.content+'</p>'+(admin?'<button class="btn btn-gray" style="padding:10px;margin-top:10px" onclick="del('+i+')">🗑️ حذف</button>':'')+'</div>').join('');
 }
-}
-document.getElementById('list').innerHTML=h;
 document.getElementById('saveBtn').style.display=admin?'block':'none';
 document.getElementById('addBtn').style.display=admin?'block':'none';
 document.getElementById('exitBtn').style.display=admin?'block':'none';
-var b=document.getElementById('badge');
-b.textContent=admin?'وضع المعلم':'وضع الطالب';
-b.style.background=admin?'red':'#ffc107';
+const b=document.getElementById('badge');
+b.textContent=admin?'وضع المعلم (تعديل مفعل)':'وضع الطالب (عرض فقط)';
+b.style.background=admin?'#f44336':'#ffc107';
+b.style.color=admin?'#fff':'#000';
 }
 
 function openModal(){
 document.getElementById('modal').style.display='flex';
 document.getElementById('pwd').value='';
 document.getElementById('err').style.display='none';
-setTimeout(function(){document.getElementById('pwd').focus();},200);
+setTimeout(function(){document.getElementById('pwd').focus();},300);
 }
 
 function closeModal(){
 document.getElementById('modal').style.display='none';
 }
 
-function check(){
-var v=document.getElementById('pwd').value;
-if(v===PASS){admin=true;closeModal();show();}
-else{document.getElementById('err').style.display='block';}
+function checkPass(){
+var val=document.getElementById('pwd').value.trim();
+if(val===PASS){
+admin=true;
+closeModal();
+render();
+}else{
+document.getElementById('err').style.display='block';
+}
 }
 
-function save(){
-localStorage.setItem('n',JSON.stringify(data));
-alert('✅ تم الحفظ');
+function saveAll(){
+localStorage.setItem('notifs',JSON.stringify(data));
+alert('✅ تم حفظ التغييرات بنجاح!');
 }
 
-function add(){
-data.unshift({t:"عنوان جديد",c:"اكتب هنا..."});
-show();
+function addNew(){
+data.unshift({id:Date.now(),title:"عنوان إشعار جديد",content:"اكتب محتوى الإشعار هنا..."});
+render();
 }
 
 function del(i){
-if(confirm('حذف؟')){data.splice(i,1);show();}
+if(confirm('هل أنت متأكد من حذف هذا الإشعار؟')){
+data.splice(i,1);
+render();
+}
 }
 
-function exit(){admin=false;show();}
+function exitMode(){
+admin=false;
+render();
+}
 
-document.getElementById('pwd').onkeypress=function(e){if(e.key==='Enter')check();};
+document.getElementById('pwd').addEventListener('keypress',function(e){
+if(e.key==='Enter')checkPass();
+});
 
-show();
+render();
 </script>
 
 </body>
