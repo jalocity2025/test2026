@@ -2,22 +2,38 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>إشعارات نظام الاختبارات</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* === الحل لمشكلة التمرير (scroll) === */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        html, body {
+            height: auto !important;
+            min-height: 100vh;
+            overflow-y: auto !important;
+            overflow-x: hidden;
+        }
+        
         body {
             font-family: 'Tajawal', sans-serif;
             background: #f5f7fb;
             padding: 20px;
             direction: rtl;
+            padding-bottom: 60px;
         }
+        
         .container {
             max-width: 1200px;
             margin: auto;
         }
+        
         .header {
             background: linear-gradient(135deg, #1e4663, #2a5a82);
             color: white;
@@ -26,6 +42,7 @@
             margin-bottom: 30px;
             text-align: center;
         }
+        
         .mode-badge {
             display: inline-block;
             background: #ffc107;
@@ -35,11 +52,13 @@
             font-size: 14px;
             margin-top: 10px;
         }
+        
         .notifications-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 20px;
         }
+        
         .card {
             background: white;
             border-radius: 24px;
@@ -48,7 +67,9 @@
             transition: transform 0.2s;
             border-right: 5px solid #2a5a82;
         }
+        
         .card:hover { transform: translateY(-3px); }
+        
         .card-title {
             font-size: 1.2rem;
             font-weight: bold;
@@ -58,16 +79,19 @@
             align-items: center;
             gap: 10px;
         }
+        
         .card-content {
             color: #2c3e50;
             line-height: 1.6;
             font-size: 0.95rem;
         }
+        
         .admin-controls {
             margin-top: 15px;
             padding-top: 15px;
             border-top: 1px dashed #ccc;
         }
+        
         input, textarea {
             width: 100%;
             padding: 10px;
@@ -77,6 +101,7 @@
             font-family: 'Tajawal', sans-serif;
             font-size: 14px;
         }
+        
         .save-single {
             background: #28a745;
             color: white;
@@ -86,6 +111,7 @@
             cursor: pointer;
             font-size: 13px;
         }
+        
         .save-all-btn {
             background: #1e4663;
             color: white;
@@ -98,6 +124,7 @@
             margin-top: 20px;
             font-weight: bold;
         }
+        
         .toast {
             position: fixed;
             bottom: 20px;
@@ -109,14 +136,17 @@
             display: none;
             z-index: 1000;
         }
+        
         @media (max-width: 700px) {
             .notifications-grid { grid-template-columns: 1fr; }
         }
+        
         footer {
             text-align: center;
             margin-top: 40px;
             color: #7f8c8d;
             font-size: 12px;
+            padding-bottom: 20px;
         }
     </style>
 </head>
@@ -124,7 +154,7 @@
 
 <div class="container">
     <div class="header">
-	  <h1><i class="fas fa-graduation-cap"></i> ثانوية صلاح الدين جالو</h1>
+        <h1><i class="fas fa-graduation-cap"></i> ثانوية صلاح الدين جالو</h1>
         <h1><i class="fas fa-graduation-cap"></i> نظام الإشعارات - الاختبارات</h1>
         <div class="mode-badge" id="modeBadge"></div>
     </div>
@@ -132,7 +162,7 @@
     <div class="notifications-grid" id="notificationsContainer"></div>
     
     <footer>
-        <i class="fas fa-mobile-alt"></i> متوافق مع جميع الأجهزة -  محمد عيادة 2026
+        <i class="fas fa-mobile-alt"></i> متوافق مع جميع الأجهزة - محمد عيادة 2026
     </footer>
 </div>
 <div id="toastMsg" class="toast">✓ تم الحفظ</div>
