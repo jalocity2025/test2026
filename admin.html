@@ -3,40 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>إشعارات نظام الاختبارات</title>
+    <title>إشعارات الاختبارات</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        /* إعادة تعيين كامل */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
         
-        /* حلول التمرير للموبايل */
-        html {
-            height: 100%;
-            overflow-y: auto !important;
-            -webkit-overflow-scrolling: touch;
-        }
-        
+        /* أهم شيء: تأكيد ظهور body */
         body {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
             font-family: 'Tajawal', sans-serif;
-            background: #f5f7fb;
-            padding: 15px;
+            background: #f0f2f5;
             direction: rtl;
+            padding: 15px;
             min-height: 100vh;
-            height: auto;
-            overflow-y: visible;
-            padding-bottom: 100px;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: auto;
             width: 100%;
+            overflow-x: hidden;
+            overflow-y: auto;
         }
         
+        /* الحاوية الرئيسية */
+        .container {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            background: transparent;
+        }
+        
+        /* الهيدر */
         .header {
             background: linear-gradient(135deg, #1e4663, #2a5a82);
             color: white;
@@ -47,10 +48,11 @@
         }
         
         .header h1 {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             margin: 5px 0;
         }
         
+        /* شارة وضع العرض */
         .mode-badge {
             display: inline-block;
             background: #17a2b8;
@@ -61,17 +63,19 @@
             margin-top: 10px;
         }
         
+        /* شبكة الإشعارات */
         .notifications-grid {
-            display: grid;
-            grid-template-columns: 1fr;
+            display: flex;
+            flex-direction: column;
             gap: 18px;
         }
         
+        /* بطاقة الإشعار */
         .card {
             background: white;
             border-radius: 24px;
-            padding: 18px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            padding: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
             border-right: 5px solid #2a5a82;
         }
         
@@ -91,21 +95,30 @@
             font-size: 0.95rem;
         }
         
+        /* التذييل */
         footer {
             text-align: center;
             margin-top: 35px;
-            color: #7f8c8d;
+            color: #5a6e7c;
             font-size: 12px;
-            padding: 20px 0 30px;
+            padding: 15px 0 25px;
         }
         
         /* للشاشات الكبيرة */
         @media (min-width: 700px) {
-            .notifications-grid {
-                grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            }
             body {
                 padding: 25px;
+            }
+            .notifications-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+        }
+        
+        @media (min-width: 1000px) {
+            .notifications-grid {
+                grid-template-columns: repeat(3, 1fr);
             }
         }
         
@@ -116,78 +129,69 @@
     </style>
 </head>
 <body>
-
-<div class="container">
-    <div class="header">
-        <h1><i class="fas fa-graduation-cap"></i> ثانوية صلاح الدين جالو</h1>
-        <h1><i class="fas fa-bullhorn"></i> نظام الإشعارات - الاختبارات</h1>
-        <div class="mode-badge" id="modeBadge">
-            <i class="fas fa-eye"></i> وضع الطالب (عرض فقط)
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-graduation-cap"></i> ثانوية صلاح الدين جالو</h1>
+            <h1><i class="fas fa-bullhorn"></i> نظام الإشعارات - الاختبارات</h1>
+            <div class="mode-badge">
+                <i class="fas fa-eye"></i> عرض الإشعارات
+            </div>
         </div>
+
+        <div class="notifications-grid" id="notificationsContainer">
+            <!-- الإشعارات ستظهر هنا -->
+        </div>
+        
+        <footer>
+            <i class="fas fa-mobile-alt"></i> متوافق مع جميع الأجهزة - محمد عيادة 2026
+        </footer>
     </div>
 
-    <div class="notifications-grid" id="notificationsContainer"></div>
-    
-    <footer>
-        <i class="fas fa-mobile-alt"></i> متوافق مع جميع الأجهزة - محمد عيادة 2026
-    </footer>
-</div>
-
-<script>
-    // البيانات الافتراضية
-    let notifications = [
-        { id: 1, title: "📢 تذكير: اختبار منتصف الفصل", content: "موعد اختبار منتصف الفصل لمادة قواعد البيانات: الأربعاء القادم الساعة 10 صباحاً." },
-        { id: 2, title: "📊 نتائج الاختبار التجريبي", content: "تم إعلان نتائج الاختبار التجريبي. درجة النجاح 70%. يرجى مراجعة حساباتكم." },
-        { id: 3, title: "⚙️ تحديث المنصة", content: "تم إضافة ميزة مراجعة الإجابات بعد الاختبار. نوصي بتحديث التطبيق." },
-        { id: 4, title: "⏳ موعد التسليم", content: "آخر موعد للتسجيل في الاختبار النهائي هو 20 أبريل 2025." },
-        { id: 5, title: "📚 محاضرة مراجعة", content: "محاضرة مراجعة شاملة يوم السبت من 2 إلى 4 مساءً (قاعة A101)." }
-    ];
-    
-    function renderNotifications() {
-        const container = document.getElementById("notificationsContainer");
-        if (!container) return;
-        container.innerHTML = "";
+    <script>
+        // بيانات الإشعارات
+        const notificationsData = [
+            { title: "📢 تذكير: اختبار منتصف الفصل", content: "موعد اختبار منتصف الفصل لمادة قواعد البيانات: الأربعاء القادم الساعة 10 صباحاً." },
+            { title: "📊 نتائج الاختبار التجريبي", content: "تم إعلان نتائج الاختبار التجريبي. درجة النجاح 70%. يرجى مراجعة حساباتكم." },
+            { title: "⚙️ تحديث المنصة", content: "تم إضافة ميزة مراجعة الإجابات بعد الاختبار. نوصي بتحديث التطبيق." },
+            { title: "⏳ موعد التسليم", content: "آخر موعد للتسجيل في الاختبار النهائي هو 20 أبريل 2025." },
+            { title: "📚 محاضرة مراجعة", content: "محاضرة مراجعة شاملة يوم السبت من 2 إلى 4 مساءً (قاعة A101)." }
+        ];
         
-        notifications.forEach((notif) => {
-            const card = document.createElement("div");
-            card.className = "card";
-            card.innerHTML = `
-                <div class="card-title">
-                    <i class="fas fa-bell" style="color: #2a5a82;"></i>
-                    ${escapeHtml(notif.title)}
-                </div>
-                <div class="card-content">
-                    ${escapeHtml(notif.content)}
-                </div>
-            `;
-            container.appendChild(card);
-        });
-    }
-    
-    function escapeHtml(str) {
-        if (!str) return "";
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        });
-    }
-    
-    function loadData() {
-        const stored = localStorage.getItem("exam_app_notifications");
-        if (stored) {
-            try {
-                const parsed = JSON.parse(stored);
-                if (Array.isArray(parsed) && parsed.length > 0) {
-                    notifications = parsed;
-                }
-            } catch(e) {}
+        // عرض الإشعارات
+        function displayNotifications() {
+            const container = document.getElementById('notificationsContainer');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            notificationsData.forEach(notif => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-title">
+                        <i class="fas fa-bell" style="color: #2a5a82;"></i>
+                        ${escapeHtml(notif.title)}
+                    </div>
+                    <div class="card-content">
+                        ${escapeHtml(notif.content)}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
         }
-        renderNotifications();
-    }
-    
-    loadData();
-</script>
+        
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+        
+        // تشغيل العرض
+        displayNotifications();
+    </script>
 </body>
 </html>
