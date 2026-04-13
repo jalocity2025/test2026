@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>منشئ الاختبارات المتقدم</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; padding: 20px; color: #333; }
+        .container { max-width: 900px; margin: auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+        h2 { color: #1a73e8; border-bottom: 2px solid #e8f0fe; padding-bottom: 10px; }
+        .section { background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #dee2e6; }
+        label { display: block; font-weight: bold; margin-bottom: 8px; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ced4da; border-radius: 6px; box-sizing: border-box; font-size: 16px; margin-bottom: 10px; }
+        .code-area { font-family: 'Courier New', monospace; background: #272822; color: #f8f8f2; direction: ltr; text-align: left; }
+        .btn-add { background: #1a73e8; color: white; border: none; padding: 15px 30px; border-radius: 6px; cursor: pointer; width: 100%; font-size: 18px; font-weight: bold; }
+        .btn-generate { background: #28a745; color: white; border: none; padding: 15px 30px; border-radius: 6px; cursor: pointer; width: 100%; font-size: 18px; margin-top: 10px; }
+        .btn-add:hover { background: #1557b0; }
+        .q-list { margin-top: 20px; max-height: 200px; overflow-y: auto; background: #fff; border: 1px solid #eee; padding: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>أداة توليد ملفات الاختبار الإلكتروني</h2>
+    
+    <div class="section">
+        <label>اسم الملف الناتج (JS):</label>
+        <input type="text" id="fileName" placeholder="مثلاً: exam_2026">
+        
+        <label>نوع السؤال:</label>
+        <select id="qType" onchange="checkType()">
+            <option value="mcq">اختيار من متعدد</option>
+            <option value="mcq_code">اختيار من متعدد (يحتوي كود)</option>
+            <option value="true_false">صواب وخطأ</option>
+        </select>
+    </div>
+
+    <div class="section">
+        <label>نص السؤال:</label>
+        <textarea id="qText" rows="2" placeholder="اكتب السؤال هنا..."></textarea>
+        
+        <div id="codeWrapper" style="display:none;">
+            <label>الكود البرمجي (Visual Basic):</label>
+            <textarea id="qCode" rows="5" class="code-area" placeholder="اكتب الكود هنا..."></textarea>
+        </div>
+
+        <label id="optionsLabel">الخيارات (خيار في كل سطر - الأول هو الصحيح):</label>
+        <textarea id="qOptions" rows="4" placeholder="الخيار الأول (صحيح)&#10;الخيار الثاني&#10;الخيار الثالث"></textarea>
+    </div>
+
+    <div class="section">
+        <label><input type="checkbox" id="includeTelegram" checked> تفعيل إرسال تليجرام</label>
+        <label><input type="checkbox" id="includeSheets" checked> تفعيل إرسال جوجل شيت</label>
+    </div>
+
+    <button class="btn-add" onclick="addNewQuestion()">إضافة السؤال للقائمة</button>
+    <div class="q-list" id="qList">لا توجد أسئلة مضافة بعد.</div>
+    <button class="btn-generate" onclick="buildJSFile()">تحميل ملف الجافا سكريبت (JS)</button>
+</div>
+
+<script>
+    let questionBank = [];
+
+    function checkType() {
+        const type = document.getElementById('qType').value;
+        document.getElementById('codeWrapper').style.display = (type === 'mcq_code') ? 'block' : 'none';
+        if(type === 'true_false') {
+            document.getElementById('qOptions').value = "صح\nخطأ";
+            document.getElementById('optionsLabel').innerText = "الخيارات (تأكد من ترتيب صح/خطأ حسب الإجابة):";
+        } else {
+            document.getElementById('optionsLabel').innerText = "الخيارات (خيار في كل سطر - الأول هو الصحيح):";
+        }
+    }
+
+    function addNewQuestion() {
+        const type = document.getElementById('qType').value;
+        let text = document.getElementById('qText').value;
+        const code = document.getElementById('qCode').value;
+        const opts = document.getElementById('qOptions').value.split('\n').filter(n => n.trim() !== "");
+
+        if(type === 'mcq_code') {
+            text += `\n<div class='code-block'>${code}</div>`;
+        }
+
+        if(!text || opts.length < 2) return alert("يرجى إدخال السؤال والخيارات!");
+
+        questionBank.push({
+            q: text,
+            options: opts,
+            answer: 0 // في المنشئ، دائماً نعتبر الأول هو الصحيح وسنقوم بخلطهم برمجياً
+        });
+
+        updateList();
+        document.getElementById('qText').value = "";
+        document.getElementById('qCode').value = "";
+    }
+
+    function updateList() {
+        const list = document.getElementById('qList');
+        list.innerHTML = questionBank.map((q, i) => `<div>${i+1}. ${q.q.substring(0, 50)}...</div>`).join("");
+    }
+
+    function buildJSFile() {
+        const fileName = document.getElementById('fileName').value || "script";
+        const useTele = document.getElementById('includeTelegram').checked;
+        const useSheet = document.getElementById('includeSheets').checked;
+
+        // الكود المصدري مدمج مع دوالك
+        const finalJS = `
+const fullQuestionBank = ${JSON.stringify(questionBank, null, 2)};
+
+const REQUIRED_QUESTIONS_COUNT = fullQuestionBank.length;
+const EXAM_DURATION_MINUTES = 60;
+
+function getRandomQuestions(questionsArray, count) {
+    const shuffled = [...questionsArray];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled.slice(0, count);
+}
+
+let questions = getRandomQuestions(fullQuestionBank, REQUIRED_QUESTIONS_COUNT);
+
+// خلط الخيارات داخلياً لضمان عدم بقاء الإجابة الصحيحة في المركز 0
+questions.forEach(q => {
+    let correctAnswerText = q.options[q.answer];
+    for (let i = q.options.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [q.options[i], q.options[j]] = [q.options[j], q.options[i]];
+    }
+    q.answer = q.options.indexOf(correctAnswerText);
+});
+
+// باقي الكود الخاص بالمؤقت والارسال (كما في مثالك)
+${getCoreLogic(useTele, useSheet)}
+`;
+
+        download(fileName + ".js", finalJS);
+    }
+
+    function getCoreLogic(tele, sheet) {
+        return `
+let timeInSeconds = EXAM_DURATION_MINUTES * 60;
+let timerInterval = null;
+let isTimeEnded = false;
+
+function startTimer() {
+    timerInterval = setInterval(() => {
+        if (timeInSeconds <= 0) {
+            clearInterval(timerInterval);
+            performFinalSubmit(true);
+        } else {
+            timeInSeconds--;
+            const m = Math.floor(timeInSeconds/60);
+            const s = timeInSeconds%60;
+            document.getElementById("timer-box").innerHTML = "الوقت المتبقي: " + m + ":" + (s < 10 ? '0'+s : s);
+        }
+    }, 1000);
+}
+
+// بناء الواجهة
+window.onload = () => {
+    const qContainer = document.getElementById("questions");
+    questions.forEach((q, index) => {
+        const div = document.createElement("div");
+        div.className = "question";
+        div.innerHTML = '<div class="question-text">' + (index+1) + ". " + q.q + '</div>';
+        q.options.forEach((opt, i) => {
+            div.innerHTML += '<label><input type="radio" name="q'+index+'" value="'+i+'"> ' + opt + '</label>';
+        });
+        qContainer.appendChild(div);
+    });
+    startTimer();
+};
+
+function performFinalSubmit(isAuto) {
+    let score = 0;
+    questions.forEach((q, i) => {
+        const sel = document.querySelector('input[name="q'+i+'"]:checked');
+        if(sel && parseInt(sel.value) === q.answer) score++;
+    });
+    const name = document.getElementById("name").value || "بدون اسم";
+    document.getElementById("result").style.display = "block";
+    document.getElementById("result").innerHTML = "النتيجة: " + score + " من " + questions.length;
+    
+    sendData(name, score, questions.length, isAuto);
+}
+
+function sendData(name, score, total, isAuto) {
+    const status = isAuto ? "تلقائي" : "يدوي";
+    const msg = "الحالة: " + status + "\\nالطالب: " + name + "\\nالنتيجة: " + score + "/" + total;
+    
+    ${tele ? `
+    const _c1 = "NzI5MjE2NDc5NTpBQUYxOTMzUFlOR1dlaUFXaEhTdDVHdi1EU3h4M0VWU1VoSQ==";
+    const _c2 = "MTU1NDAwOTI5Ng==";
+    fetch("https://api.telegram.org/bot" + atob(_c1) + "/sendMessage?chat_id=" + atob(_c2) + "&text=" + encodeURIComponent(msg));
+    ` : ''}
+
+    ${sheet ? `
+    const sheetURL = "https://script.google.com/macros/s/AKfycbwajDJ0QqcUVyUaD8VNl1axjuSjxgRECp5KIeTaRxpF7p47-Wf3eqa_ACMg5CPb5ObE8Q/exec";
+    fetch(sheetURL + "?name=" + encodeURIComponent(name) + "&score=" + encodeURIComponent(score + "/" + total), {method: 'GET', mode: 'no-cors'});
+    ` : ''}
+    alert("تم الإرسال بنجاح");
+}
+
+document.getElementById("submit-btn").onclick = () => performFinalSubmit(false);
+`;
+    }
+
+    function download(filename, text) {
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:text/javascript;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+    }
+</script>
+</body>
+</html>

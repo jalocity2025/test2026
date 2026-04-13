@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>محول الاختبارات الاحترافي | النسخة المطورة</title>
+    <script src="https://unpkg.com/docx@7.1.0/build/index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #2b579a;
+            --success-color: #28a745;
+            --bg-color: #f0f2f5;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: var(--text-color);
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+            border-top: 8px solid var(--primary-color);
+            transition: transform 0.3s ease;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 26px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 15px;
+        }
+
+        .upload-zone {
+            border: 2px dashed var(--primary-color);
+            padding: 40px 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            background: #f8fbff;
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
+            display: block;
+            position: relative;
+        }
+
+        .upload-zone:hover {
+            background: #eef4ff;
+            border-color: #1e3e6d;
+            transform: scale(1.02);
+        }
+
+        .upload-icon {
+            font-size: 50px;
+            display: block;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        button {
+            background: var(--success-color);
+            color: white;
+            border: none;
+            padding: 18px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        button:hover:not(:disabled) {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        }
+
+        button:disabled {
+            background: #ccc;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
+        #status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 15px;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .status-success {
+            background: #e7f3e7;
+            border: 1px solid #28a745;
+            color: #155724;
+        }
+
+        .status-error {
+            background: #f8d7da;
+            border: 1px solid #dc3545;
+            color: #721c24;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .footer-note {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1><span>📝</span> محول الاختبارات الذكي</h1>
+    <p>قم بتحويل مصفوفة الأسئلة من JS إلى ملف Word جاهز</p>
+
+    <label for="jsFile" class="upload-zone" id="dropZone">
+        <span class="upload-icon">📁</span>
+        <span id="uploadText">اضغط هنا لاختيار ملف الـ JS</span>
+        <br>
+        <small style="color: #888;">(questions / fullQuestionBank)</small>
+    </label>
+    <input type="file" id="jsFile" accept=".js">
+
+    <div id="status"></div>
+    
+    <button id="downloadBtn" disabled>
+        <span>📥</span> تحميل ملف الوورد المنسق
+    </button>
+
+    <div class="footer-note">يدعم تنسيق Code-Block وتلقائي اليمين لليسار</div>
+</div>
+
+<script>
+    let finalQuestions = [];
+
+    document.getElementById('jsFile').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        document.getElementById('uploadText').innerText = "تم اختيار: " + file.name;
+
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const content = event.target.result;
+            const statusBox = document.getElementById('status');
+            statusBox.style.display = "block";
+
+            try {
+                const regex = /(?:questions|fullQuestionBank)\s*=\s*(\[[\s\S]*?\])\s*;/;
+                const match = content.match(regex);
+                let dataString = match ? match[1] : null;
+
+                if (!dataString) {
+                    const fallbackMatch = content.match(/\[\s*\{[\s\S]*?\}\s*\]/);
+                    if (fallbackMatch) dataString = fallbackMatch[0];
+                }
+
+                if (dataString) {
+                    finalQuestions = eval(dataString);
+                    statusBox.className = "status-success";
+                    statusBox.innerHTML = `✅ تم بنجاح! تم العثور على <b>${finalQuestions.length}</b> سؤال جاهز للتحويل.`;
+                    document.getElementById('downloadBtn').disabled = false;
+                } else {
+                    throw new Error();
+                }
+            } catch (err) {
+                statusBox.className = "status-error";
+                statusBox.innerHTML = `❌ خطأ: لم يتم العثور على مصفوفة أسئلة في الملف.`;
+                document.getElementById('downloadBtn').disabled = true;
+            }
+        };
+        reader.readAsText(file);
+    });
+
+    document.getElementById('downloadBtn').addEventListener('click', async function() {
+        const { Document, Packer, Paragraph, TextRun, AlignmentType, Table, TableRow, TableCell, WidthType, BorderStyle, ShadingType, PageBreak } = docx;
+
+        const docContent = [
+            new Paragraph({
+                alignment: AlignmentType.CENTER,
+                children: [new TextRun({ text: "ورقة امتحان مادة الحاسب الآلي", bold: true, size: 36 })]
+            }),
+            new Paragraph({ text: "", spacing: { after: 300 } }),
+            new Table({
+                width: { size: 100, type: WidthType.PERCENTAGE },
+                rows: [
+                    new TableRow({
+                        children: [
+                            new TableCell({ children: [new Paragraph({ text: "اسم الطالب: ...........................................", alignment: AlignmentType.RIGHT })] }),
+                            new TableCell({ children: [new Paragraph({ text: "رقم الجلوس: .........", alignment: AlignmentType.RIGHT })] })
+                        ]
+                    })
+                ]
+            }),
+            new Paragraph({ text: "", spacing: { after: 400 } })
+        ];
+
+        finalQuestions.forEach((item, index) => {
+            const parts = item.q.split(/(<div class='code-block'>[\s\S]*?<\/div>)/g);
+            parts.forEach(part => {
+                if (part.startsWith("<div class='code-block'>")) {
+                    let codeText = part.replace("<div class='code-block'>", "").replace("</div>", "").trim();
+                    const lines = codeText.split('\n');
+                    const codeRuns = [];
+                    lines.forEach((line, i) => {
+                        codeRuns.push(new TextRun({ text: line, font: "Courier New", size: 24, bold: true }));
+                        if (i < lines.length - 1) codeRuns.push(new TextRun({ text: "", break: 1 }));
+                    });
+
+                    docContent.push(new Paragraph({
+                        alignment: AlignmentType.LEFT,
+                        bidirectional: false,
+                        spacing: { before: 200, after: 200 },
+                        border: {
+                            top: { style: BorderStyle.SINGLE, size: 2, space: 10 },
+                            bottom: { style: BorderStyle.SINGLE, size: 2, space: 10 },
+                            left: { style: BorderStyle.SINGLE, size: 2, space: 10 },
+                            right: { style: BorderStyle.SINGLE, size: 2, space: 10 },
+                        },
+                        shading: { fill: "F8F9FA", type: ShadingType.CLEAR },
+                        children: codeRuns
+                    }));
+                } else if (part.trim() !== "") {
+                    let cleanText = part.replace(/<\/?[^>]+(>|$)/g, "");
+                    docContent.push(new Paragraph({
+                        alignment: AlignmentType.RIGHT,
+                        bidirectional: true,
+                        spacing: { before: 200 },
+                        children: [new TextRun({ text: `${index + 1}. ${cleanText}`, bold: true, size: 28 })]
+                    }));
+                }
+            });
+
+            item.options.forEach(opt => {
+                docContent.push(new Paragraph({
+                    alignment: AlignmentType.RIGHT,
+                    bidirectional: true,
+                    indent: { right: 400 },
+                    children: [new TextRun({ text: `(   ) ${opt}`, size: 24, bold: true })]
+                }));
+            });
+        });
+
+        docContent.push(new Paragraph({ children: [new PageBreak()] }));
+        docContent.push(new Paragraph({
+            alignment: AlignmentType.CENTER,
+            children: [new TextRun({ text: "نموذج الإجابة النموذجية", bold: true, size: 30, color: "FF0000" })]
+        }));
+
+        finalQuestions.forEach((q, i) => {
+            docContent.push(new Paragraph({
+                alignment: AlignmentType.RIGHT,
+                bidirectional: true,
+                spacing: { before: 100 },
+                children: [
+                    new TextRun({ text: `السؤال (${i+1}): `, bold: true }),
+                    new TextRun({ text: q.options[q.answer], color: "008000", bold: true })
+                ]
+            }));
+        });
+
+        const doc = new Document({
+            sections: [{
+                properties: { bidi: true },
+                children: docContent,
+            }],
+        });
+
+        const blob = await Packer.toBlob(doc);
+        saveAs(blob, `Exam_${new Date().toLocaleDateString()}.docx`);
+    });
+</script>
+
+</body>
+</html>

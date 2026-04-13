@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>„‰‘∆ «·«Œ »«—«  «· ›«⁄·Ì | À«‰ÊÌ… ’·«Õ «·œÌ‰ Ã«·Ê</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #e9ecef;
+            margin: 0;
+            padding: 20px;
+            color: #1e2a3e;
+        }
+        .builder-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.1);
+            padding: 25px 30px;
+        }
+        h1, h2 {
+            text-align: center;
+            margin: 0 0 5px;
+        }
+        h1 {
+            font-size: 28px;
+            color: #2c3e66;
+        }
+        h2 {
+            font-size: 18px;
+            color: #2c3e66;
+            font-weight: normal;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .form-section {
+            background: #f8f9fc;
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            border: 1px solid #e2e8f0;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+            font-size: 16px;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 14px;
+            border: 1px solid #cbd5e1;
+            font-family: inherit;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #2c7da0;
+            box-shadow: 0 0 0 3px rgba(44,125,160,0.2);
+        }
+        textarea {
+            resize: vertical;
+            font-family: monospace;
+        }
+        .row-2cols {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .row-2cols > div {
+            flex: 1;
+        }
+        button {
+            background: #2c7da0;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-left: 10px;
+            margin-top: 8px;
+        }
+        button:hover {
+            background: #1f5068;
+            transform: scale(0.97);
+        }
+        .btn-success {
+            background: #2c6e2c;
+        }
+        .btn-danger {
+            background: #b23c1c;
+        }
+        .btn-info {
+            background: #2c7da0;
+        }
+        .questions-list {
+            margin-top: 20px;
+            background: #fff;
+            border-radius: 24px;
+            padding: 10px;
+            max-height: 350px;
+            overflow-y: auto;
+            border: 1px solid #e2e8f0;
+        }
+        .question-item {
+            background: #f1f5f9;
+            margin: 12px 0;
+            padding: 12px 16px;
+            border-radius: 20px;
+            border-right: 6px solid #2c7da0;
+        }
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            align-items: baseline;
+        }
+        .question-text-preview {
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .badge {
+            background: #2c7da0;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 12px;
+        }
+        .delete-btn {
+            background: #b91c1c;
+            padding: 4px 12px;
+            font-size: 13px;
+        }
+        .file-downloads {
+            margin-top: 30px;
+            background: #eef2ff;
+            padding: 20px;
+            border-radius: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        .file-downloads button {
+            background: #1e4668;
+            margin: 0;
+        }
+        hr {
+            margin: 20px 0;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        .checkbox-group label {
+            margin: 0;
+            font-weight: bold;
+        }
+        .small-note {
+            font-size: 13px;
+            color: #4a627a;
+            margin-top: 6px;
+        }
+        .code-preview {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-family: monospace;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+<div class="builder-container">
+    <h1>?? „‰‘∆ «·«Œ »«—«  «·„ ﬂ«„·</h1>
+    <h2>À«‰ÊÌ… ’·«Õ «·œÌ‰ Ã«·Ê - ‰Ÿ«„ ≈‰‘«¡ «·√”∆·… (’Õ/Œÿ√° «Œ Ì«— „‰ „ ⁄œœ° «Œ Ì«— „⁄ ﬂÊœ)</h2>
+
+    <!-- ﬁ”„ ≈œŒ«· «·”ƒ«· -->
+    <div class="form-section">
+        <h3 style="margin-top:0">? ≈÷«›… ”ƒ«· ÃœÌœ</h3>
+        <div class="form-group">
+            <label>?? ‰’ «·”ƒ«·:</label>
+            <input type="text" id="questionText" placeholder="«ﬂ » ‰’ «·”ƒ«· Â‰« ...">
+        </div>
+        <div class="form-group">
+            <label>?? ‰Ê⁄ «·”ƒ«·:</label>
+            <select id="questionType">
+                <option value="truefalse">? ’Õ / Œÿ√</option>
+                <option value="mcq">?? «Œ Ì«— €Ì— „ ⁄œœ (»œÊ‰ ﬂÊœ)</option>
+                <option value="code_mcq">?? «Œ Ì«— €Ì— „ ⁄œœ + ﬂÊœ »—„ÃÌ</option>
+            </select>
+        </div>
+        <div id="optionsArea" class="form-group">
+            <label>?? «·ŒÌ«—«  («ﬂ » ﬂ· ŒÌ«— ›Ì ”ÿ— ÃœÌœ):</label>
+            <textarea id="optionsInput" rows="3" placeholder="„À«·:&#10;’Õ&#10;Œÿ√" dir="ltr"></textarea>
+            <div class="small-note">* »«·‰”»… ·‹ (’Õ/Œÿ√) ”Ì „  ⁄»∆ Â«  ·ﬁ«∆Ì«.</div>
+        </div>
+        <div id="codeArea" style="display:none;" class="form-group">
+            <label>??? ﬂÊœ «·”ƒ«· (”ÌŸÂ— ÷„‰ «·”ƒ«·):</label>
+            <textarea id="codeSnippet" rows="4" placeholder="√œŒ· «·ﬂÊœ Â‰« ..." dir="ltr" style="font-family: monospace;"></textarea>
+        </div>
+        <div class="form-group">
+            <label>? «·≈Ã«»… «·’ÕÌÕ… («Œ — „‰ «·ŒÌ«—« ):</label>
+            <select id="correctAnswerSelect"></select>
+        </div>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <button id="addQuestionBtn" class="btn-success">? ≈÷«›… «·”ƒ«· & «· «·Ì</button>
+            <button id="resetFormBtn" class="btn-info">?? „”Õ «·ÕﬁÊ·</button>
+        </div>
+    </div>
+
+    <!-- ﬁ«∆„… «·√”∆·… «·„÷«›… -->
+    <div>
+        <h3>?? «·√”∆·… «·„÷«›… (<span id="questionsCount">0</span>)</h3>
+        <div id="questionsList" class="questions-list">
+            <div style="text-align:center; color:gray;">·«  ÊÃœ √”∆·… »⁄œ° √÷› ”ƒ«·« »«” Œœ«„ «·‰„Ê–Ã √⁄·«Â</div>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- ≈⁄œ«œ«  «· ﬂ«„· „⁄  ·ÌÃ—«„ ÊÃÊÃ· ‘Ì  -->
+    <div class="form-section">
+        <h3>?? ≈⁄œ«œ«  «·≈—”«· «·Œ«—ÃÌ</h3>
+        <div class="checkbox-group">
+            <input type="checkbox" id="enableTelegram">
+            <label>? ≈—”«· «·‰ «∆Ã ≈·Ï  ·ÌÃ—«„ (»Ê )</label>
+        </div>
+        <div id="telegramFields" style="display:none; margin-right: 25px; margin-bottom: 15px;">
+            <div class="form-group">
+                <label>??  Êﬂ‰ «·»Ê :</label>
+                <input type="text" id="botToken" placeholder="„À«·: 1234567890:ABCdefghIJKLMNOP">
+            </div>
+            <div class="form-group">
+                <label>?? „⁄—› «·œ—œ‘… (Chat ID):</label>
+                <input type="text" id="chatId" placeholder="„À«·: 123456789">
+            </div>
+        </div>
+        <div class="checkbox-group">
+            <input type="checkbox" id="enableSheets">
+            <label>?? ≈—”«· «·‰ «∆Ã ≈·Ï ÃÊÃ· ‘Ì  (Web App URL)</label>
+        </div>
+        <div id="sheetsFields" style="display:none; margin-right: 25px;">
+            <div class="form-group">
+                <label>?? —«»ÿ ÃÊÃ· ‘Ì  (Web App URL):</label>
+                <input type="text" id="sheetsUrl" placeholder="https://script.google.com/macros/s/.../exec">
+                <div class="small-note">ÌÃ» √‰ ÌﬂÊ‰ «·‹ Web App Ìﬁ»· POST ÊÌ—”· «·»Ì«‰«  ﬂ‹ JSON</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>?? «”„ „·› «·Ã«›« ”ﬂ—Ì»  (»œÊ‰ «„ œ«œ):</label>
+        <input type="text" id="jsFileName" value="exam_questions" placeholder="„À«·: exam_data">
+        <div class="small-note">”Ì „ ≈‰‘«¡ „·› .js »‰›” «·«”„° Ê„·› HTML »‰›” «·«”„ √Ì÷«° Ê style1.css À«» </div>
+    </div>
+
+    <!-- √“—«— «· ’œÌ— -->
+    <div class="file-downloads">
+        <button id="downloadJsBtn">??  Õ„Ì· „·› «·√”∆·… (.js)</button>
+        <button id="downloadHtmlBtn">??  Õ„Ì· „·› HTML</button>
+        <button id="downloadCssBtn">??  Õ„Ì· style1.css</button>
+    </div>
+    <div class="small-note" style="text-align:center;">?? »⁄œ  Õ„Ì· «·„·›« ° ÷⁄Â« ›Ì „Ã·œ Ê«Õœ Ê«› Õ „·› HTML ·»œ¡ «·«Œ »«—</div>
+</div>
+
+<script>
+    // --------------------------------------------------------------
+    //  „Œ“‰ «·√”∆·… («·„” Œœ„)
+    let questionsBank = [];
+
+    //  ÕœÌÀ ﬁ«∆„… «·√”∆·… ›Ì «·Ê«ÃÂ…
+    function renderQuestionsList() {
+        const container = document.getElementById('questionsList');
+        const countSpan = document.getElementById('questionsCount');
+        if (!container) return;
+        if (questionsBank.length === 0) {
+            container.innerHTML = '<div style="text-align:center; color:gray;">·«  ÊÃœ √”∆·… »⁄œ° √÷› ”ƒ«·« »«” Œœ«„ «·‰„Ê–Ã √⁄·«Â</div>';
+            countSpan.innerText = '0';
+            return;
+        }
+        let html = '';
+        questionsBank.forEach((q, idx) => {
+            let typeLabel = '';
+            if (q.type === 'truefalse') typeLabel = '? ’Õ/Œÿ√';
+            else if (q.type === 'mcq') typeLabel = '?? «Œ Ì«— „ ⁄œœ';
+            else typeLabel = '?? «Œ Ì«— „ ⁄œœ + ﬂÊœ';
+            let optionsPreview = q.options.join(' | ');
+            html += `
+                <div class="question-item">
+                    <div class="question-header">
+                        <span class="badge">${typeLabel}</span>
+                        <button class="delete-btn" data-index="${idx}" style="background:#b91c1c; padding:4px 12px;">?? Õ–›</button>
+                    </div>
+                    <div class="question-text-preview">${escapeHtml(q.text)}</div>
+                    <div style="font-size:13px; color:#2c3e66;">«·ŒÌ«—« : ${escapeHtml(optionsPreview)}</div>
+                    <div style="font-size:13px;">? «·≈Ã«»… «·’ÕÌÕ…: ${escapeHtml(q.options[q.correct])}</div>
+                    ${q.code ? `<div class="code-preview" style="margin-top:6px;">?? ﬂÊœ: ${escapeHtml(q.code.substring(0,60))}${q.code.length>60?'...':''}</div>` : ''}
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+        countSpan.innerText = questionsBank.length;
+        // —»ÿ √“—«— «·Õ–›
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const idx = parseInt(btn.getAttribute('data-index'));
+                questionsBank.splice(idx, 1);
+                renderQuestionsList();
+            });
+        });
+    }
+
+    function escapeHtml(str) { 
+        if(!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if(m === '&') return '&amp;';
+            if(m === '<') return '&lt;';
+            if(m === '>') return '&gt;';
+            return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+            return c;
+        });
+    }
+
+    //  ÕœÌÀ Õﬁ· «·ŒÌ«—«  »‰«¡ ⁄·Ï ‰Ê⁄ «·”ƒ«·
+    function updateOptionsByType() {
+        const type = document.getElementById('questionType').value;
+        const optionsTextarea = document.getElementById('optionsInput');
+        const codeDiv = document.getElementById('codeArea');
+        if (type === 'truefalse') {
+            optionsTextarea.value = "’Õ\nŒÿ√";
+            optionsTextarea.disabled = true;
+            codeDiv.style.display = 'none';
+        } else {
+            optionsTextarea.disabled = false;
+            if (type === 'code_mcq') {
+                codeDiv.style.display = 'block';
+            } else {
+                codeDiv.style.display = 'none';
+            }
+            if (optionsTextarea.value.trim() === "" || optionsTextarea.value === "’Õ\nŒÿ√") {
+                optionsTextarea.value = "«·ŒÌ«— «·√Ê·\n«·ŒÌ«— «·À«‰Ì\n«·ŒÌ«— «·À«·À";
+            }
+        }
+        refreshCorrectOptions();
+    }
+
+    // »‰«¡ ﬁ«∆„… «·ŒÌ«—«  «·„‰”œ·… ··≈Ã«»… «·’ÕÌÕ…
+    function refreshCorrectOptions() {
+        const optionsRaw = document.getElementById('optionsInput').value;
+        let lines = optionsRaw.split(/\r?\n/).filter(l => l.trim() !== "");
+        if (lines.length === 0) lines = ["’Õ", "Œÿ√"];
+        const selectEl = document.getElementById('correctAnswerSelect');
+        selectEl.innerHTML = '';
+        lines.forEach((opt, idx) => {
+            const option = document.createElement('option');
+            option.value = idx;
+            option.textContent = `${idx+1} - ${opt.substring(0, 50)}`;
+            selectEl.appendChild(option);
+        });
+    }
+
+    // Ã·» ŒÌ«—«  „‰ textarea ≈·Ï „’›Ê›…
+    function getOptionsArray() {
+        const raw = document.getElementById('optionsInput').value;
+        let opts = raw.split(/\r?\n/).filter(l => l.trim() !== "");
+        if (opts.length === 0) opts = ["’Õ", "Œÿ√"];
+        return opts;
+    }
+
+    // ≈÷«›… ”ƒ«· ÃœÌœ ≈·Ï «·»‰ﬂ
+    function addCurrentQuestion() {
+        const questionText = document.getElementById('questionText').value.trim();
+        if (!questionText) {
+            alert("Ì—ÃÏ ﬂ «»… ‰’ «·”ƒ«·!");
+            return false;
+        }
+        const type = document.getElementById('questionType').value;
+        let options = getOptionsArray();
+        if (type === 'truefalse') {
+            options = ["’Õ", "Œÿ√"];
+        }
+        if (options.length < 2) {
+            alert("ÌÃ» √‰ ÌÕ ÊÌ «·”ƒ«· ⁄·Ï ŒÌ«—Ì‰ ⁄·Ï «·√ﬁ·!");
+            return false;
+        }
+        const correctIdx = parseInt(document.getElementById('correctAnswerSelect').value);
+        if (isNaN(correctIdx) || correctIdx < 0 || correctIdx >= options.length) {
+            alert("Ì—ÃÏ «Œ Ì«— «·≈Ã«»… «·’ÕÌÕ… „‰ «·ﬁ«∆„…!");
+            return false;
+        }
+        let codeSnippet = '';
+        if (type === 'code_mcq') {
+            codeSnippet = document.getElementById('codeSnippet').value.trim();
+        }
+        // «÷«›… «·”ƒ«·
+        const newQuestion = {
+            id: Date.now() + Math.random(),
+            text: questionText,
+            type: type,
+            options: [...options],
+            correct: correctIdx,
+            code: codeSnippet
+        };
+        questionsBank.push(newQuestion);
+        renderQuestionsList();
+        // ≈⁄«œ…  ⁄ÌÌ‰ «·‰„Ê–Ã ··«” „—«— («· «·Ì)
+        resetFormForNext();
+        return true;
+    }
+
+    function resetFormForNext() {
+        document.getElementById('questionText').value = '';
+        const type = document.getElementById('questionType').value;
+        if (type !== 'truefalse') {
+            document.getElementById('optionsInput').value = "«·ŒÌ«— «·√Ê·\n«·ŒÌ«— «·À«‰Ì\n«·ŒÌ«— «·À«·À";
+            document.getElementById('optionsInput').disabled = false;
+        } else {
+            document.getElementById('optionsInput').value = "’Õ\nŒÿ√";
+            document.getElementById('optionsInput').disabled = true;
+        }
+        document.getElementById('codeSnippet').value = '';
+        refreshCorrectOptions();
+        document.getElementById('questionText').focus();
+    }
+
+    // «” „«⁄ · €ÌÌ— ‰Ê⁄ «·”ƒ«·
+    document.getElementById('questionType').addEventListener('change', function() {
+        updateOptionsByType();
+    });
+    document.getElementById('optionsInput').addEventListener('input', refreshCorrectOptions);
+    
+    // “— ≈÷«›… «·”ƒ«·
+    document.getElementById('addQuestionBtn').addEventListener('click', () => {
+        addCurrentQuestion();
+    });
+    document.getElementById('resetFormBtn').addEventListener('click', () => {
+        document.getElementById('questionText').value = '';
+        document.getElementById('questionType').value = 'truefalse';
+        updateOptionsByType();
+        document.getElementById('codeSnippet').value = '';
+        refreshCorrectOptions();
+    });
+
+    // «· Õﬂ„ ›Ì ÕﬁÊ·  ·ÌÃ—«„ ÊÃÊÃ· ‘Ì 
+    const tgCheck = document.getElementById('enableTelegram');
+    const sheetsCheck = document.getElementById('enableSheets');
+    const tgFieldsDiv = document.getElementById('telegramFields');
+    const sheetsFieldsDiv = document.getElementById('sheetsFields');
+    
+    tgCheck.addEventListener('change', () => {
+        tgFieldsDiv.style.display = tgCheck.checked ? 'block' : 'none';
+    });
+    sheetsCheck.addEventListener('change', () => {
+        sheetsFieldsDiv.style.display = sheetsCheck.checked ? 'block' : 'none';
+    });
+    
+    //  ÂÌ∆… √Ê·Ì…
+    updateOptionsByType();
+    
+    // ========== œ«·… ≈‰‘«¡ „Õ ÊÏ „·› «·Ã«›« ”ﬂ—Ì»  «·ﬂ«„· («·√”∆·… + œÊ«· «·«Œ »«— +  ﬂ«„·) ==========
+    function generateFullJS() {
+        const jsFileName = document.getElementById('jsFileName').value.trim() || "exam_questions";
+        const enableTelegram = tgCheck.checked;
+        const enableSheets = sheetsCheck.checked;
+        const botToken = document.getElementById('botToken').value.trim();
+        const chatId = document.getElementById('chatId').value.trim();
+        const sheetsUrl = document.getElementById('sheetsUrl').value.trim();
+        
+        //  Õ÷Ì— „’›Ê›… «·√”∆·… ·· ”·”·
+        const cleanQuestions = questionsBank.map(q => ({
+            text: q.text,
+            type: q.type,
+            options: q.options,
+            correct: q.correct,
+            code: q.code || ''
+        }));
+        
+        // »‰«¡ œÊ«· «·≈—”«· «·„‘—Êÿ…
+        let telegramFunction = '';
+        let sheetsFunction = '';
+        let callTelegram = '';
+        let callSheets = '';
+        
+        if (enableTelegram && botToken && chatId) {
+            telegramFunction = `
+            // œ«·… «·≈—”«· ≈·Ï  ·ÌÃ—«„
+            async function sendToTelegram(studentName, score, total) {
+                const message = \`?? *‰ ÌÃ… «·«Œ »«—* ??\\n\\n?? «·ÿ«·»: \${studentName}\\n?? «·œ—Ã…: \${score} / \${total}\\n?? «· «—ÌŒ: \${new Date().toLocaleString()}\`;
+                const url = \`https://api.telegram.org/bot${botToken}/sendMessage\`;
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ chat_id: "${chatId}", text: message, parse_mode: "Markdown" })
+                    });
+                    const data = await response.json();
+                    if(!data.ok) console.warn("›‘· «·≈—”«· · ·ÌÃ—«„");
+                } catch(e) { console.error(e); }
+            }`;
+            callTelegram = `await sendToTelegram(studentName, score, totalQuestions);`;
+        } else if (enableTelegram && (!botToken || !chatId)) {
+            callTelegram = `console.warn(" ·ÌÃ—«„ „›⁄· ·ﬂ‰ «·—„Ê“ €Ì— „ﬂ „·…");`;
+            telegramFunction = `async function sendToTelegram(name,score,total){ console.log("»Ì«‰«   ·ÌÃ—«„ €Ì— „ﬂ „·…"); }`;
+        } else {
+            telegramFunction = `function sendToTelegram(name,score,total) { /* „⁄ÿ· */ }`;
+            callTelegram = ``;
+        }
+        
+        if (enableSheets && sheetsUrl) {
+            sheetsFunction = `
+            async function sendToGoogleSheets(studentName, score, total) {
+                const payload = { name: studentName, score: score, total: total, timestamp: new Date().toISOString() };
+                try {
+                    await fetch("${sheetsUrl}", {
+                        method: "POST",
+                        mode: "no-cors",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(payload)
+                    });
+                    console.log(" „ ≈—”«· «·»Ì«‰«  ≈·Ï ÃÊÃ· ‘Ì ");
+                } catch(e) { console.error("Œÿ√ ›Ì ÃÊÃ· ‘Ì ", e); }
+            }`;
+            callSheets = `await sendToGoogleSheets(studentName, score, totalQuestions);`;
+        } else if (enableSheets && !sheetsUrl) {
+            sheetsFunction = `async function sendToGoogleSheets(n,s,t){ console.log("—«»ÿ ÃÊÃ· ‘Ì  €Ì— „ÊÃÊœ"); }`;
+            callSheets = ``;
+        } else {
+            sheetsFunction = `function sendToGoogleSheets(name,score,total) {}`;
+            callSheets = ``;
+        }
+        
+        // ﬂÊœ ﬂ«„· ··„·› «·‰Â«∆Ì
+        const questionsJSON = JSON.stringify(cleanQuestions, null, 2);
+        return `// ========== „·› «·√”∆·… Ê«· ‘€Ì· «· ·ﬁ«∆Ì ==========
+//  „ ≈‰‘«ƒÂ »Ê«”ÿ… „‰‘∆ «·«Œ »«—«  - À«‰ÊÌ… ’·«Õ «·œÌ‰ Ã«·Ê
+const examQuestions = ${questionsJSON};
+
+${telegramFunction}
+${sheetsFunction}
+
+// œ«·… ⁄—÷ «·√”∆·… ›Ì «·’›Õ…
+function renderExamQuestions() {
+    const container = document.getElementById('questions');
+    if (!container) return;
+    container.innerHTML = '';
+    examQuestions.forEach((q, idx) => {
+        const questionDiv = document.createElement('div');
+        questionDiv.className = 'question';
+        questionDiv.setAttribute('data-qid', idx);
+        
+        // ‰’ «·”ƒ«·
+        const qText = document.createElement('div');
+        qText.className = 'question-text';
+        qText.innerHTML = \`\${idx+1}. \${escapeHtml(q.text)}\`;
+        questionDiv.appendChild(qText);
+        
+        // ≈÷«›… ﬂÊœ ≈–« ÊÃœ Ê‰Ê⁄Â code_mcq
+        if (q.type === 'code_mcq' && q.code && q.code.trim() !== '') {
+            const codeBlock = document.createElement('pre');
+            codeBlock.className = 'code-block';
+            codeBlock.textContent = q.code;
+            questionDiv.appendChild(codeBlock);
+        }
+        
+        // ⁄—÷ «·ŒÌ«—« 
+        q.options.forEach((opt, optIdx) => {
+            const radioId = \`q\${idx}_opt\${optIdx}\`;
+            const label = document.createElement('label');
+            const radio = document.createElement('input');
+            radio.type = 'radio';
+            radio.name = \`question\${idx}\`;
+            radio.value = optIdx;
+            radio.id = radioId;
+            label.appendChild(radio);
+            label.appendChild(document.createTextNode(' ' + opt));
+            questionDiv.appendChild(label);
+        });
+        container.appendChild(questionDiv);
+    });
+}
+
+function escapeHtml(str) {
+    if(!str) return '';
+    return str.replace(/[&<>]/g, function(m) {
+        if(m === '&') return '&amp;';
+        if(m === '<') return '&lt;';
+        if(m === '>') return '&gt;';
+        return m;
+    });
+}
+
+// Õ”«» «·‰ ÌÃ…
+function computeScore() {
+    let score = 0;
+    examQuestions.forEach((q, idx) => {
+        const selectedRadio = document.querySelector(\`input[name="question\${idx}"]:checked\`);
+        if (selectedRadio) {
+            const userAnswer = parseInt(selectedRadio.value);
+            if (userAnswer === q.correct) score++;
+        }
+    });
+    return score;
+}
+
+// ⁄—÷ «·‰ ÌÃ… Ê«·≈—”«· ··Œœ„« 
+async function submitExam() {
+    const studentName = document.getElementById('name').value.trim();
+    if (!studentName) {
+        alert("«·—Ã«¡ ≈œŒ«· «”„ «·ÿ«·»");
+        return;
+    }
+    const total = examQuestions.length;
+    const score = computeScore();
+    const resultDiv = document.getElementById('result');
+    resultDiv.style.display = 'block';
+    resultDiv.innerHTML = \`?? «·ÿ«·»: \${escapeHtml(studentName)} | ? «·œ—Ã…: \${score} / \${total}\`;
+    
+    // ≈—”«· ≈·Ï  ·ÌÃ—«„ ÊÃÊÃ· ‘Ì  ≈–«  „  ›⁄Ì·Â«
+    try {
+        ${callTelegram}
+        ${callSheets}
+    } catch(err) { console.error(err); }
+    
+    // ≈ŸÂ«— “— «· ’ÕÌÕ »⁄œ «·≈—”«·
+    const correctBtn = document.getElementById('correct-btn');
+    if(correctBtn) correctBtn.style.display = 'block';
+}
+
+// ⁄—÷ «·≈Ã«»«  «·’ÕÌÕ…
+function showCorrectAnswers() {
+    let resultText = "?? «·≈Ã«»«  «·’ÕÌÕ…:\\n";
+    examQuestions.forEach((q, idx) => {
+        const correctOption = q.options[q.correct];
+        resultText += \`\${idx+1}. \${q.text} -> ? \${correctOption}\\n\`;
+        if (q.code) resultText += \`   («·ﬂÊœ: \${q.code.substring(0,40)}...)\\n\`;
+    });
+    alert(resultText);
+}
+
+// —»ÿ «·√Õœ«À ⁄‰œ  Õ„Ì· «·’›Õ…
+document.addEventListener('DOMContentLoaded', () => {
+    renderExamQuestions();
+    const submitBtn = document.getElementById('submit-btn');
+    if (submitBtn) submitBtn.addEventListener('click', submitExam);
+    const correctBtn = document.getElementById('correct-btn');
+    if (correctBtn) correctBtn.addEventListener('click', showCorrectAnswers);
+});
+`;
+    }
+    
+    // ≈‰‘«¡ „Õ ÊÏ HTML (»‰›” «”„ «·Ã«›« ”ﬂ—Ì» )
+    function generateHTMLFile() {
+        let jsFileName = document.getElementById('jsFileName').value.trim() || "exam_questions";
+        if (!jsFileName.endsWith('.js')) jsFileName += '.js';
+        return `<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>À«‰ÊÌ… ’·«Õ «·œÌ‰ Ã«·Ê - «Œ »«— ‰Â«∆Ì</title>
+    <link rel="stylesheet" href="style1.css">
+</head>
+<body>
+    <div class="container">
+        <h1>«„ Õ«‰ ‰Â«∆Ì ··À«·À ⁄·„Ì</h1>
+        <h5>»⁄œ «ﬂ„«· «·«Œ »«— »÷€ÿ “— «—”«·  ŸÂ— «·œ—Ã… «· Ï  Õ’·  ⁄·ÌÂ«  Õ Â</h5>
+        <form id="quiz-form">
+            <label for="name">«·«”„:</label>
+            <input type="text" id="name" name="name" required>
+            <div id="questions"></div>
+            <button type="button" id="submit-btn">≈—”«·</button>
+            <button type="button" id="correct-btn" style="display: none; background-color: #007bff; margin-top: 10px;"> ’ÕÌÕ «·≈Ã«»« </button>
+        </form>
+        <div id="result" class="result" style="display: none;"></div>
+    </div>
+    <script src="${jsFileName}"></script>
+</body>
+</html>`;
+    }
+    
+    // CSS „Õ ÊÏ À«»  Õ”» «·ÿ·» „⁄  Õ”Ì‰« 
+    function generateCSS() {
+        return `body {
+    font-family: Arial, sans-serif;
+    text-align: right;
+    direction: rtl;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 600px;
+    margin: 10px auto; 
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2 {
+    text-align: center;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    color: #000;
+    font-weight: bold;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+h2 {
+    font-size: 14px;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+label[for="name"] {
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #000;
+}
+
+input[id="name"] {
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #000;
+    border: 2px solid #000;
+    border-radius: 6px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+.question {
+    margin: 5px 0;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+}
+
+.question-text {
+    font-weight: bold;
+    font-size: 20px;
+    color: #000;
+    margin-bottom: 5px;
+}
+
+.code-block {
+    display: block;
+    direction: ltr !important;    
+    text-align: left !important;  
+    background-color: #f8f9fa;    
+    padding: 10px;
+    margin: 10px 0;               
+    border: 2px solid #000;       
+    font-family: 'Courier New', Courier, monospace; 
+    font-size: 20px;              
+    font-weight: bold;            
+    color: #000;               
+    white-space: pre-wrap;        
+    border-radius: 4px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+}
+
+label {
+    display: block;
+    margin: 5px 0;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+    color: #000;
+}
+
+input[type="radio"] {
+    transform: scale(1.5);
+    margin-left: 12px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+button:hover {
+    background: #218838;
+}
+
+.result {
+    margin-top: 15px;
+    padding: 15px;
+    background: #e7f3e7;
+    border: 2px solid #28a745;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    border-radius: 5px;
+    color: #000;
+}`;
+    }
+    
+    //  Õ„Ì· «·„·›« 
+    function downloadFile(content, fileName, mimeType = 'application/javascript') {
+        const blob = new Blob([content], { type: mimeType });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.href = url;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    }
+    
+    document.getElementById('downloadJsBtn').addEventListener('click', () => {
+        if (questionsBank.length === 0) {
+            alert("Ì—ÃÏ ≈÷«›… ”ƒ«· Ê«Õœ ⁄·Ï «·√ﬁ· ﬁ»·  ’œÌ— „·› «·√”∆·…!");
+            return;
+        }
+        let baseName = document.getElementById('jsFileName').value.trim() || "exam_questions";
+        if (!baseName.endsWith('.js')) baseName += '.js';
+        const jsContent = generateFullJS();
+        downloadFile(jsContent, baseName, 'application/javascript');
+    });
+    
+    document.getElementById('downloadHtmlBtn').addEventListener('click', () => {
+        if (questionsBank.length === 0) {
+            alert("·« ÌÊÃœ √”∆·…! √÷› √”∆·… √Ê·« ·≈‰‘«¡ „·› HTML ﬂ«„·.");
+            return;
+        }
+        let baseName = document.getElementById('jsFileName').value.trim() || "exam_questions";
+        if (!baseName.endsWith('.html')) baseName += '.html';
+        const htmlContent = generateHTMLFile();
+        downloadFile(htmlContent, baseName, 'text/html');
+    });
+    
+    document.getElementById('downloadCssBtn').addEventListener('click', () => {
+        const cssContent = generateCSS();
+        downloadFile(cssContent, 'style1.css', 'text/css');
+    });
+    
+    // ≈÷«›… ”ƒ«· «› —«÷Ì ﬂ‰„Ê–Ã ·· Ê÷ÌÕ
+    window.addEventListener('load', () => {
+        if(questionsBank.length === 0){
+            // ‰„Ê–Ã  Ã—Ì»Ì
+            questionsBank.push({
+                id: 1,
+                text: "„À«·: «·⁄»«—… «· «·Ì… ’ÕÌÕ… √„ Œ«ÿ∆…ø (·€… »«ÌÀÊ‰ ÂÌ ·€… „ —Ã„…)",
+                type: "truefalse",
+                options: ["’Õ", "Œÿ√"],
+                correct: 1,
+                code: ""
+            });
+            questionsBank.push({
+                id: 2,
+                text: "√Ì „‰ «·ŒÌ«—«  «· «·Ì… Ì„À· „Œ—Ã«  «·ﬂÊœ: print(2**3)",
+                type: "mcq",
+                options: ["5", "6", "8", "9"],
+                correct: 2,
+                code: ""
+            });
+            renderQuestionsList();
+        }
+    });
+</script>
+</body>
+</html>
