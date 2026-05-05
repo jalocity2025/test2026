@@ -1,4 +1,4 @@
-
+﻿
 
 const fullQuestionBank = [
   {
@@ -407,7 +407,7 @@ const fullQuestionBank = [
         "answer": 1
     },
  {
-        "q": "اما قيمة B من الجملة B=MID (\"HAVE-A-NICE-DAY\",6,10)",
+        "q": "ما قيمة B من الجملة B=MID (\"HAVE-A-NICE-DAY\",6,10)",
         "options": ["A-NICE-D", "-A-NICE-D", "A-NICE-DAY", "-NICE-"],
         "answer": 2
     },
@@ -494,7 +494,7 @@ const fullQuestionBank = [
     "answer": 0
   },
   {
-    "q": "ماذا يطبع البرنامج\n<div class='code-block'>PRIVATE SUB FORM LOAD()\nSTRING DIM M AS\nM = ADDM(5)\nPRINT M\nEND SUB\nFUNCTION ADDM(MVAL AS INTEGER) AS STRING\nADDM = \"MY NUMBER IS =\" & MVAL\nEND FUNCTION</div>",
+    "q": "ماذا يطبع البرنامج\n<div class='code-block'>PRIVATE SUB FORM LOAD()\n DIM M AS STRING\nM = ADDM(5)\nPRINT M\nEND SUB\nFUNCTION ADDM(MVAL AS INTEGER) AS STRING\nADDM = \"MY NUMBER IS =\" & MVAL\nEND FUNCTION</div>",
     "options": [
       "MY NUMBER IS =5",
       "5",
