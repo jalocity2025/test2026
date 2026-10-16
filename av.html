@@ -1,0 +1,217 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ثانوية صلاح الدين - الثالث علمي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f0f2f5;
+            color: var(--text-color);
+            margin: 0;
+            padding: 15px;
+        }
+
+        header {
+            text-align: center;
+            padding: 25px 15px;
+            background: #2c3e50;
+            color: white;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        .chapter-title {
+            padding: 10px 20px;
+            margin: 25px 0 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            background: #fff;
+            display: inline-block;
+            border-right: 5px solid var(--primary-color);
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 15px;
+        }
+
+        .card {
+            border-radius: 12px;
+            padding: 18px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #fff;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            filter: brightness(1.1);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .icon {
+            background: rgba(255, 255, 255, 0.25);
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 12px;
+        }
+
+        .icon svg { fill: white; width: 18px; height: 18px; }
+
+        /* تلوين الفصول */
+        .ch1 { background-color: #3498db; }
+        .ch2 { background-color: #e67e22; }
+        .ch4 { background-color: #1abc9c; }
+        .ch5 { background-color: #9b59b6; }
+        .ch6 { background-color: #34495e; }
+        .rev { background-color: #27ae60; }
+
+        footer { text-align: center; margin-top: 50px; padding-bottom: 20px; color: #777; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>ثانوية صلاح الدين</h1>
+        <p>دروس فيديو تقنية المعلومات - الثالث علمي</p>
+        <p>الفصل الأول والثاني مشترك بين القسم العلمي والقسم الأدبي</p>
+    </header>
+
+    <!-- الفصل الأول -->
+    <div class="chapter-title">الفصل الأول</div>
+    <div class="grid">
+        <a href="https://www.youtube.com/watch?v=0AN8gjGjjuU" class="card ch1" target="_blank" rel="noopener noreferrer">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الدرس الأول</span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=DQRiOSnonTk" class="card ch1" target="_blank" rel="noopener noreferrer">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الدرس الثاني</span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=HRBFTxfwyMo" class="card ch1" target="_blank" rel="noopener noreferrer">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الدرس الثالث</span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=SDSSQ6tt2I0" class="card ch1" target="_blank" rel="noopener noreferrer">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الدرس الرابع</span>
+        </a>
+    </div>
+
+    <!-- الفصل الثاني -->
+    <div class="chapter-title">الفصل الثاني</div>
+    <div class="grid">
+        <a href="https://www.youtube.com/watch?v=l_wm7na4NWI" class="card ch2" target="_blank" rel="noopener noreferrer">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الدرس الأول</span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=VqvrT_xte2k" class="card ch2" target="_blank" rel="noopener noreferrer">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الدرس الثاني</span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=g6liWWIEWu8" class="card ch2" target="_blank" rel="noopener noreferrer">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الدرس الثالث</span>
+        </a>
+    </div>
+
+    <!-- الفصل الرابع -->
+    <div class="chapter-title">الفصل الرابع</div>
+    <div class="grid">
+        <a href="https://www.youtube.com/watch?v=Bd7QZE16uFQ" class="card ch4" target="_blank" rel="noopener noreferrer">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الجزء الأول</span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=NCY950guQms" class="card ch4" target="_blank" rel="noopener noreferrer">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الجزء الثاني</span>
+        </a>
+    </div>
+
+    <!-- الفصل الخامس -->
+    <div class="chapter-title">الفصل الخامس</div>
+    <div class="grid">
+        <a href="https://www.youtube.com/watch?v=s8nmhRJgy3A" class="card ch5" target="_blank" rel="noopener noreferrer">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الدرس الأول</span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=Vrxv7bEwt1Y" class="card ch5" target="_blank" rel="noopener noreferrer">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الدرس الثاني</span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=9lC5qOm1M6E" class="card ch5" target="_blank" rel="noopener noreferrer">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الدرس الثالث</span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=Caz2P2-hp_I" class="card ch5" target="_blank" rel="noopener noreferrer">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الدرس الرابع</span>
+        </a>
+    </div>
+
+    <!-- الفصل السادس -->
+    <div class="chapter-title">الفصل السادس</div>
+    <div class="grid">
+        <a href="https://www.youtube.com/watch?v=UHvy0xOcHbg" class="card ch6" target="_blank" rel="noopener noreferrer">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الدرس الأول</span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=0QyS3LIlesU" class="card ch6" target="_blank" rel="noopener noreferrer">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الدرس الثاني</span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=4SJG-onWTcs" class="card ch6" target="_blank" rel="noopener noreferrer">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الدرس الثالث</span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=E4TSTkdNZ6o" class="card ch6" target="_blank" rel="noopener noreferrer">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الدرس الرابع</span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=BWmXD1S41sg" class="card ch6" target="_blank" rel="noopener noreferrer">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الدرس الخامس</span>
+        </a>
+    </div>
+
+    <!-- المراجعة -->
+    <div class="chapter-title">المراجعة النهائية</div>
+    <div class="grid">
+        <a href="https://www.youtube.com/watch?v=F5JaBpcF9Uc" class="card rev" target="_blank" rel="noopener noreferrer">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+            <span>مراجعة 1</span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=DSPd4o_WxNM" class="card rev" target="_blank" rel="noopener noreferrer">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+            <span>مراجعة 2</span>
+        </a>
+    </div>
+
+    <footer>
+        &copy; 2026 ثانوية صلاح الدين الأيوبي . جالو - محمد عيادة - جميع الحقوق محفوظة
+    </footer>
+</div>
+</body>
+</html>
