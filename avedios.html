@@ -115,7 +115,7 @@
         .video-wrapper {
             position: relative;
             width: 100%;
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            padding-bottom: 56.25%; /* نسبة العرض للإرتفاع 16:9 */
             height: 0;
         }
 
@@ -128,7 +128,7 @@
             border: 0;
         }
 
-        /* زر الإغلاق الواضح */
+        /* زر الإغلاق الواضح في أعلى الشاشة */
         .close-btn {
             position: absolute;
             top: 15px;
@@ -257,10 +257,6 @@
             <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
             <span>الدرس الثاني</span>
         </button>
-        <button class="card ch6" onclick="toggleVideo...?">
-            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-            <span>الدرس الثالث</span>
-        </button> -->
         <button class="card ch6" onclick="openVideo('4SJG-onWTcs')">
             <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
             <span>الدرس الثالث</span>
@@ -293,7 +289,7 @@
     </footer>
 </div>
 
-<!-- نافذة عرض الفيديو المنبثقة -->
+<!-- النافذة المنبثقة للفيديو -->
 <div id="videoModal">
     <button class="close-btn" onclick="closeVideo()">&times;</button>
     <div class="modal-content">
@@ -306,7 +302,7 @@
         var modal = document.getElementById('videoModal');
         var slot = document.getElementById('videoSlot');
         
-        // إدراج مشغل يوتيوب النظيف داخل النافذة المنبثقة
+        // تشغيل الفيديو بشكل نظيف داخل النافذة المنبثقة وبدون مقترحات يوتيوب
         slot.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + videoId + '?autoplay=1&rel=0&modestbranding=1&playsinline=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
         modal.style.display = 'flex';
     }
@@ -315,7 +311,7 @@
         var modal = document.getElementById('videoModal');
         var slot = document.getElementById('videoSlot');
         
-        // إغلاق النافذة وإيقاف الفيديو فوراً لمنع استنزاف الإنترنت لدى الطلاب
+        // إغلاق النافذة وإيقاف الفيديو تماماً لحفظ إنترنت الطلاب
         modal.style.display = 'none';
         slot.innerHTML = '';
     }
