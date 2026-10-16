@@ -1,0 +1,21 @@
+# 1. ÊÌåíÒ ßÇİÉ ÇáÊÚÏíáÇÊ
+git add .
+
+# 2. ßÊÇÈÉ æÕİ ááÊÚÏíá (íãßäß ÊÛííÑ ÇáäÕ Èíä ÇáÚáÇãÇÊ)
+git commit -m "up"
+
+# 3. ÓÍÈ ÇáÊÍÏíËÇÊ ãä ÇáãæŞÚ áÖãÇä ÚÏã æÌæÏ ÊÚÇÑÖ
+git pull origin main --rebase
+
+# 4. ÇáÑİÚ ÇáäåÇÆí (ÇÓÊÎÏã --force ÅĞÇ æÇÌåÊ ãÔßáÉ ÊÚÇÑÖ)
+git push origin main --force
+
+
+ git push origin main --force
+
+Ëã ÇĞåÈ ÇáãæŞÚ ááãÔÑæÚ
+https://jalocity2025.github.io/test2026/
+
+Ëã sitting   Ëã pages
+æ áÊäÔíØ ÇáãæÚ ÇÖÛØ  ctrl + f5
+   

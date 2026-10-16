@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -29,6 +29,9 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
+        header h1 { font-size: 1.8rem; margin: 0 0 10px 0; }
+        header p { font-size: 1.1rem; margin: 0; opacity: 0.9; }
+
         .container { max-width: 1000px; margin: 0 auto; }
 
         .chapter-title {
@@ -39,6 +42,8 @@
             background: #fff;
             display: inline-block;
             box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+            font-size: 1.1rem;
+            border-right: 5px solid var(--primary-color);
         }
 
         .grid {
@@ -53,15 +58,25 @@
             display: flex;
             align-items: center;
             text-decoration: none;
-            color: #fff; /* نص أبيض ليتناسب مع الخلفيات الملونة */
+            color: #fff;
             transition: all 0.3s ease;
             font-weight: bold;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 1.1rem;
+            box-sizing: border-box;
         }
 
         .card:hover {
             transform: scale(1.03);
             filter: brightness(1.1);
+        }
+
+        .card:active {
+            transform: scale(0.98);
         }
 
         .icon {
@@ -73,6 +88,7 @@
             align-items: center;
             justify-content: center;
             margin-left: 15px;
+            flex-shrink: 0;
         }
 
         .icon svg { fill: white; width: 20px; height: 20px; }
@@ -86,7 +102,74 @@
         .ch6 { background-color: #d35400; } /* طوبي */
         .rev { background-color: #27ae60; } /* أخضر للمراجعة */
 
-        footer { text-align: center; margin-top: 50px; color: #777; }
+        /* تصميم النافذة المنبثقة لعرض الفيديو (Modal) */
+        #videoModal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .modal-content {
+            position: relative;
+            width: 95%;
+            max-width: 850px;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* نسبة العرض للإرتفاع 16:9 */
+            height: 0;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* زر الإغلاق الواضح في أعلى الشاشة */
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            font-size: 26px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: transform 0.2s;
+        }
+
+        .close-btn:active {
+            transform: scale(0.9);
+        }
+
+        footer { text-align: center; margin-top: 50px; color: #777; font-size: 0.9rem; }
     </style>
 </head>
 <body>
@@ -99,104 +182,132 @@
 
     <div class="chapter-title">الفصل الأول</div>
     <div class="grid">
-        <a href="https://corsproxy.io/?url=https://www.youtube-nocookie.com/embed/0AN8gjGjjuU?autoplay=1" class="card ch1" target="_blank">
+        <button class="card ch1" onclick="openVideo('0AN8gjGjjuU')">
             <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
             <span>الدرس الأول</span>
-        </a>
-        <a href="https://corsproxy.io/?url=https://www.youtube-nocookie.com/embed/DQRiOSnonTk?autoplay=1" class="card ch1" target="_blank">
+        </button>
+        <button class="card ch1" onclick="openVideo('DQRiOSnonTk')">
             <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
             <span>الدرس الثاني</span>
-        </a>
-        <a href="https://corsproxy.io/?url=https://www.youtube-nocookie.com/embed/HRBFTxfwyMo?autoplay=1" class="card ch1" target="_blank">
+        </button>
+        <button class="card ch1" onclick="openVideo('HRBFTxfwyMo')">
             <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
             <span>الدرس الثالث</span>
-        </a>
-        <a href="https://corsproxy.io/?url=https://www.youtube-nocookie.com/embed/SDSSQ6tt2I0?autoplay=1" class="card ch1" target="_blank">
+        </button>
+        <button class="card ch1" onclick="openVideo('SDSSQ6tt2I0')">
             <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
             <span>الدرس الرابع</span>
-        </a>
+        </button>
     </div>
 
     <div class="chapter-title">الفصل الثاني</div>
     <div class="grid">
-        <a href="https://corsproxy.io/?url=https://www.youtube-nocookie.com/embed/l_wm7na4NWI?autoplay=1" class="card ch2" target="_blank">
+        <button class="card ch2" onclick="openVideo('l_wm7na4NWI')">
             <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
             <span>الدرس الأول</span>
-        </a>
-        <a href="https://corsproxy.io/?url=https://www.youtube-nocookie.com/embed/VqvrT_xte2k?autoplay=1" class="card ch2" target="_blank">
+        </button>
+        <button class="card ch2" onclick="openVideo('VqvrT_xte2k')">
             <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
             <span>الدرس الثاني</span>
-        </a>
-        <a href="https://corsproxy.io/?url=https://www.youtube-nocookie.com/embed/g6liWWIEWu8?autoplay=1" class="card ch2" target="_blank">
+        </button>
+        <button class="card ch2" onclick="openVideo('g6liWWIEWu8')">
             <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
             <span>الدرس الثالث</span>
-        </a>
+        </button>
     </div>
 
     <div class="chapter-title">الفصل الثالث</div>
     <div class="grid">
-        <a href="https://corsproxy.io/?url=https://www.youtube-nocookie.com/embed/42qqRpjGxQc?autoplay=1" class="card ch3" target="_blank">
+        <button class="card ch3" onclick="openVideo('42qqRpjGxQc')">
             <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
             <span>الدرس الأول</span>
-        </a>
-        <a href="https://corsproxy.io/?url=https://www.youtube-nocookie.com/embed/ELw3rmnFi6I?autoplay=1" class="card ch3" target="_blank">
+        </button>
+        <button class="card ch3" onclick="openVideo('ELw3rmnFi6I')">
             <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
             <span>الدرس الثاني</span>
-        </a>
+        </button>
     </div>
 
     <div class="chapter-title">الفصل الرابع</div>
     <div class="grid">
-        <a href="https://corsproxy.io/?url=https://www.youtube-nocookie.com/embed/MzYZYHnhx9I?autoplay=1" class="card ch4" target="_blank">
+        <button class="card ch4" onclick="openVideo('MzYZYHnhx9I')">
             <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
             <span>الجزء الأول</span>
-        </a>
-        <a href="https://corsproxy.io/?url=https://www.youtube-nocookie.com/embed/MC-NQBwXgA4?autoplay=1" class="card ch4" target="_blank">
+        </button>
+        <button class="card ch4" onclick="openVideo('MC-NQBwXgA4')">
             <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
             <span>الجزء الثاني</span>
-        </a>
+        </button>
     </div>
 
     <div class="chapter-title">الفصل الخامس</div>
     <div class="grid">
-        <a href="https://corsproxy.io/?url=https://www.youtube-nocookie.com/embed/otfwc8iwt3c?autoplay=1" class="card ch5" target="_blank">
+        <button class="card ch5" onclick="openVideo('otfwc8iwt3c')">
             <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
             <span>الدرس الأول</span>
-        </a>
-        <a href="https://corsproxy.io/?url=https://www.youtube-nocookie.com/embed/RlbpgXqjdao?autoplay=1" class="card ch5" target="_blank">
+        </button>
+        <button class="card ch5" onclick="openVideo('RlbpgXqjdao')">
             <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
             <span>الدرس الثاني</span>
-        </a>
-        <a href="https://corsproxy.io/?url=https://www.youtube-nocookie.com/embed/kIUzkmeMAug?autoplay=1" class="card ch5" target="_blank">
+        </button>
+        <button class="card ch5" onclick="openVideo('kIUzkmeMAug')">
             <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
             <span>الدرس الثالث</span>
-        </a>
+        </button>
     </div>
 
     <div class="chapter-title">الفصل السادس</div>
     <div class="grid">
-        <a href="https://corsproxy.io/?url=https://www.youtube-nocookie.com/embed/LvmkDbyXLaM?autoplay=1" class="card ch6" target="_blank">
+        <button class="card ch6" onclick="openVideo('LvmkDbyXLaM')">
             <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
             <span>عرض الفصل السادس</span>
-        </a>
+        </button>
     </div>
 
     <div class="chapter-title">المراجعة</div>
     <div class="grid">
-        <a href="https://corsproxy.io/?url=https://www.youtube-nocookie.com/embed/F5JaBpcF9Uc?autoplay=1" class="card rev" target="_blank">
+        <button class="card rev" onclick="openVideo('F5JaBpcF9Uc')">
             <div class="icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
             <span>مراجعة 1</span>
-        </a>
-        <a href="https://corsproxy.io/?url=https://www.youtube-nocookie.com/embed/1y7ytH2X2WU?autoplay=1" class="card rev" target="_blank">
+        </button>
+        <button class="card rev" onclick="openVideo('1y7ytH2X2WU')">
             <div class="icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
             <span>مراجعة 2</span>
-        </a>
+        </button>
     </div>
 
     <footer>
-        &copy; 2026 ثانوية صلاح الدين الايوبي  . جالو - محمد عيادة - جميع الحقوق محفوظة
+        &copy; 2026 ثانوية صلاح الدين الايوبي . جالو - محمد عيادة - جميع الحقوق محفوظة
     </footer>
 </div>
+
+<!-- النافذة المنبثقة للفيديو وزر الإغلاق -->
+<div id="videoModal">
+    <button class="close-btn" onclick="closeVideo()">&times;</button>
+    <div class="modal-content">
+        <div class="video-wrapper" id="videoSlot"></div>
+    </div>
+</div>
+
+<script>
+    function openVideo(videoId) {
+        var modal = document.getElementById('videoModal');
+        var slot = document.getElementById('videoSlot');
+        
+        // إدراج مشغل يوتيوب النظيف بدون مقترحات أو تعليقات وبشكل مكبر
+        slot.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + videoId + '?autoplay=1&rel=0&modestbranding=1&playsinline=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+        modal.style.display = 'flex';
+    }
+
+    function closeVideo() {
+        var modal = document.getElementById('videoModal');
+        var slot = document.getElementById('videoSlot');
+        
+        // إغلاق النافذة وإيقاف تشغيل الفيديو فوراً لتوفير الإنترنت
+        modal.style.display = 'none';
+        slot.innerHTML = '';
+    }
+</script>
 
 </body>
 </html>
