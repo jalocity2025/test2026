@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>ثانوية صلاح الدين - الثالث علمي</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -53,17 +52,10 @@
             gap: 12px;
         }
 
-        .lesson-box {
-            background: #fff;
-            border-radius: 10px;
-            padding: 10px;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.08);
-        }
-
         .card {
             width: 100%;
-            border-radius: 8px;
-            padding: 14px;
+            border-radius: 10px;
+            padding: 15px;
             display: flex;
             align-items: center;
             color: #fff;
@@ -73,6 +65,8 @@
             font-family: 'Tajawal', sans-serif;
             font-size: 1.1rem;
             box-sizing: border-box;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+            transition: opacity 0.2s;
         }
 
         .card:active {
@@ -81,37 +75,83 @@
 
         .icon {
             background: rgba(255, 255, 255, 0.25);
-            width: 38px;
-            height: 38px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-left: 12px;
+            margin-left: 15px;
             flex-shrink: 0;
         }
 
-        .icon svg { fill: white; width: 20px; height: 20px; }
+        .icon svg { fill: white; width: 22px; height: 22px; }
 
-        .video-container {
+        /* تصميم نافذة عرض الفيديو المنبثقة (Modal) */
+        #videoModal {
             display: none;
-            position: relative;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
             width: 100%;
-            padding-bottom: 56.25%; /* نسبة العرض للإرتفاع 16:9 */
-            height: 0;
-            margin-top: 10px;
-            border-radius: 8px;
-            overflow: hidden;
-            background: #000;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
         }
 
-        .video-container iframe {
+        .modal-content {
+            position: relative;
+            width: 95%;
+            max-width: 800px;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+        }
+
+        .video-wrapper iframe {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             border: 0;
+        }
+
+        /* زر الإغلاق الواضح */
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: transform 0.2s;
+        }
+
+        .close-btn:active {
+            transform: scale(0.9);
         }
 
         /* تلوين الفصول */
@@ -137,171 +177,115 @@
     <!-- الفصل الأول -->
     <div class="chapter-title">الفصل الأول</div>
     <div class="grid">
-        <div class="lesson-box">
-            <button class="card ch1" onclick="toggleVideo('vid1', '0AN8gjGjjuU')">
-                <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-                <span>الدرس الأول</span>
-            </button>
-            <div id="vid1" class="video-container"></div>
-        </div>
-        <div class="lesson-box">
-            <button class="card ch1" onclick="toggleVideo('vid2', 'DQRiOSnonTk')">
-                <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-                <span>الدرس الثاني</span>
-            </button>
-            <div id="vid2" class="video-container"></div>
-        </div>
-        <div class="lesson-box">
-            <button class="card ch1" onclick="toggleVideo('vid3', 'HRBFTxfwyMo')">
-                <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-                <span>الدرس الثالث</span>
-            </button>
-            <div id="vid3" class="video-container"></div>
-        </div>
-        <div class="lesson-box">
-            <button class="card ch1" onclick="toggleVideo('vid4', 'SDSSQ6tt2I0')">
-                <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-                <span>الدرس الرابع</span>
-            </button>
-            <div id="vid4" class="video-container"></div>
-        </div>
+        <button class="card ch1" onclick="openVideo('0AN8gjGjjuU')">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الدرس الأول</span>
+        </button>
+        <button class="card ch1" onclick="openVideo('DQRiOSnonTk')">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الدرس الثاني</span>
+        </button>
+        <button class="card ch1" onclick="openVideo('HRBFTxfwyMo')">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الدرس الثالث</span>
+        </button>
+        <button class="card ch1" onclick="openVideo('SDSSQ6tt2I0')">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الدرس الرابع</span>
+        </button>
     </div>
 
     <!-- الفصل الثاني -->
     <div class="chapter-title">الفصل الثاني</div>
     <div class="grid">
-        <div class="lesson-box">
-            <button class="card ch2" onclick="toggleVideo('vid5', 'l_wm7na4NWI')">
-                <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-                <span>الدرس الأول</span>
-            </button>
-            <div id="vid5" class="video-container"></div>
-        </div>
-        <div class="lesson-box">
-            <button class="card ch2" onclick="toggleVideo('vid6', 'VqvrT_xte2k')">
-                <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-                <span>الدرس الثاني</span>
-            </button>
-            <div id="vid6" class="video-container"></div>
-        </div>
-        <div class="lesson-box">
-            <button class="card ch2" onclick="toggleVideo('vid7', 'g6liWWIEWu8')">
-                <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-                <span>الدرس الثالث</span>
-            </button>
-            <div id="vid7" class="video-container"></div>
-        </div>
+        <button class="card ch2" onclick="openVideo('l_wm7na4NWI')">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الدرس الأول</span>
+        </button>
+        <button class="card ch2" onclick="openVideo('VqvrT_xte2k')">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الدرس الثاني</span>
+        </button>
+        <button class="card ch2" onclick="openVideo('g6liWWIEWu8')">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الدرس الثالث</span>
+        </button>
     </div>
 
     <!-- الفصل الرابع -->
     <div class="chapter-title">الفصل الرابع</div>
     <div class="grid">
-        <div class="lesson-box">
-            <button class="card ch4" onclick="toggleVideo('vid8', 'Bd7QZE16uFQ')">
-                <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-                <span>الجزء الأول</span>
-            </button>
-            <div id="vid8" class="video-container"></div>
-        </div>
-        <div class="lesson-box">
-            <button class="card ch4" onclick="toggleVideo('vid9', 'NCY950guQms')">
-                <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-                <span>الجزء الثاني</span>
-            </button>
-            <div id="vid9" class="video-container"></div>
-        </div>
+        <button class="card ch4" onclick="openVideo('Bd7QZE16uFQ')">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الجزء الأول</span>
+        </button>
+        <button class="card ch4" onclick="openVideo('NCY950guQms')">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الجزء الثاني</span>
+        </button>
     </div>
 
     <!-- الفصل الخامس -->
     <div class="chapter-title">الفصل الخامس</div>
     <div class="grid">
-        <div class="lesson-box">
-            <button class="card ch5" onclick="toggleVideo('vid10', 's8nmhRJgy3A')">
-                <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-                <span>الدرس الأول</span>
-            </button>
-            <div id="vid10" class="video-container"></div>
-        </div>
-        <div class="lesson-box">
-            <button class="card ch5" onclick="toggleVideo('vid11', 'Vrxv7bEwt1Y')">
-                <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-                <span>الدرس الثاني</span>
-            </button>
-            <div id="vid11" class="video-container"></div>
-        </div>
-        <div class="lesson-box">
-            <button class="card ch5" onclick="toggleVideo('vid12', '9lC5qOm1M6E')">
-                <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-                <span>الدرس الثالث</span>
-            </button>
-            <div id="vid12" class="video-container"></div>
-        </div>
-        <div class="lesson-box">
-            <button class="card ch5" onclick="toggleVideo('vid13', 'Caz2P2-hp_I')">
-                <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-                <span>الدرس الرابع</span>
-            </button>
-            <div id="vid13" class="video-container"></div>
-        </div>
+        <button class="card ch5" onclick="openVideo('s8nmhRJgy3A')">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الدرس الأول</span>
+        </button>
+        <button class="card ch5" onclick="openVideo('Vrxv7bEwt1Y')">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الدرس الثاني</span>
+        </button>
+        <button class="card ch5" onclick="openVideo('9lC5qOm1M6E')">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الدرس الثالث</span>
+        </button>
+        <button class="card ch5" onclick="openVideo('Caz2P2-hp_I')">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الدرس الرابع</span>
+        </button>
     </div>
 
     <!-- الفصل السادس -->
     <div class="chapter-title">الفصل السادس</div>
     <div class="grid">
-        <div class="lesson-box">
-            <button class="card ch6" onclick="toggleVideo('vid14', 'UHvy0xOcHbg')">
-                <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-                <span>الدرس الأول</span>
-            </button>
-            <div id="vid14" class="video-container"></div>
-        </div>
-        <div class="lesson-box">
-            <button class="card ch6" onclick="toggleVideo('vid15', '0QyS3LIlesU')">
-                <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-                <span>الدرس الثاني</span>
-            </button>
-            <div id="vid15" class="video-container"></div>
-        </div>
-        <div class="lesson-box">
-            <button class="card ch6" onclick="toggleVideo('vid16', '4SJG-onWTcs')">
-                <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-                <span>الدرس الثالث</span>
-            </button>
-            <div id="vid16" class="video-container"></div>
-        </div>
-        <div class="lesson-box">
-            <button class="card ch6" onclick="toggleVideo('vid17', 'E4TSTkdNZ6o')">
-                <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-                <span>الدرس الرابع</span>
-            </button>
-            <div id="vid17" class="video-container"></div>
-        </div>
-        <div class="lesson-box">
-            <button class="card ch6" onclick="toggleVideo('vid18', 'BWmXD1S41sg')">
-                <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-                <span>الدرس الخامس</span>
-            </button>
-            <div id="vid18" class="video-container"></div>
-        </div>
+        <button class="card ch6" onclick="openVideo('UHvy0xOcHbg')">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الدرس الأول</span>
+        </button>
+        <button class="card ch6" onclick="openVideo('0QyS3LIlesU')">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الدرس الثاني</span>
+        </button>
+        <button class="card ch6" onclick="toggleVideo...?">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الدرس الثالث</span>
+        </button> -->
+        <button class="card ch6" onclick="openVideo('4SJG-onWTcs')">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الدرس الثالث</span>
+        </button>
+        <button class="card ch6" onclick="openVideo('E4TSTkdNZ6o')">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الدرس الرابع</span>
+        </button>
+        <button class="card ch6" onclick="openVideo('BWmXD1S41sg')">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span>الدرس الخامس</span>
+        </button>
     </div>
 
     <!-- المراجعة -->
     <div class="chapter-title">المراجعة النهائية</div>
     <div class="grid">
-        <div class="lesson-box">
-            <button class="card rev" onclick="toggleVideo('vid19', 'F5JaBpcF9Uc')">
-                <div class="icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
-                <span>مراجعة 1</span>
-            </button>
-            <div id="vid19" class="video-container"></div>
-        </div>
-        <div class="lesson-box">
-            <button class="card rev" onclick="toggleVideo('vid20', 'DSPd4o_WxNM')">
-                <div class="icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
-                <span>مراجعة 2</span>
-            </button>
-            <div id="vid20" class="video-container"></div>
-        </div>
+        <button class="card rev" onclick="openVideo('F5JaBpcF9Uc')">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+            <span>مراجعة 1</span>
+        </button>
+        <button class="card rev" onclick="openVideo('DSPd4o_WxNM')">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+            <span>مراجعة 2</span>
+        </button>
     </div>
 
     <footer>
@@ -309,23 +293,31 @@
     </footer>
 </div>
 
-<script>
-    function toggleVideo(containerId, videoId) {
-        var container = document.getElementById(containerId);
-        
-        if (container.style.display === 'block') {
-            container.style.display = 'none';
-            container.innerHTML = '';
-        } else {
-            var allContainers = document.querySelectorAll('.video-container');
-            allContainers.forEach(function(box) {
-                box.style.display = 'none';
-                box.innerHTML = '';
-            });
+<!-- نافذة عرض الفيديو المنبثقة -->
+<div id="videoModal">
+    <button class="close-btn" onclick="closeVideo()">&times;</button>
+    <div class="modal-content">
+        <div class="video-wrapper" id="videoSlot"></div>
+    </div>
+</div>
 
-            container.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + videoId + '?autoplay=1&rel=0&modestbranding=1&playsinline=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
-            container.style.display = 'block';
-        }
+<script>
+    function openVideo(videoId) {
+        var modal = document.getElementById('videoModal');
+        var slot = document.getElementById('videoSlot');
+        
+        // إدراج مشغل يوتيوب النظيف داخل النافذة المنبثقة
+        slot.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + videoId + '?autoplay=1&rel=0&modestbranding=1&playsinline=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+        modal.style.display = 'flex';
+    }
+
+    function closeVideo() {
+        var modal = document.getElementById('videoModal');
+        var slot = document.getElementById('videoSlot');
+        
+        // إغلاق النافذة وإيقاف الفيديو فوراً لمنع استنزاف الإنترنت لدى الطلاب
+        modal.style.display = 'none';
+        slot.innerHTML = '';
     }
 </script>
 
